@@ -8,13 +8,6 @@ import { Box } from '@mui/system';
  * input account not exists in server.
  */
 
- const styles = {
-    paperContainer: {
-        backgroundImage: 'url(https://arambartholl.com/wwwppp/wp-content/uploads/old_blog/full-screen-rozendaal.jpg)',
-    },
-};
-
-
 class LoginSignup extends React.Component {
     constructor(props){
         super(props);
@@ -33,8 +26,8 @@ class LoginSignup extends React.Component {
                         <FormSignUp/>
                     </Grid>
                     <Grid item md={6}>
-                        <Paper style={styles.paperContainer}>
-                            Some text to fill the Paper Component
+                        <Paper variant="outlined">
+                            <img alt="Hello" src="https://arambartholl.com/wwwppp/wp-content/uploads/old_blog/full-screen-rozendaal.jpg"/>
                         </Paper>
                     </Grid>
                 </Grid>
