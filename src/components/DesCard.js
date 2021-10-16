@@ -5,7 +5,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 function DesCard() {
   return (
-    <Card elevation={5} style={{ margin: 20 }}>
+    <Card elevation={5} style={{ margin: 20, width:480 }}>
       <CardContent>
         <Stack direction="row">
           <Avatar style={{ margin: 10 }} />

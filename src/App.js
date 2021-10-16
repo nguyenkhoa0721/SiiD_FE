@@ -57,7 +57,7 @@ function App() {
           <CustomButton name="Menu 3" />
           <CustomButton name="Menu 4" />
         </Drawer>
-        <Stack style={{flexWrap:"wrap"}} direction="row">
+        <Stack style={{flexWrap:"wrap", marginTop:20}} justifyContent="space-between" direction="row">
             <DesCard/>
             <DesCard/>
             <DesCard/>
