@@ -5,7 +5,7 @@ import SignLog from './components/LoginSignup'
 // File này chỉ dùng để run component, không được code trên file này
 function App() {
   return (
-    <SignLog type={"login"}/>
+    <SignLog type={"signup"}/>
   );
 }
 
