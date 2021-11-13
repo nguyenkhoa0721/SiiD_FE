@@ -12,17 +12,69 @@ import {
   Switch,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "assets/img/BgSignUp.png";
-import React from "react";
+import {React,useState} from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
-
+import axios from "axios";
 function SignUp() {
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
   const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
+
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const toast = useToast();
+
+  const handleSubmit = () => {
+
+    if (email.length > 0 && password.length > 0 && userName.length > 0 && name.length > 0) {
+      console.log("SignIn");
+      axios
+        .post("https://nmcnpm-siid.herokuapp.com/api/v1/user/signup",
+          {
+            username: userName,
+            email: email,
+            password: password,
+            name: name,
+          }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            toast({
+              title: "Success",
+              description: "You have been signed in",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+          } else{
+            toast({
+              title: "Failed",
+              description: "Maybe you have registered your email or username",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+        })
+        .catch((err) => {
+          toast({
+            title: "Failed",
+            description: err.toString(),
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+  }
+
   return (
     <Flex
       direction="column"
@@ -160,11 +212,13 @@ function SignUp() {
           >
             or
           </Text>
+          <form onSubmit={handleSubmit}>
           <FormControl>
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Name
             </FormLabel>
             <Input
+              onChange={(e) => setName(e.target.value)}
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
@@ -173,10 +227,26 @@ function SignUp() {
               mb="24px"
               size="lg"
             />
+
+            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Username
+            </FormLabel>
+            <Input
+              onChange={(e) => setUserName(e.target.value)}
+              fontSize="sm"
+              ms="4px"
+              borderRadius="15px"
+              type="text"
+              placeholder="Your username"
+              mb="24px"
+              size="lg"
+            />
+
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Email
             </FormLabel>
             <Input
+              onChange={(e) => setEmail(e.target.value)}
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
@@ -189,6 +259,7 @@ function SignUp() {
               Password
             </FormLabel>
             <Input
+              onChange={(e) => setPassword(e.target.value)}
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
@@ -222,6 +293,7 @@ function SignUp() {
               SIGN UP
             </Button>
           </FormControl>
+          </form>
           <Flex
             flexDirection="column"
             justifyContent="center"

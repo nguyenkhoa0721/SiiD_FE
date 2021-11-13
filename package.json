@@ -14,6 +14,7 @@
     "@fontsource/raleway": "^4.5.0",
     "@fontsource/roboto": "^4.5.0",
     "apexcharts": "^3.27.3",
+    "axios": "^0.24.0",
     "classnames": "2.3.1",
     "framer-motion": "^4.1.17",
     "match-sorter": "6.3.0",
@@ -38,7 +39,7 @@
     "stylis-plugin-rtl": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
