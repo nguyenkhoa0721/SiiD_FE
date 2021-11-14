@@ -19,9 +19,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
-import AuthLayout from "layouts/Auth.js";
-import AdminLayout from "layouts/Admin.js";
-import RTLLayout from "layouts/RTL.js";
+import AuthLayout from "./layouts/Auth";
+import AdminLayout from "./layouts/Admin";
+import RTLLayout from "./layouts/RTL";
 
 ReactDOM.render(
   <HashRouter>
