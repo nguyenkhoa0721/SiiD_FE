@@ -8,16 +8,16 @@ import {
   FormLabel,
   Heading,
   Input,
-  Link,
   Switch,
   Text,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 // Assets
-import signInImage from "assets/img/signInImage.png";
+import signInImage from "assets/img/signInImage.jpg";
 //Import Axios
 import axios from "axios";
+import {Link, useHistory} from 'react-router-dom';
 function SignIn() {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
@@ -27,8 +27,10 @@ function SignIn() {
   const [password, setPassword] = useState("");
 
   const toast = useToast();
+  const router = useHistory();
 
-  const onHandleSubmit = () => {
+  const onHandleSubmit = (e) => {
+    e.preventDefault();
     if (email.length > 0 && password.length > 0) {
       console.log("SignIn");
       axios
@@ -40,6 +42,7 @@ function SignIn() {
         )
         .then((res) => {
           if (res.status === 200) {
+            router.push('/admin/dashboard');
             toast({
               title: "Success",
               description: "You have been signed in",
@@ -106,7 +109,7 @@ function SignIn() {
               Enter your email and password to sign in
             </Text>
             
-            <form onSubmit={onHandleSubmit}>
+            <form onSubmit={(e) =>onHandleSubmit(e)}>
               <FormControl>
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Email
@@ -117,7 +120,7 @@ function SignIn() {
                   mb="24px"
                   fontSize="sm"
                   type="text"
-                  placeholder="Your email adress"
+                  placeholder="Your email address"
                   size="lg"
                 />
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
@@ -132,17 +135,6 @@ function SignIn() {
                   placeholder="Your password"
                   size="lg"
                 />
-                <FormControl display="flex" alignItems="center">
-                  <Switch id="remember-login" colorScheme="teal" me="10px" />
-                  <FormLabel
-                    htmlFor="remember-login"
-                    mb="0"
-                    ms="1"
-                    fontWeight="normal"
-                  >
-                    Remember me
-                  </FormLabel>
-                </FormControl>
                 <Button
                   fontSize="10px"
                   type="submit"
@@ -172,8 +164,10 @@ function SignIn() {
             >
               <Text color={textColor} fontWeight="medium">
                 Don't have an account?
-                <Link color={titleColor} as="span" ms="5px" fontWeight="bold">
+                <Link to="/auth/signup">
+                  <Text color={titleColor} as="span" ms="5px" fontWeight="bold">
                   Sign Up
+                  </Text>
                 </Link>
               </Text>
             </Flex>

@@ -8,7 +8,6 @@ import {
   HStack,
   Icon,
   Input,
-  Link,
   Switch,
   Text,
   useColorModeValue,
@@ -16,9 +15,10 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "assets/img/BgSignUp.png";
-import {React,useState} from "react";
+import { React, useState } from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import axios from "axios";
+import { Link, useHistory } from "react-router-dom";
 function SignUp() {
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
@@ -30,30 +30,35 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
+  const router = useHistory();
 
-  const handleSubmit = () => {
-
-    if (email.length > 0 && password.length > 0 && userName.length > 0 && name.length > 0) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      email.length > 0 &&
+      password.length > 0 &&
+      userName.length > 0 &&
+      name.length > 0
+    ) {
       console.log("SignIn");
       axios
-        .post("https://nmcnpm-siid.herokuapp.com/api/v1/user/signup",
-          {
-            username: userName,
-            email: email,
-            password: password,
-            name: name,
-          }
-        )
+        .post("https://nmcnpm-siid.herokuapp.com/api/v1/user/signup", {
+          username: userName,
+          email: email,
+          password: password,
+          name: name,
+        })
         .then((res) => {
           if (res.status === 200) {
+            router.push('/auth/signin');
             toast({
               title: "Success",
-              description: "You have been signed in",
+              description: "You can sign in with your account",
               status: "success",
               duration: 5000,
               isClosable: true,
             });
-          } else{
+          } else {
             toast({
               title: "Failed",
               description: "Maybe you have registered your email or username",
@@ -73,7 +78,7 @@ function SignUp() {
           });
         });
     }
-  }
+  };
 
   return (
     <Flex
@@ -117,8 +122,6 @@ function SignUp() {
           mb="26px"
           w={{ base: "90%", sm: "60%", lg: "40%", xl: "30%" }}
         >
-          Use these awesome forms to login or create new account in your project
-          for free.
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
@@ -212,87 +215,81 @@ function SignUp() {
           >
             or
           </Text>
-          <form onSubmit={handleSubmit}>
-          <FormControl>
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Name
-            </FormLabel>
-            <Input
-              onChange={(e) => setName(e.target.value)}
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="text"
-              placeholder="Your full name"
-              mb="24px"
-              size="lg"
-            />
-
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Username
-            </FormLabel>
-            <Input
-              onChange={(e) => setUserName(e.target.value)}
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="text"
-              placeholder="Your username"
-              mb="24px"
-              size="lg"
-            />
-
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Email
-            </FormLabel>
-            <Input
-              onChange={(e) => setEmail(e.target.value)}
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="email"
-              placeholder="Your email address"
-              mb="24px"
-              size="lg"
-            />
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Password
-            </FormLabel>
-            <Input
-              onChange={(e) => setPassword(e.target.value)}
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="password"
-              placeholder="Your password"
-              mb="24px"
-              size="lg"
-            />
-            <FormControl display="flex" alignItems="center" mb="24px">
-              <Switch id="remember-login" colorScheme="teal" me="10px" />
-              <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
-                Remember me
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <FormControl>
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                Name
               </FormLabel>
+              <Input
+                onChange={(e) => setName(e.target.value)}
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="text"
+                placeholder="Your full name"
+                mb="24px"
+                size="lg"
+              />
+
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                Username
+              </FormLabel>
+              <Input
+                onChange={(e) => setUserName(e.target.value)}
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="text"
+                placeholder="Your username"
+                mb="24px"
+                size="lg"
+              />
+
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                Email
+              </FormLabel>
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="email"
+                placeholder="Your email address"
+                mb="24px"
+                size="lg"
+              />
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                Password
+              </FormLabel>
+              <Input
+                onChange={(e) => setPassword(e.target.value)}
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="password"
+                placeholder="Your password"
+                mb="24px"
+                size="lg"
+              />
+              <Button
+                type="submit"
+                bg="teal.300"
+                fontSize="10px"
+                color="white"
+                fontWeight="bold"
+                w="100%"
+                h="45"
+                mb="24px"
+                _hover={{
+                  bg: "teal.200",
+                }}
+                _active={{
+                  bg: "teal.400",
+                }}
+              >
+                SIGN UP
+              </Button>
             </FormControl>
-            <Button
-              type="submit"
-              bg="teal.300"
-              fontSize="10px"
-              color="white"
-              fontWeight="bold"
-              w="100%"
-              h="45"
-              mb="24px"
-              _hover={{
-                bg: "teal.200",
-              }}
-              _active={{
-                bg: "teal.400",
-              }}
-            >
-              SIGN UP
-            </Button>
-          </FormControl>
           </form>
           <Flex
             flexDirection="column"
@@ -303,14 +300,10 @@ function SignUp() {
           >
             <Text color={textColor} fontWeight="medium">
               Already have an account?
-              <Link
-                color={titleColor}
-                as="span"
-                ms="5px"
-                href="#"
-                fontWeight="bold"
-              >
-                Sign In
+              <Link to="/auth/signin">
+                <Text color={titleColor} as="span" ms="5px" fontWeight="bold">
+                  Sign In
+                </Text>
               </Link>
             </Text>
           </Flex>

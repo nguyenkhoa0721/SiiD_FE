@@ -19,7 +19,6 @@ import {
 import IconBox from "components/Icons/IconBox";
 import { CreativeTimLogo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
-import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -77,9 +76,7 @@ function Sidebar(props) {
               }}
               py="12px"
             >
-              {document.documentElement.dir === "rtl"
-                ? prop.rtlName
-                : prop.name}
+              {prop.name}
             </Text>
             {createLinks(prop.views)}
           </>
@@ -134,9 +131,7 @@ function Sidebar(props) {
                   </IconBox>
                 )}
                 <Text color={activeColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
+                  {prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -185,9 +180,7 @@ function Sidebar(props) {
                   </IconBox>
                 )}
                 <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
+                  {prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -257,7 +250,6 @@ function Sidebar(props) {
           <Stack direction="column" mb="40px">
             <Box>{links}</Box>
           </Stack>
-          <SidebarHelp></SidebarHelp>
         </Box>
       </Box>
     </Box>
@@ -306,9 +298,7 @@ export function SidebarResponsive(props) {
               }}
               py="12px"
             >
-              {document.documentElement.dir === "rtl"
-                ? prop.rtlName
-                : prop.name}
+              {prop.name}
             </Text>
             {createLinks(prop.views)}
           </>
@@ -360,9 +350,7 @@ export function SidebarResponsive(props) {
                   </IconBox>
                 )}
                 <Text color={activeColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
+                  {prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -410,9 +398,7 @@ export function SidebarResponsive(props) {
                   </IconBox>
                 )}
                 <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
+                  {prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -474,7 +460,7 @@ export function SidebarResponsive(props) {
       <Drawer
         isOpen={isOpen}
         onClose={onClose}
-        placement={document.documentElement.dir === "rtl" ? "right" : "left"}
+        placement={"left"}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
@@ -499,7 +485,6 @@ export function SidebarResponsive(props) {
               <Stack direction="column" mb="40px">
                 <Box>{links}</Box>
               </Stack>
-              <SidebarHelp></SidebarHelp>
             </Box>
           </DrawerBody>
         </DrawerContent>
