@@ -3,8 +3,8 @@ import Dashboard from "views/Dashboard/Dashboard.js";
 import Tables from "views/Dashboard/Tables.js";
 import Billing from "views/Dashboard/Billing.js";
 import Profile from "views/Dashboard/Profile.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
+import SignIn from "views/Authentication/SignIn.js";
+import SignUp from "views/Authentication/SignUp.js";
 
 import {
   HomeIcon,
