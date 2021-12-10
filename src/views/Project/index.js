@@ -1,8 +1,8 @@
 import React from "react";
 // Chakra imports
 import { Flex } from "@chakra-ui/react";
-function Portfolio() {
+function Project() {
   return <Flex direction="column"></Flex>;
 }
 
-export default Portfolio;
+export default Project;
