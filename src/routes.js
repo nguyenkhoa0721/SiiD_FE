@@ -1,9 +1,11 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard.js";
 import Project from "views/Project";
+import Portfolio from "views/Portfolio";
 // import Tables from "views/Dashboard/Tables.js";
 // import Billing from "views/Dashboard/Billing.js";
-import Profile from "views/Dashboard/Profile.js";
+// import Profile from "views/Dashboard/Profile.js";
+import Profile from "views/Profile";
 import SignIn from "views/Authentication/SignIn.js";
 // import SignUp from "views/Authentication/SignUp.js";
 
@@ -40,7 +42,7 @@ var dashRoutes = [
     name: "Portfolio",
     icon: <PortfolioIcon color="inherit" />,
     secondaryNavbar: true,
-    component: Profile,
+    component: Portfolio,
     layout: "/admin",
   },
 
