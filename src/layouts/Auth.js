@@ -1,5 +1,6 @@
 // chakra imports
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
+import Footer from "components/Footer/Footer";
 // core components
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import React from "react";
@@ -86,10 +87,7 @@ export default function Pages(props) {
     <ChakraProvider theme={theme} resetCss={false} w="100%">
       <Box ref={navRef} w="100%">
         <Portal containerRef={navRef}>
-          <AuthNavbar
-            secondary={getActiveNavbar(routes)}
-            logoText="SiiD"
-          />
+          <AuthNavbar secondary={getActiveNavbar(routes)} logoText="SiiD" />
         </Portal>
         <Box w="100%">
           <Box ref={wrapper} w="100%">
@@ -100,6 +98,7 @@ export default function Pages(props) {
           </Box>
         </Box>
         <Box px="24px" mx="auto" width="1044px" maxW="100%">
+          <Footer />
         </Box>
       </Box>
     </ChakraProvider>
