@@ -47,7 +47,7 @@ export default function Pages(props) {
         let categoryActiveNavbar = getActiveNavbar(routes[i].views);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
-        }
+        } 
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -93,7 +93,7 @@ export default function Pages(props) {
           <Box ref={wrapper} w="100%">
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="/auth" to="/auth/login-page" />
+              <Redirect from="/auth" to="/auth/signup" />
             </Switch>
           </Box>
         </Box>
