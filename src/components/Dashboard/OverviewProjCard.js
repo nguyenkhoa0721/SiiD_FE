@@ -23,7 +23,7 @@ import { tablesTableData } from "variables/general";
 import wrappedSpotify from "assets/img/Spotify-Wrapped-2021.jpg";
 export default function OverviewProjCard({flexIndex}) {
   return (
-    <Box flex={flexIndex} bg="white" p={4} borderRadius="lg">
+    <Box shadow="lg" flex={flexIndex} bg="white" p={4} borderRadius="lg">
       <Text fontWeight="bold" fontSize="xl">
         Spotify 2021 Wrapped
       </Text>
