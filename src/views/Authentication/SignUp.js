@@ -5,34 +5,37 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  HStack,
-  Icon,
   Input,
-  Switch,
   Text,
-  useColorModeValue,
   useToast,
+  Heading,
+  createStandaloneToast,
 } from "@chakra-ui/react";
-// Assets
-import BgSignUp from "assets/img/BgSignUp.png";
 import { React, useState } from "react";
-import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
-import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
-function SignUp() {
-  const titleColor = useColorModeValue("teal.300", "teal.200");
-  const textColor = useColorModeValue("gray.700", "white");
-  const bgColor = useColorModeValue("white", "gray.700");
-  const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
 
+import { ChakraProvider } from "@chakra-ui/provider";
+import theme from "theme/theme";
+
+import axios from "axios";
+
+import signInImage from "assets/img/signInImage.jpg";
+import { USER_SIGNUP } from "utils/path/internalPaths";
+import { GREEN_SHOPIFY } from "utils/const/ColorChoice";
+import { TEXT_COLOR } from "utils/const/ColorChoice";
+import { GREEN_DARKER } from "utils/const/ColorChoice";
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+function SignUp() {
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const toast = useToast();
+
+  const toast = createStandaloneToast();
   const router = useHistory();
 
-  const handleSubmit = (e) => {
+  const onHandleSubmit = (e) => {
     e.preventDefault();
     if (
       email.length > 0 &&
@@ -40,9 +43,8 @@ function SignUp() {
       userName.length > 0 &&
       name.length > 0
     ) {
-      console.log("SignIn");
       axios
-        .post("https://nmcnpm-siid.herokuapp.com/api/v1/user/signup", {
+        .post(USER_SIGNUP, {
           username: userName,
           email: email,
           password: password,
@@ -50,7 +52,7 @@ function SignUp() {
         })
         .then((res) => {
           if (res.status === 200) {
-            router.push('/auth/signin');
+            router.push("/auth/signin");
             toast({
               title: "Success",
               description: "You can sign in with your account",
@@ -61,7 +63,7 @@ function SignUp() {
           } else {
             toast({
               title: "Failed",
-              description: "Maybe you have registered your email or username",
+              description: "Maybe your email has been signed up!!",
               status: "error",
               duration: 5000,
               isClosable: true,
@@ -71,7 +73,7 @@ function SignUp() {
         .catch((err) => {
           toast({
             title: "Failed",
-            description: err.toString(),
+            description: "Noooo",
             status: "error",
             duration: 5000,
             isClosable: true,
@@ -81,235 +83,163 @@ function SignUp() {
   };
 
   return (
-    <Flex
-      direction="column"
-      alignSelf="center"
-      justifySelf="center"
-      overflow="hidden"
-    >
-      <Box
-        position="absolute"
-        minH={{ base: "70vh", md: "50vh" }}
-        w={{ md: "calc(100vw - 50px)" }}
-        borderRadius={{ md: "15px" }}
-        left="0"
-        right="0"
-        bgRepeat="no-repeat"
-        overflow="hidden"
-        zIndex="-1"
-        top="0"
-        bgImage={BgSignUp}
-        bgSize="cover"
-        mx={{ md: "auto" }}
-        mt={{ md: "14px" }}
-      ></Box>
-      <Flex
-        direction="column"
-        textAlign="center"
-        justifyContent="center"
-        align="center"
-        mt="6.5rem"
-        mb="30px"
-      >
-        <Text fontSize="4xl" color="white" fontWeight="bold">
-          Welcome!
-        </Text>
-        <Text
-          fontSize="md"
-          color="white"
-          fontWeight="normal"
-          mt="10px"
-          mb="26px"
-          w={{ base: "90%", sm: "60%", lg: "40%", xl: "30%" }}
-        >
-        </Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
+    <ChakraProvider theme={theme} resetCss={false} w="100%">
+      <Flex position="relative" mb="40px">
         <Flex
-          direction="column"
-          w="445px"
-          background="transparent"
-          borderRadius="15px"
-          p="40px"
-          mx={{ base: "100px" }}
-          bg={bgColor}
-          boxShadow="0 20px 27px 0 rgb(0 0 0 / 5%)"
+          h={{ sm: "initial", md: "75vh", lg: "85vh" }}
+          w="100%"
+          maxW="1044px"
+          mx="auto"
+          justifyContent="space-between"
+          mb="30px"
+          pt={{ sm: "100px", md: "0px" }}
         >
-          <Text
-            fontSize="xl"
-            color={textColor}
-            fontWeight="bold"
-            textAlign="center"
-            mb="22px"
-          >
-            Register With
-          </Text>
-          <HStack spacing="15px" justify="center" mb="22px">
-            <Flex
-              justify="center"
-              align="center"
-              w="75px"
-              h="75px"
-              borderRadius="15px"
-              border="1px solid lightgray"
-              cursor="pointer"
-              transition="all .25s ease"
-              _hover={{ filter: "brightness(120%)", bg: bgIcons }}
-            >
-              <Link href="#">
-                <Icon
-                  as={FaFacebook}
-                  w="30px"
-                  h="30px"
-                  _hover={{ filter: "brightness(120%)" }}
-                />
-              </Link>
-            </Flex>
-            <Flex
-              justify="center"
-              align="center"
-              w="75px"
-              h="75px"
-              borderRadius="15px"
-              border="1px solid lightgray"
-              cursor="pointer"
-              transition="all .25s ease"
-              _hover={{ filter: "brightness(120%)", bg: bgIcons }}
-            >
-              <Link href="#">
-                <Icon
-                  as={FaApple}
-                  w="30px"
-                  h="30px"
-                  _hover={{ filter: "brightness(120%)" }}
-                />
-              </Link>
-            </Flex>
-            <Flex
-              justify="center"
-              align="center"
-              w="75px"
-              h="75px"
-              borderRadius="15px"
-              border="1px solid lightgray"
-              cursor="pointer"
-              transition="all .25s ease"
-              _hover={{ filter: "brightness(120%)", bg: bgIcons }}
-            >
-              <Link href="#">
-                <Icon
-                  as={FaGoogle}
-                  w="30px"
-                  h="30px"
-                  _hover={{ filter: "brightness(120%)" }}
-                />
-              </Link>
-            </Flex>
-          </HStack>
-          <Text
-            fontSize="lg"
-            color="gray.400"
-            fontWeight="bold"
-            textAlign="center"
-            mb="22px"
-          >
-            or
-          </Text>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <FormControl>
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                Name
-              </FormLabel>
-              <Input
-                onChange={(e) => setName(e.target.value)}
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="text"
-                placeholder="Your full name"
-                mb="24px"
-                size="lg"
-              />
-
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                Username
-              </FormLabel>
-              <Input
-                onChange={(e) => setUserName(e.target.value)}
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="text"
-                placeholder="Your username"
-                mb="24px"
-                size="lg"
-              />
-
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                Email
-              </FormLabel>
-              <Input
-                onChange={(e) => setEmail(e.target.value)}
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="email"
-                placeholder="Your email address"
-                mb="24px"
-                size="lg"
-              />
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                Password
-              </FormLabel>
-              <Input
-                onChange={(e) => setPassword(e.target.value)}
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="password"
-                placeholder="Your password"
-                mb="24px"
-                size="lg"
-              />
-              <Button
-                type="submit"
-                bg="teal.300"
-                fontSize="10px"
-                color="white"
-                fontWeight="bold"
-                w="100%"
-                h="45"
-                mb="24px"
-                _hover={{
-                  bg: "teal.200",
-                }}
-                _active={{
-                  bg: "teal.400",
-                }}
-              >
-                SIGN UP
-              </Button>
-            </FormControl>
-          </form>
           <Flex
-            flexDirection="column"
-            justifyContent="center"
             alignItems="center"
-            maxW="100%"
-            mt="0px"
+            justifyContent="start"
+            style={{ userSelect: "none" }}
+            w={{ base: "100%", md: "50%", lg: "42%" }}
           >
-            <Text color={textColor} fontWeight="medium">
-              Already have an account?
-              <Link to="/auth/signin">
-                <Text color={titleColor} as="span" ms="5px" fontWeight="bold">
-                  Sign In
+            <Flex
+              direction="column"
+              w="100%"
+              background="transparent"
+              p="48px"
+              mt={{ md: "150px", lg: "80px" }}
+            >
+              <Heading color={GREEN_SHOPIFY} fontSize="32px" mb="10px">
+                Welcome Back
+              </Heading>
+              <Text
+                mb="36px"
+                ms="4px"
+                color={TEXT_COLOR}
+                fontWeight="bold"
+                fontSize="14px"
+              >
+                Sign up now!!!!
+              </Text>
+
+              <form onSubmit={(e) => onHandleSubmit(e)}>
+                <FormControl id="name" isRequired>
+                  <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                    Name
+                  </FormLabel>
+                  <Input
+                    onChange={(e) => setName(e.target.value)}
+                    borderRadius="15px"
+                    mb="24px"
+                    fontSize="sm"
+                    type="text"
+                    placeholder="Your name"
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl id="username" isRequired>
+                  <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                    Username
+                  </FormLabel>
+                  <Input
+                    onChange={(e) => setUserName(e.target.value)}
+                    borderRadius="15px"
+                    mb="24px"
+                    fontSize="sm"
+                    type="text"
+                    placeholder="Your username"
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl id="email" isRequired>
+                  <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                    Email
+                  </FormLabel>
+                  <Input
+                    onChange={(e) => setEmail(e.target.value)}
+                    borderRadius="15px"
+                    mb="24px"
+                    fontSize="sm"
+                    type="text"
+                    placeholder="Your email address"
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl id="password" isRequired>
+                  <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                    Password
+                  </FormLabel>
+                  <Input
+                    onChange={(e) => setPassword(e.target.value)}
+                    borderRadius="15px"
+                    mb="36px"
+                    fontSize="sm"
+                    type="password"
+                    placeholder="Your password"
+                    size="lg"
+                  />
+                </FormControl>
+                <Button
+                  fontSize="15px"
+                  type="submit"
+                  bg={GREEN_SHOPIFY}
+                  w="100%"
+                  h="45"
+                  mb="20px"
+                  color="white"
+                  mt="20px"
+                  _hover={{
+                    bg: GREEN_DARKER,
+                  }}
+                  _active={{
+                    bg: GREEN_SHOPIFY,
+                  }}
+                >
+                  Sign up
+                </Button>
+              </form>
+              <Flex
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                maxW="100%"
+                mt="0px"
+              >
+                <Text color={TEXT_COLOR} fontWeight="medium">
+                  Have an account?
+                  <Link to="/auth/signin">
+                    <Text
+                      color={GREEN_SHOPIFY}
+                      as="span"
+                      ms="5px"
+                      fontWeight="bold"
+                    >
+                      Sign In
+                    </Text>
+                  </Link>
                 </Text>
-              </Link>
-            </Text>
+              </Flex>
+            </Flex>
           </Flex>
+          <Box
+            display={{ base: "none", md: "block" }}
+            overflowX="hidden"
+            h="100%"
+            w="40vw"
+            position="absolute"
+            right="0px"
+          >
+            <Box
+              bgImage={signInImage}
+              w="100%"
+              h="100%"
+              bgSize="cover"
+              bgPosition="50%"
+              position="absolute"
+              borderBottomLeftRadius="20px"
+            ></Box>
+          </Box>
         </Flex>
       </Flex>
-    </Flex>
+    </ChakraProvider>
   );
 }
 
