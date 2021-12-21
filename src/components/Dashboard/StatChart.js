@@ -52,7 +52,7 @@ export default function StatChart() {
     },
   };
   return (
-    <Box shadow="lg" flex="1" bg="white" p={4} ml={4} borderRadius="lg">
+    <Box shadow="lg" bg="white" p={4} ml={4} borderRadius="lg">
       <ReactApexChart
         options={state.options}
         series={state.series}

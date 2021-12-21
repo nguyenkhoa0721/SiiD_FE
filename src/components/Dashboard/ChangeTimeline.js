@@ -11,7 +11,7 @@ import {
   ListIcon,
   ListItem,
   Avatar,
-  VStack,
+  VStack, 
 } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 function ChangeTimelineCard(){
