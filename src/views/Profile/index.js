@@ -1,6 +1,18 @@
 import React from "react";
 // Chakra imports
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Textarea,
+} from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
+import {
   Avatar,
   AvatarGroup,
   Box,
@@ -46,6 +58,9 @@ function Profile() {
   );
   const borderAvatar = useColorModeValue("white", "white");
   const buttonEditColor = useColorModeValue("white", "white");
+
+  const { id, isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Flex direction="column">
       <Box
@@ -112,7 +127,6 @@ function Profile() {
                 fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
                 color={textWhite}
                 fontWeight="bold"
-                // ms={{ sm: "8px", md: "0px" }}
               >
                 Tessa
               </Text>
@@ -149,9 +163,118 @@ function Profile() {
                 p="0px"
                 borderRadius="full"
                 bgColor={buttonEditColor}
+                onClick={onOpen}
               >
                 <MdEdit color="#18A558" w="20px" h="20px" />
               </Button>
+
+              <Modal
+                id="editProfileDialog"
+                isCentered
+                isOpen={isOpen}
+                onClose={onClose}
+                size="2xl"
+                closeOnOverlayClick={false}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader p="0px">
+                    <Box
+                      w="full"
+                      h="60px"
+                      bgColor="#008060"
+                      borderRadius="5px 5px 0px 0px"
+                      pl="32px"
+                    >
+                      <Flex justifyContent="space-between" align="center">
+                        <Text
+                          my="12px"
+                          fontSize="2xl"
+                          color={textWhite}
+                          fontWeight="semibold"
+                        >
+                          Edit Profiles
+                        </Text>
+                        <ModalCloseButton mt="5px"></ModalCloseButton>
+                      </Flex>
+                    </Box>
+                  </ModalHeader>
+                  <ModalBody p="32px">
+                    <FormControl experimental_spaceY="32px">
+                      <Input
+                        id="name"
+                        type="name"
+                        placeholder="Full name*"
+                        required
+                        h="50px"
+                        color="black"
+                        fontSize="lg"
+                        borderColor="black"
+                      />
+                      <Input
+                        id="job"
+                        type="job"
+                        placeholder="Current job*"
+                        required
+                        h="50px"
+                        color="black"
+                        fontSize="lg"
+                        borderColor="black"
+                      />
+                      <Input
+                        id="country"
+                        type="country"
+                        placeholder="Country*"
+                        required
+                        h="50px"
+                        color="black"
+                        fontSize="lg"
+                        borderColor="black"
+                      />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Email*"
+                        required
+                        h="50px"
+                        color="black"
+                        fontSize="lg"
+                        borderColor="black"
+                      />
+                      <Input
+                        id="phone-number"
+                        type="number"
+                        placeholder="Phone number"
+                        h="50px"
+                        color="black"
+                        fontSize="lg"
+                        borderColor="black"
+                      />
+                      <Textarea
+                        id="description"
+                        type=""
+                        placeholder="Description"
+                        h="200px"
+                        color="black"
+                        fontSize="lg"
+                        borderColor="black"
+                      ></Textarea>
+                    </FormControl>
+                  </ModalBody>
+
+                  <ModalFooter
+                    p="0px 32px 32px 32px"
+                    experimental_spaceX="32px"
+                  >
+                    <Button color="white" colorScheme="green">
+                      Save
+                    </Button>
+                    <Button color="black" colorScheme="gray" onClick={onClose}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Flex>
           </Box>
           <Box
