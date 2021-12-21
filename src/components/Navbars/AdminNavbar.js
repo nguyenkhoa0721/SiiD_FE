@@ -71,11 +71,11 @@ export default function AdminNavbar(props) {
   return (
     <Flex
       position={navbarPosition}
-      boxShadow={navbarShadow}
-      bg={navbarBg}
+      // boxShadow={navbarShadow}
+      // bg={navbarBg}
       borderColor={navbarBorder}
       filter={navbarFilter}
-      backdropFilter={navbarBackdrop}
+      // backdropFilter={navbarBackdrop}
       borderWidth="1.5px"
       borderStyle="solid"
       transitionDelay="0s, 0s, 0s, 0s"

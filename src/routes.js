@@ -2,64 +2,33 @@
 import Dashboard from "views/Dashboard/Dashboard.js";
 import Project from "views/Project";
 import Portfolio from "views/Portfolio";
-// import Tables from "views/Dashboard/Tables.js";
-// import Billing from "views/Dashboard/Billing.js";
-// import Profile from "views/Dashboard/Profile.js";
 import Profile from "views/Profile";
 import SignIn from "views/Authentication/SignIn.js";
-// import SignUp from "views/Authentication/SignUp.js";
-
-import {
-  HomeIcon,
-  ProjectIcon,
-  // StatsIcon,
-  // CreditIcon,
-  PersonIcon,
-  SignoutIcon,
-  PortfolioIcon,
-  // DocumentIcon,
-  // RocketIcon,
-  // SupportIcon,
-} from "components/Icons/Icons";
-
+import {FaHome, FaChalkboard, FaDoorOpen} from "react-icons/fa";
+import {MdDesignServices, MdPerson} from "react-icons/md";
 var dashRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    icon: <HomeIcon color="inherit" />,
+    icon: <FaHome color="inherit" />,
     component: Dashboard,
     layout: "/admin",
   },
   {
     path: "/project",
     name: "Project",
-    icon: <ProjectIcon color="inherit" />,
+    icon: <FaChalkboard color="inherit" />,
     component: Project,
     layout: "/admin",
   },
   {
     path: "/portfolio",
     name: "Portfolio",
-    icon: <PortfolioIcon color="inherit" />,
+    icon: <MdDesignServices color="inherit" />,
     secondaryNavbar: true,
     component: Portfolio,
     layout: "/admin",
   },
-
-  // {
-  //   path: "/tables",
-  //   name: "Tables",
-  //   icon: <StatsIcon color="inherit" />,
-  //   component: Tables,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/billing",
-  //   name: "Billing",
-  //   icon: <CreditIcon color="inherit" />,
-  //   component: Billing,
-  //   layout: "/admin",
-  // },
   {
     name: "ACCOUNT PAGES",
     category: "account",
@@ -68,7 +37,7 @@ var dashRoutes = [
       {
         path: "/profile",
         name: "Profile",
-        icon: <PersonIcon color="inherit" />,
+        icon: <MdPerson color="inherit" />,
         secondaryNavbar: true,
         component: Profile,
         layout: "/admin",
@@ -76,26 +45,11 @@ var dashRoutes = [
       {
         path: "/signin",
         name: "Sign Out",
-        icon: <SignoutIcon color="inherit" />,
+        icon: <FaDoorOpen color="inherit" />,
         secondaryNavbar: true,
         component: SignIn,
         layout: "/auth",
       },
-      // {
-      //   path: "/signin",
-      //   name: "Sign In",
-      //   icon: <DocumentIcon color="inherit" />,
-      //   component: SignIn,
-      //   layout: "/auth",
-      // },
-      // {
-      //   path: "/signup",
-      //   name: "Sign Up",
-      //   icon: <RocketIcon color="inherit" />,
-      //   secondaryNavbar: true,
-      //   component: SignUp,
-      //   layout: "/auth",
-      // },
     ],
   },
 ];

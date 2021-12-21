@@ -117,10 +117,10 @@ function Sidebar(props) {
             >
               <Flex>
                 {typeof prop.icon === "string" ? (
-                  <Icon>{prop.icon}</Icon>
+                  <Icon color="white">{prop.icon}</Icon>
                 ) : (
                   <IconBox
-                    bg="teal.300"
+                    bg="#18A558"
                     color="white"
                     h="30px"
                     w="30px"
@@ -170,7 +170,7 @@ function Sidebar(props) {
                 ) : (
                   <IconBox
                     bg={inactiveBg}
-                    color="teal.300"
+                    color="#18A558"
                     h="30px"
                     w="30px"
                     me="12px"
