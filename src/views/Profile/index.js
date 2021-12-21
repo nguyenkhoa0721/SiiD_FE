@@ -21,7 +21,7 @@ import CardHeader from "components/Card/CardHeader";
 
 import avatar from "assets/img/avatars/avatar.png";
 import ProfileBgImage from "assets/img/ProfileBackground2.png";
-
+import { MdEdit } from "react-icons/md";
 import {
   FaCube,
   FaFacebook,
@@ -33,7 +33,8 @@ import {
 import { IoDocumentsSharp } from "react-icons/io5";
 
 function Profile() {
-  const textColor = useColorModeValue("gray.700", "white");
+  // const textColor = useColorModeValue("gray.700", "white");
+  const textColor = useColorModeValue("white", "white");
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
@@ -42,11 +43,13 @@ function Profile() {
     "white",
     "rgba(255, 255, 255, 0.31)"
   );
-  const emailColor = useColorModeValue("gray.400", "gray.300");
+  // const jobColor = useColorModeValue("gray.400", "gray.300");
+  const jobColor = useColorModeValue("white", "white");
   return (
     <Flex direction="column">
       <Box
-        mb={{ sm: "205px", md: "75px", xl: "70px" }}
+        // mb={{ sm: "205px", md: "75px", xl: "70px" }}
+        mb="32px"
         borderRadius="15px"
         px="0px"
         display="flex"
@@ -65,7 +68,7 @@ function Profile() {
           display="flex"
           justifyContent="center"
         >
-          <Flex
+          {/* <Flex
             direction={{ sm: "column", md: "row" }}
             mx="1.5rem"
             maxH="330px"
@@ -111,17 +114,67 @@ function Profile() {
                 </Text>
                 <Text
                   fontSize={{ sm: "sm", md: "md" }}
-                  color={emailColor}
+                  color={jobColor}
                   fontWeight="semibold"
                 >
                   esthera@simmmple.com
                 </Text>
               </Flex>
             </Flex>
+          </Flex> */}
+          <Flex
+            align={{ sm: "center", md: "end" }}
+            position={{ sm: "", md: "absolute" }}
+            left="32px"
+            bottom={"32px"}
+            mt={{ sm: "20px", md: "0px" }}
+            direction={{ sm: "column", md: "row" }}
+            w={{ sm: "100%" }}
+            textAlign={{ sm: "center", md: "end" }}
+          >
+            <Avatar
+              me={{ md: "22px" }}
+              position={{ md: "relative" }}
+              src={avatar}
+              w="200px"
+              h="200px"
+              borderRadius="full"
+              border="4px"
+              borderColor="whiteAlpha.50"
+            >
+              <Button
+                position="absolute"
+                right="0px"
+                bottom="0px"
+                w="30px"
+                h="30px"
+                p="0px"
+                borderRadius="full"
+              >
+                <MdEdit color="#18A558" w="20px" h="20px" />
+              </Button>
+            </Avatar>
+            <Flex direction="column" maxWidth="100%">
+              <Text
+                fontSize={{ sm: "sm", md: "md" }}
+                color={jobColor}
+                fontWeight="semibold"
+              >
+                Freelacer Designer
+              </Text>
+              <Text
+                fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
+                color={textColor}
+                fontWeight="bold"
+                // ms={{ sm: "8px", md: "0px" }}
+              >
+                Tessa
+              </Text>
+            </Flex>
           </Flex>
         </Box>
       </Box>
-      <Grid templateColumns={{ sm: "1fr", xl: "repeat(3, 1fr)" }} gap="22px">
+      {/* <Grid templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }} gap="32px">
         <Card p="16px" my={{ sm: "24px", xl: "0px" }}>
           <CardHeader p="12px 5px" mb="12px">
             <Text fontSize="lg" color={textColor} fontWeight="bold">
@@ -318,7 +371,7 @@ function Profile() {
             </Flex>
           </CardBody>
         </Card>
-      </Grid>
+      </Grid> */}
     </Flex>
   );
 }
