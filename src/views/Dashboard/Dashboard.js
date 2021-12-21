@@ -7,6 +7,9 @@ import {
   HStack,
   Button,
   Spacer,
+  VStack,
+  Grid,
+  GridItem
 } from "@chakra-ui/react";
 
 import { InfoIcon } from "@chakra-ui/icons";
@@ -29,14 +32,17 @@ export default function Dashboard() {
         <VersionNotify />
         <DonateBox />
       </SimpleGrid>
-      <Flex mt={4}>
-        <OverviewProjCard flexIndex={2} />
-        <StatChart />
-      </Flex>
-      <Flex mt={4}>
-        <OverviewProjCard flexIndex={2} />
-        <ChangeTimeline />
-      </Flex>
+      <Grid templateColumns='repeat(6, 1fr)' gap={1}>
+        <GridItem colSpan={4}>
+          <OverviewProjCard flexIndex={1} />
+          <OverviewProjCard flexIndex={1} />
+          <OverviewProjCard flexIndex={1} />
+        </GridItem>
+        <GridItem colSpan={2}>
+          <StatChart />
+          <ChangeTimeline />
+        </GridItem>
+      </Grid>
     </Flex>
   );
 }
