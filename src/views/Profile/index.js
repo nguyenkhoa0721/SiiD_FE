@@ -20,7 +20,7 @@ import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 
 import avatar from "assets/img/avatars/avatar.png";
-import ProfileBgImage from "assets/img/ProfileBackground2.png";
+import ProfileBgImage from "assets/img/ProfileBackground3.png";
 import { MdEdit } from "react-icons/md";
 import {
   FaCube,
@@ -141,7 +141,7 @@ function Profile() {
               pr="10px"
             >
               <Text fontSize="lg" color={textWhite} fontWeight="bold" my="17px">
-                Your profiles
+                Your Profiles
               </Text>
               <Button
                 w="40px"
