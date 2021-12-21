@@ -1,6 +1,17 @@
 import React from "react";
 // Chakra imports
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Textarea,
+} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
+import {
   Avatar,
   AvatarGroup,
   Box,
@@ -39,10 +50,11 @@ function Portfolio() {
   const textWhite = useColorModeValue("white", "black");
   const textBlack = useColorModeValue("black", "white");
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const borderAvatar = useColorModeValue("white", "white");
   const buttonEditColor = useColorModeValue("white", "white");
   return (
-    <Flex direction="column">
+    <Flex pt={{ base: "120px", md: "75px" }} direction="column">
       <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
         <Box
           w="full"
@@ -266,9 +278,327 @@ function Portfolio() {
                 p="0px"
                 borderRadius="full"
                 bgColor={buttonEditColor}
+                onClick={onOpen}
               >
                 <MdEdit color="#18A558" w="20px" h="20px" />
               </Button>
+              <Modal
+                id="editGalleryDialog"
+                isCentered
+                isOpen={isOpen}
+                onClose={onClose}
+                size="full"
+                closeOnOverlayClick={false}
+                scrollBehavior="inside"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader p="0px">
+                    <Box
+                      w="full"
+                      h="60px"
+                      bgColor="#008060"
+                      borderRadius="5px 5px 0px 0px"
+                      pl="32px"
+                    >
+                      <Flex justifyContent="space-between" align="center">
+                        <Text
+                          my="12px"
+                          fontSize="2xl"
+                          color={textWhite}
+                          fontWeight="semibold"
+                        >
+                          Edit Profiles
+                        </Text>
+                        <ModalCloseButton mt="5px"></ModalCloseButton>
+                      </Flex>
+                    </Box>
+                  </ModalHeader>
+                  <ModalBody p="32px">
+                    <Grid
+                      templateColumns={{ sm: "1fr", xl: "repeat(4, 1fr)" }}
+                      gap="32px"
+                    >
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box position="relative">
+                        <Image src={galleryItem} alt="" borderRadius="15px" />
+                        <Box w="full" h="60px" position="absolute" bottom="0px">
+                          <Flex
+                            h="full"
+                            px="32px"
+                            direction="row"
+                            justifyContent="space-between"
+                            bgColor="transparent"
+                            alignItems="center"
+                            backdropFilter="saturate(200%) blur(50px)"
+                            borderRadius="0px 0px 15px 15px"
+                          >
+                            <Text
+                              fontSize="xl"
+                              color={textBlack}
+                              fontWeight="semibold"
+                            >
+                              Project01
+                            </Text>
+                            <Switch size="lg" colorScheme="green" />
+                          </Flex>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  </ModalBody>
+
+                  <ModalFooter
+                    p="0px 32px 32px 32px"
+                    experimental_spaceX="32px"
+                  >
+                    <Button color="white" colorScheme="green">
+                      Save
+                    </Button>
+                    <Button color="black" colorScheme="gray" onClick={onClose}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Flex>
           </Box>
 
