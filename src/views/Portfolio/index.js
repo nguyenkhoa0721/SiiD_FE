@@ -27,6 +27,16 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import {
+  GREEN_SHOPIFY,
+  GREEN_DARKER,
+  TEXT_COLOR,
+  GRAY1,
+  GRAY2,
+  BLACK,
+  WHITE,
+  PINK,
+} from "utils/const/ColorChoice";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
@@ -59,7 +69,7 @@ function Portfolio() {
         <Box
           w="full"
           h="60px"
-          bgColor="#18A558"
+          bgColor={GREEN_SHOPIFY}
           borderRadius="15px"
           boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
         >
@@ -70,7 +80,7 @@ function Portfolio() {
             pl="32px"
             pr="10px"
           >
-            <Text fontSize="lg" color={textWhite} fontWeight="bold" my="17px">
+            <Text fontSize="lg" color={TEXT_COLOR} fontWeight="bold" my="17px">
               Your Portfolio
             </Text>
           </Flex>
@@ -78,7 +88,7 @@ function Portfolio() {
         <Box
           w="full"
           h="full"
-          bgColor="#F8F9FA"
+          bgColor={GRAY2}
           borderRadius="15px"
           mt="32px"
           p="32px"
@@ -94,7 +104,7 @@ function Portfolio() {
                 h="full"
                 borderRadius="15px"
                 p="32px"
-                bgColor="white"
+                bgColor={WHITE}
                 boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
                 justifyContent="center"
               >
@@ -128,7 +138,7 @@ function Portfolio() {
                 h="full"
                 borderRadius="15px"
                 p="32px"
-                bgColor="white"
+                bgColor={WHITE}
                 boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
                 placeItems="center"
                 justifyItems="center"
@@ -143,65 +153,65 @@ function Portfolio() {
                   <Flex align="center" mb="18px">
                     <Text
                       fontSize="md"
-                      color={textBlack}
+                      color={TEXT_COLOR}
                       fontWeight="bold"
                       me="10px"
                     >
                       Full Name:{" "}
                     </Text>
-                    <Text fontSize="md" color="gray.500" fontWeight="400">
-                      Tesa Violet
+                    <Text fontSize="md" color={BLACK} fontWeight="400">
+                      Tessa Violet
                     </Text>
                   </Flex>
                   <Flex align="center" mb="18px">
                     <Text
                       fontSize="md"
-                      color={textBlack}
+                      color={TEXT_COLOR}
                       fontWeight="bold"
                       me="10px"
                     >
                       Current job:{" "}
                     </Text>
-                    <Text fontSize="md" color="gray.500" fontWeight="400">
+                    <Text fontSize="md" color={BLACK} fontWeight="400">
                       Freelancer Designer
                     </Text>
                   </Flex>
                   <Flex align="center" mb="18px">
                     <Text
                       fontSize="md"
-                      color={textBlack}
+                      color={TEXT_COLOR}
                       fontWeight="bold"
                       me="10px"
                     >
                       Country:{" "}
                     </Text>
-                    <Text fontSize="md" color="gray.500" fontWeight="400">
+                    <Text fontSize="md" color={BLACK} fontWeight="400">
                       Viet Nam
                     </Text>
                   </Flex>
                   <Flex align="center" mb="18px">
                     <Text
                       fontSize="md"
-                      color={textBlack}
+                      color={TEXT_COLOR}
                       fontWeight="bold"
                       me="10px"
                     >
                       Email:{" "}
                     </Text>
-                    <Text fontSize="md" color="gray.500" fontWeight="400">
+                    <Text fontSize="md" color={BLACK} fontWeight="400">
                       tessavio@gmail.com
                     </Text>
                   </Flex>
                   <Flex align="center" mb="18px">
                     <Text
                       fontSize="md"
-                      color={textBlack}
+                      color={TEXT_COLOR}
                       fontWeight="bold"
                       me="10px"
                     >
                       Phone number:{" "}
                     </Text>
-                    <Text fontSize="md" color="gray.500" fontWeight="400">
+                    <Text fontSize="md" color={BLACK} fontWeight="400">
                       0123456789
                     </Text>
                   </Flex>
@@ -214,7 +224,7 @@ function Portfolio() {
                 h="full"
                 borderRadius="15px"
                 p="32px"
-                bgColor="white"
+                bgColor={WHITE}
                 boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
                 placeItems="start"
                 justifyItems="center"
@@ -223,18 +233,13 @@ function Portfolio() {
                 <Flex align="start" alignItems="start">
                   <Text
                     fontSize="md"
-                    color={textBlack}
+                    color={TEXT_COLOR}
                     fontWeight="bold"
                     me="10px"
                   >
                     Descriptions:{" "}
                   </Text>
-                  <Text
-                    fontSize="md"
-                    color="gray.500"
-                    fontWeight="400"
-                    mb="30px"
-                  >
+                  <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
                     Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
                     answer is no. If two equally difficult paths, choose the one
                     more painful in the short term (pain avoidance is creating
@@ -248,7 +253,7 @@ function Portfolio() {
         <Box
           w="full"
           h="full"
-          bgColor="#F8F9FA"
+          bgColor={GRAY2}
           borderRadius="15px"
           mt="32px"
           p="32px"
@@ -257,7 +262,7 @@ function Portfolio() {
           <Box
             w="full"
             h="60px"
-            bgColor="#18A558"
+            bgColor={GREEN_SHOPIFY}
             borderRadius="15px"
             boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
           >
@@ -268,7 +273,12 @@ function Portfolio() {
               pl="32px"
               pr="10px"
             >
-              <Text fontSize="lg" color={textWhite} fontWeight="bold" my="17px">
+              <Text
+                fontSize="lg"
+                color={TEXT_COLOR}
+                fontWeight="bold"
+                my="17px"
+              >
                 Gallery
               </Text>
 
@@ -280,7 +290,7 @@ function Portfolio() {
                 bgColor={buttonEditColor}
                 onClick={onOpen}
               >
-                <MdEdit color="#18A558" w="20px" h="20px" />
+                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               </Button>
               <Modal
                 id="editGalleryDialog"
@@ -297,7 +307,7 @@ function Portfolio() {
                     <Box
                       w="full"
                       h="60px"
-                      bgColor="#008060"
+                      bgColor={GREEN_SHOPIFY}
                       borderRadius="5px 5px 0px 0px"
                       pl="32px"
                     >
@@ -305,7 +315,7 @@ function Portfolio() {
                         <Text
                           my="12px"
                           fontSize="2xl"
-                          color={textWhite}
+                          color={TEXT_COLOR}
                           fontWeight="semibold"
                         >
                           Edit Profiles
@@ -334,7 +344,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -358,7 +368,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -382,7 +392,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -406,7 +416,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -430,7 +440,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -454,7 +464,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -478,7 +488,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -502,7 +512,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -526,7 +536,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -550,7 +560,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -574,7 +584,7 @@ function Portfolio() {
                           >
                             <Text
                               fontSize="xl"
-                              color={textBlack}
+                              color={TEXT_COLOR}
                               fontWeight="semibold"
                             >
                               Project01
@@ -587,10 +597,10 @@ function Portfolio() {
                   </ModalBody>
 
                   <ModalFooter p="32px" experimental_spaceX="32px">
-                    <Button color="white" colorScheme="green">
+                    <Button color={WHITE} colorScheme="green">
                       Save
                     </Button>
-                    <Button color="black" colorScheme="gray" onClick={onClose}>
+                    <Button color={BLACK} colorScheme="gray" onClick={onClose}>
                       Cancel
                     </Button>
                   </ModalFooter>
