@@ -26,7 +26,16 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-
+import {
+  GREEN_SHOPIFY,
+  GREEN_DARKER,
+  TEXT_COLOR,
+  GRAY1,
+  GRAY2,
+  BLACK,
+  WHITE,
+  PINK,
+} from "utils/const/ColorChoice";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
@@ -45,21 +54,7 @@ import {
 import { IoDocumentsSharp } from "react-icons/io5";
 
 function Profile() {
-  // const textWhite = useColorModeValue("gray.700", "white");
-  const textWhite = useColorModeValue("white", "black");
-  const textBlack = useColorModeValue("black", "white");
-  const bgProfile = useColorModeValue(
-    "hsla(0,0%,100%,.8)",
-    "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
-  );
-  const borderProfileColor = useColorModeValue(
-    "white",
-    "rgba(255, 255, 255, 0.31)"
-  );
-  const borderAvatar = useColorModeValue("white", "white");
-  const buttonEditColor = useColorModeValue("white", "white");
-
-  const { id, isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex direction="column">
@@ -100,7 +95,7 @@ function Profile() {
               h="200px"
               borderRadius="full"
               border="4px"
-              borderColor={borderAvatar}
+              borderColor={WHITE}
             >
               <Button
                 position="absolute"
@@ -110,22 +105,22 @@ function Profile() {
                 h="40px"
                 p="0px"
                 borderRadius="full"
-                bgColor={buttonEditColor}
+                bgColor={WHITE}
               >
-                <MdEdit color="#18A558" w="20px" h="20px" />
+                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               </Button>
             </Avatar>
-            <Flex direction="column" maxWidth="100%">
+            <Flex direction="column" maxWidth="100%" color={WHITE}>
               <Text
                 fontSize={{ sm: "sm", md: "md" }}
-                color={textWhite}
+                // color={TEXT_COLOR}
                 fontWeight="semibold"
               >
                 Freelacer Designer
               </Text>
               <Text
                 fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
-                color={textWhite}
+                // color={TEXT_COLOR}
                 fontWeight="bold"
               >
                 Tessa
@@ -143,7 +138,7 @@ function Profile() {
           <Box
             w="full"
             h="60px"
-            bgColor="#18A558"
+            bgColor={GREEN_SHOPIFY}
             borderRadius="15px"
             boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
           >
@@ -154,7 +149,12 @@ function Profile() {
               pl="32px"
               pr="10px"
             >
-              <Text fontSize="lg" color={textWhite} fontWeight="bold" my="17px">
+              <Text
+                fontSize="lg"
+                color={TEXT_COLOR}
+                fontWeight="bold"
+                my="17px"
+              >
                 Your Profiles
               </Text>
               <Button
@@ -162,10 +162,10 @@ function Profile() {
                 h="40px"
                 p="0px"
                 borderRadius="full"
-                bgColor={buttonEditColor}
+                bgColor={WHITE}
                 onClick={onOpen}
               >
-                <MdEdit color="#18A558" w="20px" h="20px" />
+                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               </Button>
 
               <Modal
@@ -175,6 +175,7 @@ function Profile() {
                 onClose={onClose}
                 size="2xl"
                 closeOnOverlayClick={false}
+                scrollBehavior="inside"
               >
                 <ModalOverlay />
                 <ModalContent>
@@ -182,7 +183,7 @@ function Profile() {
                     <Box
                       w="full"
                       h="60px"
-                      bgColor="#008060"
+                      bgColor={GREEN_SHOPIFY}
                       borderRadius="5px 5px 0px 0px"
                       pl="32px"
                     >
@@ -190,7 +191,7 @@ function Profile() {
                         <Text
                           my="12px"
                           fontSize="2xl"
-                          color={textWhite}
+                          color={TEXT_COLOR}
                           fontWeight="semibold"
                         >
                           Edit Profiles
@@ -199,7 +200,7 @@ function Profile() {
                       </Flex>
                     </Box>
                   </ModalHeader>
-                  <ModalBody p="32px">
+                  <ModalBody px="32px" pt="32px">
                     <FormControl experimental_spaceY="32px">
                       <Input
                         id="name"
@@ -207,9 +208,9 @@ function Profile() {
                         placeholder="Full name*"
                         required
                         h="50px"
-                        color="black"
+                        color={BLACK}
                         fontSize="lg"
-                        borderColor="black"
+                        borderColor={BLACK}
                       />
                       <Input
                         id="job"
@@ -217,9 +218,9 @@ function Profile() {
                         placeholder="Current job*"
                         required
                         h="50px"
-                        color="black"
+                        color={BLACK}
                         fontSize="lg"
-                        borderColor="black"
+                        borderColor={BLACK}
                       />
                       <Input
                         id="country"
@@ -227,9 +228,9 @@ function Profile() {
                         placeholder="Country*"
                         required
                         h="50px"
-                        color="black"
+                        color={BLACK}
                         fontSize="lg"
-                        borderColor="black"
+                        borderColor={BLACK}
                       />
                       <Input
                         id="email"
@@ -237,39 +238,36 @@ function Profile() {
                         placeholder="Email*"
                         required
                         h="50px"
-                        color="black"
+                        color={BLACK}
                         fontSize="lg"
-                        borderColor="black"
+                        borderColor={BLACK}
                       />
                       <Input
                         id="phone-number"
                         type="number"
                         placeholder="Phone number"
                         h="50px"
-                        color="black"
+                        color={BLACK}
                         fontSize="lg"
-                        borderColor="black"
+                        borderColor={BLACK}
                       />
                       <Textarea
                         id="description"
                         type=""
                         placeholder="Description"
                         h="200px"
-                        color="black"
+                        color={BLACK}
                         fontSize="lg"
-                        borderColor="black"
+                        borderColor={BLACK}
                       ></Textarea>
                     </FormControl>
                   </ModalBody>
 
-                  <ModalFooter
-                    p="0px 32px 32px 32px"
-                    experimental_spaceX="32px"
-                  >
-                    <Button color="white" colorScheme="green">
+                  <ModalFooter p="32px" experimental_spaceX="32px">
+                    <Button color={WHITE} colorScheme="green">
                       Save
                     </Button>
-                    <Button color="black" colorScheme="gray" onClick={onClose}>
+                    <Button color={BLACK} colorScheme="gray" onClick={onClose}>
                       Cancel
                     </Button>
                   </ModalFooter>
@@ -280,7 +278,7 @@ function Profile() {
           <Box
             w="full"
             h="full"
-            bgColor="#F8F9FA"
+            bgColor={GRAY2}
             borderRadius="15px"
             mt="32px"
             p="32px"
@@ -295,78 +293,78 @@ function Profile() {
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textBlack}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Full Name:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
-                  Tesa Violet
+                <Text fontSize="md" color={BLACK} fontWeight="400">
+                  Tessa Violet
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textBlack}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Current job:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
+                <Text fontSize="md" color={BLACK} fontWeight="400">
                   Freelancer Designer
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textBlack}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Country:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
+                <Text fontSize="md" color={BLACK} fontWeight="400">
                   Viet Nam
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textBlack}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Email:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
+                <Text fontSize="md" color={BLACK} fontWeight="400">
                   tessavio@gmail.com
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textBlack}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Phone number:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
+                <Text fontSize="md" color={BLACK} fontWeight="400">
                   0123456789
                 </Text>
               </Flex>
               <Flex align="center" mb="18px" alignItems="start">
                 <Text
                   fontSize="md"
-                  color={textBlack}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Descriptions:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400" mb="30px">
+                <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
                   Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
                   answer is no. If two equally difficult paths, choose the one
                   more painful in the short term (pain avoidance is creating an
@@ -380,7 +378,7 @@ function Profile() {
           <Box
             w="full"
             h="60px"
-            bgColor="#18A558"
+            bgColor={GREEN_SHOPIFY}
             borderRadius="15px"
             boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
           >
@@ -391,7 +389,12 @@ function Profile() {
               pl="32px"
               pr="10px"
             >
-              <Text fontSize="lg" color={textWhite} fontWeight="bold" my="17px">
+              <Text
+                fontSize="lg"
+                color={TEXT_COLOR}
+                fontWeight="bold"
+                my="17px"
+              >
                 Platform Settings
               </Text>
             </Flex>
@@ -399,22 +402,22 @@ function Profile() {
           <Box
             w="full"
             h="full"
-            bgColor="#F8F9FA"
+            bgColor={GRAY2}
             borderRadius="15px"
             mt="32px"
             p="32px"
             boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
           >
             <Flex direction="column">
-              <Text fontSize="sm" color="gray.500" fontWeight="600" mb="20px">
+              <Text fontSize="sm" color={BLACK} fontWeight="600" mb="20px">
                 ACCOUNT
               </Text>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="green" me="10px" />
+                <Switch colorScheme="green" me="10px" color={PINK} />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Email me when someone follows me
@@ -425,7 +428,7 @@ function Profile() {
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Email me when someone answers on my post
@@ -436,7 +439,7 @@ function Profile() {
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Email me when someone mentions me
@@ -444,7 +447,7 @@ function Profile() {
               </Flex>
               <Text
                 fontSize="sm"
-                color="gray.500"
+                color={BLACK}
                 fontWeight="600"
                 m="6px 0px 20px 0px"
               >
@@ -455,7 +458,7 @@ function Profile() {
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   New launches and projects
@@ -466,7 +469,7 @@ function Profile() {
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Monthly product changes
@@ -477,7 +480,7 @@ function Profile() {
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Subscribe to newsletter
