@@ -586,10 +586,7 @@ function Portfolio() {
                     </Grid>
                   </ModalBody>
 
-                  <ModalFooter
-                    p="0px 32px 32px 32px"
-                    experimental_spaceX="32px"
-                  >
+                  <ModalFooter p="32px" experimental_spaceX="32px">
                     <Button color="white" colorScheme="green">
                       Save
                     </Button>
