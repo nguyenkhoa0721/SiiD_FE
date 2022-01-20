@@ -1,7 +1,8 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { USER_PROFILE } from "utils/path/internalPaths";
 import axios from "axios";
+import { AuthenticationContext } from "store/AuthenticationContext";
 // Chakra imports
 import {
   Modal,
@@ -57,13 +58,14 @@ import {
 import { IoDocumentsSharp } from "react-icons/io5";
 
 function Profile() {
+  const { state, update } = useContext(AuthenticationContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     (async () => {
       const profile = await axios
         .get(USER_PROFILE, {
           headers: {
-            Authorization: `Bearer ${access_token}`,
+            Authorization: `Bearer ${state.bearerToken}`,
           },
         })
         .catch((error) => {
