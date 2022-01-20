@@ -45,7 +45,7 @@ function Profile() {
   const emailColor = useColorModeValue("gray.400", "gray.300");
   return (
     <Flex direction="column">
-      <Box
+      {/* <Box
         mb={{ sm: "205px", md: "75px", xl: "70px" }}
         borderRadius="15px"
         px="0px"
@@ -318,7 +318,7 @@ function Profile() {
             </Flex>
           </CardBody>
         </Card>
-      </Grid>
+      </Grid> */}
     </Flex>
   );
 }

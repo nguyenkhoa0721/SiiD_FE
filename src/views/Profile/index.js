@@ -1,6 +1,18 @@
 import React from "react";
 // Chakra imports
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Textarea,
+} from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
+import {
   Avatar,
   AvatarGroup,
   Box,
@@ -14,14 +26,23 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-
+import {
+  GREEN_SHOPIFY,
+  GREEN_DARKER,
+  TEXT_COLOR,
+  GRAY1,
+  GRAY2,
+  BLACK,
+  WHITE,
+  PINK,
+} from "utils/const/ColorChoice";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 
 import avatar from "assets/img/avatars/avatar.png";
-import ProfileBgImage from "assets/img/ProfileBackground2.png";
-
+import ProfileBgImage from "assets/img/ProfileBackground3.png";
+import { MdEdit } from "react-icons/md";
 import {
   FaCube,
   FaFacebook,
@@ -33,20 +54,11 @@ import {
 import { IoDocumentsSharp } from "react-icons/io5";
 
 function Profile() {
-  const textColor = useColorModeValue("gray.700", "white");
-  const bgProfile = useColorModeValue(
-    "hsla(0,0%,100%,.8)",
-    "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
-  );
-  const borderProfileColor = useColorModeValue(
-    "white",
-    "rgba(255, 255, 255, 0.31)"
-  );
-  const emailColor = useColorModeValue("gray.400", "gray.300");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Flex direction="column">
       <Box
-        mb={{ sm: "205px", md: "75px", xl: "70px" }}
         borderRadius="15px"
         px="0px"
         display="flex"
@@ -64,211 +76,370 @@ function Profile() {
           position="relative"
           display="flex"
           justifyContent="center"
+          alignItems={{ sm: "center", md: "end" }}
         >
           <Flex
+            align={{ sm: "center", md: "end" }}
+            position={{ sm: "", md: "absolute" }}
+            left="32px"
+            bottom={"32px"}
             direction={{ sm: "column", md: "row" }}
-            mx="1.5rem"
-            maxH="330px"
-            w={{ sm: "90%", xl: "95%" }}
-            justifyContent={{ sm: "center", md: "space-between" }}
-            align="center"
-            backdropFilter="saturate(200%) blur(50px)"
-            position="absolute"
-            boxShadow="0px 2px 5.5px rgba(0, 0, 0, 0.02)"
-            border="2px solid"
-            borderColor={borderProfileColor}
-            bg={bgProfile}
-            p="24px"
-            borderRadius="20px"
-            transform={{
-              sm: "translateY(45%)",
-              md: "translateY(110%)",
-              lg: "translateY(160%)",
-            }}
+            w={{ sm: "100%" }}
+            textAlign={{ sm: "center", md: "end" }}
           >
-            <Flex
-              align="center"
-              mb={{ sm: "10px", md: "0px" }}
-              direction={{ sm: "column", md: "row" }}
-              w={{ sm: "100%" }}
-              textAlign={{ sm: "center", md: "start" }}
+            <Avatar
+              me={{ md: "22px" }}
+              position="relative"
+              src={avatar}
+              w="200px"
+              h="200px"
+              borderRadius="full"
+              border="4px"
+              borderColor={WHITE}
             >
-              <Avatar
-                me={{ md: "22px" }}
-                src={avatar}
-                w="80px"
-                h="80px"
-                borderRadius="15px"
-              />
-              <Flex direction="column" maxWidth="100%" my={{ sm: "14px" }}>
-                <Text
-                  fontSize={{ sm: "lg", lg: "xl" }}
-                  color={textColor}
-                  fontWeight="bold"
-                  ms={{ sm: "8px", md: "0px" }}
-                >
-                  Esthera Jackson
-                </Text>
-                <Text
-                  fontSize={{ sm: "sm", md: "md" }}
-                  color={emailColor}
-                  fontWeight="semibold"
-                >
-                  esthera@simmmple.com
-                </Text>
-              </Flex>
+              <Button
+                position="absolute"
+                right="5px"
+                bottom="5px"
+                w="40px"
+                h="40px"
+                p="0px"
+                borderRadius="full"
+                bgColor={WHITE}
+              >
+                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
+              </Button>
+            </Avatar>
+            <Flex direction="column" maxWidth="100%" color={WHITE}>
+              <Text
+                fontSize={{ sm: "sm", md: "md" }}
+                // color={TEXT_COLOR}
+                fontWeight="semibold"
+              >
+                Freelacer Designer
+              </Text>
+              <Text
+                fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
+                // color={TEXT_COLOR}
+                fontWeight="bold"
+              >
+                Tessa
+              </Text>
             </Flex>
           </Flex>
         </Box>
       </Box>
-      <Grid templateColumns={{ sm: "1fr", xl: "repeat(3, 1fr)" }} gap="22px">
-        <Card p="16px" my={{ sm: "24px", xl: "0px" }}>
-          <CardHeader p="12px 5px" mb="12px">
-            <Text fontSize="lg" color={textColor} fontWeight="bold">
-              Profile Information
-            </Text>
-          </CardHeader>
-          <CardBody px="5px">
-            <Flex direction="column">
-              <Text fontSize="md" color="gray.500" fontWeight="400" mb="30px">
-                Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
-                answer is no. If two equally difficult paths, choose the one
-                more painful in the short term (pain avoidance is creating an
-                illusion of equality).
+      <Grid
+        templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }}
+        gap="32px"
+        mt="32px"
+      >
+        <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
+          <Box
+            w="full"
+            h="60px"
+            bgColor={GREEN_SHOPIFY}
+            borderRadius="15px"
+            boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
+          >
+            <Flex
+              alignItems="center"
+              direction="row"
+              justifyContent="space-between"
+              pl="32px"
+              pr="10px"
+            >
+              <Text
+                fontSize="lg"
+                color={TEXT_COLOR}
+                fontWeight="bold"
+                my="17px"
+              >
+                Your Profiles
               </Text>
+              <Button
+                w="40px"
+                h="40px"
+                p="0px"
+                borderRadius="full"
+                bgColor={WHITE}
+                onClick={onOpen}
+              >
+                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
+              </Button>
+
+              <Modal
+                id="editProfileDialog"
+                isCentered
+                isOpen={isOpen}
+                onClose={onClose}
+                size="2xl"
+                closeOnOverlayClick={false}
+                scrollBehavior="inside"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader p="0px">
+                    <Box
+                      w="full"
+                      h="60px"
+                      bgColor={GREEN_SHOPIFY}
+                      borderRadius="5px 5px 0px 0px"
+                      pl="32px"
+                    >
+                      <Flex justifyContent="space-between" align="center">
+                        <Text
+                          my="12px"
+                          fontSize="2xl"
+                          color={TEXT_COLOR}
+                          fontWeight="semibold"
+                        >
+                          Edit Profiles
+                        </Text>
+                        <ModalCloseButton mt="5px"></ModalCloseButton>
+                      </Flex>
+                    </Box>
+                  </ModalHeader>
+                  <ModalBody px="32px" pt="32px">
+                    <FormControl experimental_spaceY="32px">
+                      <Input
+                        id="name"
+                        type="name"
+                        placeholder="Full name*"
+                        required
+                        h="50px"
+                        color={BLACK}
+                        fontSize="lg"
+                        borderColor={BLACK}
+                      />
+                      <Input
+                        id="job"
+                        type="job"
+                        placeholder="Current job*"
+                        required
+                        h="50px"
+                        color={BLACK}
+                        fontSize="lg"
+                        borderColor={BLACK}
+                      />
+                      <Input
+                        id="country"
+                        type="country"
+                        placeholder="Country*"
+                        required
+                        h="50px"
+                        color={BLACK}
+                        fontSize="lg"
+                        borderColor={BLACK}
+                      />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Email*"
+                        required
+                        h="50px"
+                        color={BLACK}
+                        fontSize="lg"
+                        borderColor={BLACK}
+                      />
+                      <Input
+                        id="phone-number"
+                        type="number"
+                        placeholder="Phone number"
+                        h="50px"
+                        color={BLACK}
+                        fontSize="lg"
+                        borderColor={BLACK}
+                      />
+                      <Textarea
+                        id="description"
+                        type=""
+                        placeholder="Description"
+                        h="200px"
+                        color={BLACK}
+                        fontSize="lg"
+                        borderColor={BLACK}
+                      ></Textarea>
+                    </FormControl>
+                  </ModalBody>
+
+                  <ModalFooter p="32px" experimental_spaceX="32px">
+                    <Button color={WHITE} colorScheme="green">
+                      Save
+                    </Button>
+                    <Button color={BLACK} colorScheme="gray" onClick={onClose}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </Flex>
+          </Box>
+          <Box
+            w="full"
+            h="full"
+            bgColor={GRAY2}
+            borderRadius="15px"
+            mt="32px"
+            p="32px"
+            boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
+          >
+            <Flex
+              alignItems="left"
+              direction="row"
+              justifyContent="space-between"
+              direction="column"
+            >
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textColor}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Full Name:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
-                  Esthera Jackson
+                <Text fontSize="md" color={BLACK} fontWeight="400">
+                  Tessa Violet
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textColor}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
-                  Mobile:{" "}
+                  Current job:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
-                  (44) 123 1234 123
+                <Text fontSize="md" color={BLACK} fontWeight="400">
+                  Freelancer Designer
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textColor}
+                  color={TEXT_COLOR}
+                  fontWeight="bold"
+                  me="10px"
+                >
+                  Country:{" "}
+                </Text>
+                <Text fontSize="md" color={BLACK} fontWeight="400">
+                  Viet Nam
+                </Text>
+              </Flex>
+              <Flex align="center" mb="18px">
+                <Text
+                  fontSize="md"
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
                   Email:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
-                  esthera@simmmple.com
+                <Text fontSize="md" color={BLACK} fontWeight="400">
+                  tessavio@gmail.com
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
-                  color={textColor}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
-                  Location:{" "}
+                  Phone number:{" "}
                 </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
-                  United States
+                <Text fontSize="md" color={BLACK} fontWeight="400">
+                  0123456789
                 </Text>
               </Flex>
-              <Flex align="center" mb="18px">
+              <Flex align="center" mb="18px" alignItems="start">
                 <Text
                   fontSize="md"
-                  color={textColor}
+                  color={TEXT_COLOR}
                   fontWeight="bold"
                   me="10px"
                 >
-                  Social Media:{" "}
+                  Descriptions:{" "}
                 </Text>
-                <Flex>
-                  <Link
-                    href="#"
-                    color="teal.300"
-                    fontSize="lg"
-                    me="10px"
-                    _hover={{ color: "teal.300" }}
-                  >
-                    <Icon as={FaFacebook} />
-                  </Link>
-                  <Link
-                    href="#"
-                    color="teal.300"
-                    fontSize="lg"
-                    me="10px"
-                    _hover={{ color: "teal.300" }}
-                  >
-                    <Icon as={FaInstagram} />
-                  </Link>
-                  <Link
-                    href="#"
-                    color="teal.300"
-                    fontSize="lg"
-                    me="10px"
-                    _hover={{ color: "teal.300" }}
-                  >
-                    <Icon as={FaTwitter} />
-                  </Link>
-                </Flex>
+                <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
+                  Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
+                  answer is no. If two equally difficult paths, choose the one
+                  more painful in the short term (pain avoidance is creating an
+                  illusion of equality).
+                </Text>
               </Flex>
             </Flex>
-          </CardBody>
+          </Box>
         </Card>
-        <Card p="16px">
-          <CardHeader p="12px 5px" mb="12px">
-            <Text fontSize="lg" color={textColor} fontWeight="bold">
-              Platform Settings
-            </Text>
-          </CardHeader>
-          <CardBody px="5px">
+        <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
+          <Box
+            w="full"
+            h="60px"
+            bgColor={GREEN_SHOPIFY}
+            borderRadius="15px"
+            boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
+          >
+            <Flex
+              alignItems="center"
+              direction="row"
+              justifyContent="space-between"
+              pl="32px"
+              pr="10px"
+            >
+              <Text
+                fontSize="lg"
+                color={TEXT_COLOR}
+                fontWeight="bold"
+                my="17px"
+              >
+                Platform Settings
+              </Text>
+            </Flex>
+          </Box>
+          <Box
+            w="full"
+            h="full"
+            bgColor={GRAY2}
+            borderRadius="15px"
+            mt="32px"
+            p="32px"
+            boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
+          >
             <Flex direction="column">
-              <Text fontSize="sm" color="gray.500" fontWeight="600" mb="20px">
+              <Text fontSize="sm" color={BLACK} fontWeight="600" mb="20px">
                 ACCOUNT
               </Text>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="teal" me="10px" />
+                <Switch colorScheme="green" me="10px" color={PINK} />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Email me when someone follows me
                 </Text>
               </Flex>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="teal" me="10px" />
+                <Switch colorScheme="green" me="10px" />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Email me when someone answers on my post
                 </Text>
               </Flex>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="teal" me="10px" />
+                <Switch colorScheme="green" me="10px" />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Email me when someone mentions me
@@ -276,47 +447,47 @@ function Profile() {
               </Flex>
               <Text
                 fontSize="sm"
-                color="gray.500"
+                color={BLACK}
                 fontWeight="600"
                 m="6px 0px 20px 0px"
               >
                 APPLICATION
               </Text>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="teal" me="10px" />
+                <Switch colorScheme="green" me="10px" />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   New launches and projects
                 </Text>
               </Flex>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="teal" me="10px" />
+                <Switch colorScheme="green" me="10px" />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Monthly product changes
                 </Text>
               </Flex>
               <Flex align="center" mb="20px">
-                <Switch colorScheme="teal" me="10px" />
+                <Switch colorScheme="green" me="10px" />
                 <Text
                   noOfLines={1}
                   fontSize="md"
-                  color="gray.500"
+                  color={BLACK}
                   fontWeight="400"
                 >
                   Subscribe to newsletter
                 </Text>
               </Flex>
             </Flex>
-          </CardBody>
+          </Box>
         </Card>
       </Grid>
     </Flex>
