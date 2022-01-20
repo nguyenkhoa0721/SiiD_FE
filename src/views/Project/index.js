@@ -29,6 +29,8 @@ import {
   Textarea,
   FormControl, 
   FormLabel,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { ArrowForwardIcon, ArrowLeftIcon, ArrowRightIcon, AtSignIcon, DragHandleIcon, HamburgerIcon, SettingsIcon, AddIcon} from "@chakra-ui/icons";
@@ -36,7 +38,6 @@ import React, { useState } from "react";
 import { tablesTableData } from "variables/general";
 import CommentCard from "components/Project/CommentCard";
 import HistoryItemCard from "components/Project/HistoryItemCard";
-import DialogUpload from "components/Project/DialogUpload";
 import { useEffect, useContext } from "react";
 import { USER_PROFILE } from "utils/path/internalPaths";
 import axios from "axios";
@@ -71,8 +72,40 @@ const InputComment = () => (
       </Box>
   </HStack>
 )
+import Dropzone from "react-dropzone";
+
+function File({file,setFiles}) {
+  
+  const handleDrop = (acceptedFiles) =>
+    setFiles(acceptedFiles.map((file) => file));
+  const dropStyle = {textAlign: "center", padding: "20px", border: "3px dashed #eeeeee", backgroundColor: "#fafafa", color: "#bdbdbd", marginBottom: "20px"};
+  return (
+    <Box style={dropStyle}>
+      <Dropzone onDrop={handleDrop}>
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps({ className: "dropzone" })}>
+            <input {...getInputProps()} />
+            <p>Selected files</p>
+          </div>
+        )}
+      </Dropzone>
+      <div>
+        <List>
+          {file.map((f) => (
+            <ListItem key={f.name}>{f.name}</ListItem>
+          ))}
+        </List>
+      </div>
+    </Box>
+  );
+}
+
+function uploadVersion(name, desc, file){
+  console.log(name, desc, file);
+}
 
 function Project() {
+  const [file, setFiles] = useState([]);
   const [new_name, setNewName] = useState("");
   const [new_des, setNewDes] = useState("");
 
@@ -194,7 +227,7 @@ function Project() {
                         color={BLACK}
                         fontSize="lg"
                         borderColor={BLACK}
-                        onChange={e => this.setNewName({new_name: e.target.value})}
+                        onChange={(e) => setNewName(e.target.value)}
                       />
                       <Textarea
                         id="description"
@@ -204,13 +237,14 @@ function Project() {
                         color={BLACK}
                         fontSize="lg"
                         borderColor={BLACK}
-                        onChange={e => this.setNewDes({new_des: e.target.value})}
+                        onChange={(e) => setNewDes(e.target.value)}
                       ></Textarea>
+                      <File file={file} setFiles={setFiles}/>
                     </FormControl>
                   </ModalBody>
 
                   <ModalFooter p="32px" experimental_spaceX="32px">
-                    <Button color={WHITE} colorScheme="green">
+                    <Button color={WHITE} colorScheme="green" onClick={uploadVersion(new_name, new_des, file)} >
                       Save
                     </Button>
                     <Button color={BLACK} colorScheme="gray" onClick={onClose}>
