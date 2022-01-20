@@ -47,6 +47,7 @@ const InputComment = () => (
 )
 
 function Project() {
+  const [emptyProject, setEmptyProject] = useState(true);
   return (
     <Flex
       overflow="auto" 
