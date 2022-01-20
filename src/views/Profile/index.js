@@ -1,4 +1,7 @@
 import React from "react";
+import { useEffect } from "react";
+import { USER_PROFILE } from "utils/path/internalPaths";
+import axios from "axios";
 // Chakra imports
 import {
   Modal,
@@ -55,7 +58,19 @@ import { IoDocumentsSharp } from "react-icons/io5";
 
 function Profile() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  useEffect(() => {
+    (async () => {
+      const profile = await axios
+        .get(USER_PROFILE, {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    })();
+  }, []);
   return (
     <Flex direction="column">
       <Box
