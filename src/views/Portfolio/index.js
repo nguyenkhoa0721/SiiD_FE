@@ -146,7 +146,6 @@ function Portfolio() {
               >
                 <Flex
                   alignItems="left"
-                  direction="row"
                   justifyContent="space-between"
                   direction="column"
                 >
@@ -240,7 +239,7 @@ function Portfolio() {
                     Descriptions:{" "}
                   </Text>
                   <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
-                    Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
+                    Hi, I`m Esthera Jackson, Decisions: If you can`t decide, the
                     answer is no. If two equally difficult paths, choose the one
                     more painful in the short term (pain avoidance is creating
                     an illusion of equality).
