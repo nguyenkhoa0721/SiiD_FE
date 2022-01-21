@@ -1,9 +1,11 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { USER_PROFILE } from "utils/path/internalPaths";
+import { AuthenticationProvider } from "store/AuthenticationContext";
 import axios from "axios";
 import { AuthenticationContext } from "store/AuthenticationContext";
 import { createStandaloneToast } from "@chakra-ui/react";
+import Dropzone from "react-dropzone";
 
 // Chakra imports
 import {
@@ -16,8 +18,9 @@ import {
   ModalCloseButton,
   Textarea,
 } from "@chakra-ui/react";
-import { FormControl, Input } from "@chakra-ui/react";
+import { FormControl, Input, List, ListItem } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -39,8 +42,65 @@ import Card from "components/Card/Card";
 
 import avatar from "assets/img/avatars/avatar.png";
 import ProfileBgImage from "assets/img/ProfileBackground3.png";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
 
+function File({ file, setFiles }) {
+  const handleDrop = (acceptedFiles) =>
+    setFiles(acceptedFiles.map((file) => file));
+  const dropStyle = {
+    textAlign: "center",
+    padding: "20px",
+    border: "1px dashed black",
+    backgroundColor: "#fafafa",
+    color: "#bdbdbd",
+    alignItems: "center",
+    borderRadius: "12px",
+    color: GREEN_SHOPIFY,
+    fontSize: "18px",
+  };
+  return (
+    <Box style={dropStyle}>
+      <Dropzone onDrop={handleDrop}>
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps({ className: "dropzone" })}>
+            <input {...getInputProps()} />
+            <MdOutlineCloudUpload
+              size="150px"
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "block",
+              }}
+            />
+            <p>UPLOAD IMAGE</p>
+            <hr
+              style={{
+                width: "70%",
+                border: "1px solid #718096",
+                marginTop: "20px",
+                marginBottom: "20px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "block",
+              }}
+            ></hr>
+            <p>CHOOSE FILE FROM LOCAL</p>
+          </div>
+        )}
+      </Dropzone>
+      <div>
+        <List>
+          {file.map((f) => (
+            <ListItem key={f.name}>{f.name}</ListItem>
+          ))}
+        </List>
+      </div>
+    </Box>
+  );
+}
+function uploadVersion(name, desc, file) {
+  console.log(name, desc, file);
+}
 function Profile() {
   const [profileName, setProfileName] = useState();
   const nameHandleChange = (event) => setProfileName(event.target.profileName);
@@ -59,8 +119,21 @@ function Profile() {
   const descriptionHandleChange = (event) =>
     setProfileDescription(event.target.profileName);
 
-  const [profileList, setProfileList] = useState({});
+  const [profileList, setProfileList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenAvatarModal,
+    onOpen: onOpenAvatarModal,
+    onClose: onCloseAvatarModal,
+  } = useDisclosure();
+
+  const [file, setFiles] = useState([]);
+  const [new_name, setNewName] = useState("");
+  const [new_des, setNewDes] = useState("");
+
+  const { state, update } = useContext(AuthenticationContext);
+  state.bearerToken;
+
   useEffect(() => {
     (async () => {
       await axios
@@ -75,12 +148,12 @@ function Profile() {
           setProfileDescription(response.data.data.description);
 
           setProfileList([
-            ["Full Name: ", profileName],
-            ["Current job: ", profileJob],
-            ["Country: ", profileCountry],
-            ["Email: ", profileEmail],
-            ["Phone number: ", profilePhone],
-            ["Descriptions: ", profileDescription],
+            ["Full Name: ", response.data.data.name],
+            ["Current job: ", response.data.data.job],
+            ["Country: ", response.data.data.country],
+            ["Email: ", response.data.data.email],
+            ["Phone number: ", response.data.data.phone],
+            ["Descriptions: ", response.data.data.description],
           ]);
         })
         .catch((error) => {
@@ -91,6 +164,64 @@ function Profile() {
 
   const toast = createStandaloneToast();
   const onHandleSubmit = (e) => {
+    e.preventDefault();
+    if (!!profileList) {
+      console.log(profileList[4][1]);
+      axios
+        .post(
+          USER_PROFILE,
+          {
+            // name: profileName,
+            // job: profileJob,
+            // country: profileCountry,
+            // email: profileEmail,
+            // phone: profilePhone,
+            // description: profileDescription,
+            name: profileList[0][1],
+            job: profileList[1][1],
+            country: profileList[2][1],
+            email: profileList[3][1],
+            phone: profileList[4][1],
+            description: profileList[5][1],
+          },
+          { headers: { Authorization: `Bearer ${state.bearerToken}` } }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("1");
+            toast({
+              title: "Success",
+              description: "Profile saved!",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+          } else {
+            console.log("2");
+
+            toast({
+              title: "Failed",
+              description: "Wrong username or password",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("3");
+
+          toast({
+            title: "Failed",
+            description: "Noooo",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+  };
+  const onHandleAvatarSubmit = (e) => {
     e.preventDefault();
     if (true) {
       axios
@@ -258,6 +389,63 @@ function Profile() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      <Modal
+        id="changeAvatarDialog"
+        isCentered
+        isOpen={isOpenAvatarModal}
+        onClose={onCloseAvatarModal}
+        size="2xl"
+        closeOnOverlayClick={false}
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader p="0px">
+            <Box
+              w="full"
+              h="60px"
+              bgColor={GREEN_SHOPIFY}
+              borderRadius="5px 5px 0px 0px"
+              pl="32px"
+            >
+              <Flex justifyContent="space-between" align="center">
+                <Text
+                  my="12px"
+                  fontSize="2xl"
+                  color={TEXT_COLOR}
+                  fontWeight="semibold"
+                >
+                  Change avatar
+                </Text>
+                <ModalCloseButton mt="5px"></ModalCloseButton>
+              </Flex>
+            </Box>
+          </ModalHeader>
+          <ModalBody px="32px" pt="32px">
+            <FormControl experimental_spaceY="32px">
+              <File file={file} setFiles={setFiles} />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter p="32px" experimental_spaceX="32px">
+            <Button
+              color={WHITE}
+              colorScheme="green"
+              onClick={uploadVersion(new_name, new_des, file)}
+            >
+              Save
+            </Button>
+            <Button
+              color={BLACK}
+              colorScheme="gray"
+              onClick={onCloseAvatarModal}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Box
         borderRadius="15px"
         px="0px"
@@ -306,20 +494,25 @@ function Profile() {
                 p="0px"
                 borderRadius="full"
                 bgColor={WHITE}
+                onClick={onOpenAvatarModal}
               >
                 <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               </Button>
             </Avatar>
             <Flex direction="column" maxWidth="100%" color={WHITE}>
-              <Text fontSize={{ sm: "sm", md: "md" }} fontWeight="semibold">
-                {profileJob}
-              </Text>
-              <Text
-                fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
-                fontWeight="bold"
-              >
-                {profileName}
-              </Text>
+              {!!profileJob && (
+                <Text fontSize={{ sm: "sm", md: "md" }} fontWeight="semibold">
+                  {profileJob}
+                </Text>
+              )}
+              {!!profileName && (
+                <Text
+                  fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
+                  fontWeight="bold"
+                >
+                  {profileName}
+                </Text>
+              )}
             </Flex>
           </Flex>
         </Box>
@@ -378,8 +571,10 @@ function Profile() {
               justifyContent="space-between"
               direction="column"
             >
-              {!!profileList?.length &&
-                profileList.map((item) => (
+              {!!profileList &&
+                !!profileList[0] &&
+                // console.log(profileList[0]) &&
+                profileList?.map((item) => (
                   <Flex align="center" mb="18px" alignItems="start">
                     <Text
                       fontSize="md"
