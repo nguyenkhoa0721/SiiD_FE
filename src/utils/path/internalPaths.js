@@ -4,3 +4,5 @@ export const USER_SIGNUP = BASE_URL + "/user/signup";
 
 // + /user_id
 export const USER_PROFILE = BASE_URL + "/profile";
+
+export const GET_ALL_PORTFOLIO = BASE_URL + "/portfolio";

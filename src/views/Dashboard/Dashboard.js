@@ -9,11 +9,11 @@ import {
   Spacer,
   VStack,
   Grid,
-  GridItem
+  GridItem,
 } from "@chakra-ui/react";
 
 import { InfoIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GREEN_SHOPIFY } from "utils/const/ColorChoice";
 import BarChart from "components/Charts/BarChart";
 import OverviewProjCard from "components/Dashboard/OverviewProjCard";
@@ -21,6 +21,9 @@ import ChangeTimeline from "components/Dashboard/ChangeTimeline";
 import StatChart from "components/Dashboard/StatChart";
 import DonateBox from "components/Dashboard/DonateBox";
 import VersionNotify from "components/Dashboard/VersionNotify";
+import { AuthenticationContext } from "store/AuthenticationContext";
+import SignIn from "views/Authentication/SignIn";
+import { useHistory } from "react-router-dom";
 export default function Dashboard() {
   return (
     <Flex
@@ -32,7 +35,7 @@ export default function Dashboard() {
         <VersionNotify />
         <DonateBox />
       </SimpleGrid>
-      <Grid templateColumns='repeat(6, 1fr)' gap={1}>
+      <Grid templateColumns="repeat(6, 1fr)" gap={1}>
         <GridItem colSpan={4}>
           <OverviewProjCard flexIndex={1} />
           <OverviewProjCard flexIndex={1} />

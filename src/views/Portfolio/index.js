@@ -1,5 +1,4 @@
-import React from "react";
-// Chakra imports
+import React, { useContext, useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -8,61 +7,65 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Textarea,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
   Avatar,
-  AvatarGroup,
   Box,
   Button,
   Flex,
   Grid,
   GridItem,
-  Icon,
   Image,
-  Link,
-  Switch,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 
 import {
   GREEN_SHOPIFY,
-  GREEN_DARKER,
   TEXT_COLOR,
-  GRAY1,
   GRAY2,
   BLACK,
   WHITE,
-  PINK,
 } from "utils/const/ColorChoice";
 import Card from "components/Card/Card";
-import CardBody from "components/Card/CardBody";
-import CardHeader from "components/Card/CardHeader";
 
 import avatar from "assets/img/avatars/avatar.png";
 import galleryItem from "assets/img/galleryItem.png";
-import ProfileBgImage from "assets/img/ProfileBackground2.png";
 import { MdEdit } from "react-icons/md";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import {
-  FaCube,
-  FaFacebook,
-  FaInstagram,
-  FaPenFancy,
-  FaPlus,
-  FaTwitter,
-} from "react-icons/fa";
-import { IoDocumentsSharp } from "react-icons/io5";
+import { AiFillStar } from "react-icons/ai";
+import { EditImage } from "components/Portfolio/EditImage";
+import { BasicInfo } from "components/Portfolio/BasicInfo";
+import axios from "axios";
+import { GET_ALL_PORTFOLIO } from "utils/path/internalPaths";
+import { AuthenticationContext } from "store/AuthenticationContext";
+import { isNull, isUndefined } from "lodash";
 
 function Portfolio() {
-  const textWhite = useColorModeValue("white", "black");
-  const textBlack = useColorModeValue("black", "white");
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const borderAvatar = useColorModeValue("white", "white");
   const buttonEditColor = useColorModeValue("white", "white");
+  const { state, update } = useContext(AuthenticationContext);
+  const [dataVal, setDataVal] = useState();
+  useEffect(() => {
+    loadPortfolioInfo();
+  }, []);
+  const loadPortfolioInfo = () => {
+    axios
+      .get(GET_ALL_PORTFOLIO, {
+        headers: {
+          Authorization: `Bearer ${state.bearerToken}`,
+        },
+      })
+      .then((res) => {
+        const data = res.data;
+        setDataVal(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Flex pt={{ base: "120px", md: "75px" }} direction="column">
       <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
@@ -80,7 +83,7 @@ function Portfolio() {
             pl="32px"
             pr="10px"
           >
-            <Text fontSize="lg" color={TEXT_COLOR} fontWeight="bold" my="17px">
+            <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
               Your Portfolio
             </Text>
           </Flex>
@@ -146,75 +149,16 @@ function Portfolio() {
               >
                 <Flex
                   alignItems="left"
-                  direction="row"
                   justifyContent="space-between"
                   direction="column"
                 >
-                  <Flex align="center" mb="18px">
-                    <Text
-                      fontSize="md"
-                      color={TEXT_COLOR}
-                      fontWeight="bold"
-                      me="10px"
-                    >
-                      Full Name:{" "}
-                    </Text>
-                    <Text fontSize="md" color={BLACK} fontWeight="400">
-                      Tessa Violet
-                    </Text>
-                  </Flex>
-                  <Flex align="center" mb="18px">
-                    <Text
-                      fontSize="md"
-                      color={TEXT_COLOR}
-                      fontWeight="bold"
-                      me="10px"
-                    >
-                      Current job:{" "}
-                    </Text>
-                    <Text fontSize="md" color={BLACK} fontWeight="400">
-                      Freelancer Designer
-                    </Text>
-                  </Flex>
-                  <Flex align="center" mb="18px">
-                    <Text
-                      fontSize="md"
-                      color={TEXT_COLOR}
-                      fontWeight="bold"
-                      me="10px"
-                    >
-                      Country:{" "}
-                    </Text>
-                    <Text fontSize="md" color={BLACK} fontWeight="400">
-                      Viet Nam
-                    </Text>
-                  </Flex>
-                  <Flex align="center" mb="18px">
-                    <Text
-                      fontSize="md"
-                      color={TEXT_COLOR}
-                      fontWeight="bold"
-                      me="10px"
-                    >
-                      Email:{" "}
-                    </Text>
-                    <Text fontSize="md" color={BLACK} fontWeight="400">
-                      tessavio@gmail.com
-                    </Text>
-                  </Flex>
-                  <Flex align="center" mb="18px">
-                    <Text
-                      fontSize="md"
-                      color={TEXT_COLOR}
-                      fontWeight="bold"
-                      me="10px"
-                    >
-                      Phone number:{" "}
-                    </Text>
-                    <Text fontSize="md" color={BLACK} fontWeight="400">
-                      0123456789
-                    </Text>
-                  </Flex>
+                  <BasicInfo
+                    fullName={dataVal?.createdBy?.name ?? "None"}
+                    job="None"
+                    country="None"
+                    email={dataVal?.createdBy?.email ?? "None"}
+                    phoneNumber="0123456789"
+                  />
                 </Flex>
               </Box>
             </GridItem>
@@ -240,10 +184,7 @@ function Portfolio() {
                     Descriptions:{" "}
                   </Text>
                   <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
-                    Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
-                    answer is no. If two equally difficult paths, choose the one
-                    more painful in the short term (pain avoidance is creating
-                    an illusion of equality).
+                    Hong tiep ne!!!!
                   </Text>
                 </Flex>
               </Flex>
@@ -273,25 +214,22 @@ function Portfolio() {
               pl="32px"
               pr="10px"
             >
-              <Text
-                fontSize="lg"
-                color={TEXT_COLOR}
-                fontWeight="bold"
-                my="17px"
-              >
+              <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
                 Gallery
               </Text>
 
-              <Button
-                w="40px"
-                h="40px"
-                p="0px"
-                borderRadius="full"
-                bgColor={buttonEditColor}
-                onClick={onOpen}
-              >
-                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
-              </Button>
+              {dataVal && dataVal.gallery && dataVal.gallery.length !== 0 && (
+                <Button
+                  w="40px"
+                  h="40px"
+                  p="0px"
+                  borderRadius="full"
+                  bgColor={buttonEditColor}
+                  onClick={onOpen}
+                />
+              )}
+
+              <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               <Modal
                 id="editGalleryDialog"
                 isCentered
@@ -315,7 +253,7 @@ function Portfolio() {
                         <Text
                           my="12px"
                           fontSize="2xl"
-                          color={TEXT_COLOR}
+                          color="white"
                           fontWeight="semibold"
                         >
                           Edit Profiles
@@ -329,270 +267,16 @@ function Portfolio() {
                       templateColumns={{ sm: "1fr", xl: "repeat(4, 1fr)" }}
                       gap="32px"
                     >
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
-                      <Box position="relative">
-                        <Image src={galleryItem} alt="" borderRadius="15px" />
-                        <Box w="full" h="60px" position="absolute" bottom="0px">
-                          <Flex
-                            h="full"
-                            px="32px"
-                            direction="row"
-                            justifyContent="space-between"
-                            bgColor="transparent"
-                            alignItems="center"
-                            backdropFilter="saturate(200%) blur(50px)"
-                            borderRadius="0px 0px 15px 15px"
-                          >
-                            <Text
-                              fontSize="xl"
-                              color={TEXT_COLOR}
-                              fontWeight="semibold"
-                            >
-                              Project01
-                            </Text>
-                            <Switch size="lg" colorScheme="green" />
-                          </Flex>
-                        </Box>
-                      </Box>
+                      {dataVal &&
+                        dataVal.gallery &&
+                        dataVal.gallery.map((item) => (
+                          <EditImage galleryItem={galleryItem} />
+                        ))}
+                      {/* <EditImage galleryItem={galleryItem} />
+                      <EditImage galleryItem={galleryItem} />
+                      <EditImage galleryItem={galleryItem} />
+                      <EditImage galleryItem={galleryItem} />
+                      <EditImage galleryItem={galleryItem} /> */}
                     </Grid>
                   </ModalBody>
 
@@ -615,15 +299,16 @@ function Portfolio() {
             templateColumns={{ sm: "1fr", xl: "repeat(3, 1fr)" }}
             gap="32px"
           >
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
-            <Image src={galleryItem} alt="" borderRadius="15px" />
+            {dataVal &&
+              dataVal.gallery &&
+              dataVal.gallery.map((item) => (
+                <Image
+                  key={item}
+                  src={galleryItem}
+                  alt=""
+                  borderRadius="15px"
+                />
+              ))}
           </Grid>
         </Box>
       </Card>

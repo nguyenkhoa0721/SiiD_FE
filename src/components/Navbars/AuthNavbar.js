@@ -142,7 +142,7 @@ export default function AuthNavbar(props) {
             <DocumentIcon color={navbarIcon} w="12px" h="12px" me="0px" />
           }
         >
-          <Text>Sign In</Text>
+          <Text>Sign In</Text> 
         </Button>
       </NavLink>
     </HStack>
