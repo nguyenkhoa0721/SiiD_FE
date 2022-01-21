@@ -43,6 +43,7 @@ import Card from "components/Card/Card";
 import avatar from "assets/img/avatars/avatar.png";
 import ProfileBgImage from "assets/img/ProfileBackground3.png";
 import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
+import { useHistory } from "react-router-dom";
 
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
@@ -103,21 +104,23 @@ function uploadVersion(name, desc, file) {
 }
 function Profile() {
   const [profileName, setProfileName] = useState();
-  const nameHandleChange = (event) => setProfileName(event.target.profileName);
+  //get text from event.target
+
+  const nameHandleChange = (event) => setProfileName(event.target.value);
   const [profileJob, setProfileJob] = useState();
-  const jobHandleChange = (event) => setProfileJob(event.target.profileName);
+  const jobHandleChange = (event) => setProfileJob(event.target.value);
   const [profileCountry, setProfileCountry] = useState();
   const countryHandleChange = (event) =>
-    setProfileCountry(event.target.profileName);
+    setProfileCountry(event.target.value);
   const [profileEmail, setProfileEmail] = useState();
   const emailHandleChange = (event) =>
-    setProfileEmail(event.target.profileName);
+    setProfileEmail(event.target.value);
   const [profilePhone, setProfilePhone] = useState();
   const phoneHandleChange = (event) =>
-    setProfilePhone(event.target.profileName);
+    setProfilePhone(event.target.value);
   const [profileDescription, setProfileDescription] = useState();
   const descriptionHandleChange = (event) =>
-    setProfileDescription(event.target.profileName);
+    setProfileDescription(event.target.value);
 
   const [profileList, setProfileList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -132,12 +135,11 @@ function Profile() {
   const [new_des, setNewDes] = useState("");
 
   const { state, update } = useContext(AuthenticationContext);
-  state.bearerToken;
 
   useEffect(() => {
     (async () => {
       await axios
-        .get(USER_PROFILE)
+        .get(USER_PROFILE + state.id)
         .then((response) => {
           console.log(response);
           setProfileName(response.data.data.name);
@@ -161,15 +163,17 @@ function Profile() {
         });
     })();
   }, []);
-
   const toast = createStandaloneToast();
   const onHandleSubmit = (e) => {
     e.preventDefault();
     if (!!profileList) {
-      console.log(profileList[4][1]);
+      const headers = {
+        Authorization: `Bearer ${state.bearerToken}`,
+        "Content-Type": "application/json;charset=UTF-8",
+      };
       axios
-        .post(
-          USER_PROFILE,
+        .patch(
+          USER_PROFILE + state.id,
           {
             // name: profileName,
             // job: profileJob,
@@ -177,14 +181,14 @@ function Profile() {
             // email: profileEmail,
             // phone: profilePhone,
             // description: profileDescription,
-            name: profileList[0][1],
-            job: profileList[1][1],
-            country: profileList[2][1],
-            email: profileList[3][1],
-            phone: profileList[4][1],
-            description: profileList[5][1],
+            name: profileName,
+            job: profileJob,
+            country: profileCountry,
+            email: profileEmail,
+            phone: profilePhone,
+            description: profileDescription,
           },
-          { headers: { Authorization: `Bearer ${state.bearerToken}` } }
+          { headers: headers }
         )
         .then((res) => {
           if (res.status === 200) {
@@ -196,6 +200,17 @@ function Profile() {
               duration: 5000,
               isClosable: true,
             });
+            onClose();
+            //Set profile list
+            setProfileList([
+              ["Full Name: ", profileName],
+              ["Current job: ", profileJob],
+              ["Country: ", profileCountry],
+              ["Email: ", profileEmail],
+              ["Phone number: ", profilePhone],
+              ["Descriptions: ", profileDescription],
+            ]);
+
           } else {
             console.log("2");
 
@@ -209,11 +224,11 @@ function Profile() {
           }
         })
         .catch((err) => {
-          console.log("3");
+          console.log(err);
 
           toast({
             title: "Failed",
-            description: "Noooo",
+            description: err.toString(),
             status: "error",
             duration: 5000,
             isClosable: true,
@@ -371,7 +386,7 @@ function Profile() {
                 color={BLACK}
                 fontSize="lg"
                 borderColor={BLACK}
-              ></Textarea>
+              />
             </FormControl>
           </ModalBody>
 
@@ -539,7 +554,7 @@ function Profile() {
             >
               <Text
                 fontSize="lg"
-                color={TEXT_COLOR}
+                color="white"
                 fontWeight="bold"
                 my="17px"
               >
@@ -609,7 +624,7 @@ function Profile() {
             >
               <Text
                 fontSize="lg"
-                color={TEXT_COLOR}
+                color="white"
                 fontWeight="bold"
                 my="17px"
               >
