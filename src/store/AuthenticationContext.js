@@ -5,7 +5,8 @@ export const AuthenticationContext = createContext();
 const reducer = (state, pair) => ({ ...state, ...pair });
 
 const initialState = {
-  bearerToken: "61e90bdeb3c3b667d6c1c270",
+  bearerToken:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTk3MjIyMTcwM2E2ZjRlMjdhMTdmYSIsImlhdCI6MTY0MjczODcyOSwiZXhwIjoxNjQzMzQzNTI5fQ.lYBlxLZrxZNKaRTrUhkIiEJZWMeEJw00t2uMJpW7lGE",
 };
 
 export function AuthenticationProvider(props) {
