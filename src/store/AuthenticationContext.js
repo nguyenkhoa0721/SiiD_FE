@@ -1,12 +1,14 @@
 import React, { createContext, useReducer } from "react";
 
-export const AuthenticationContext = createContext();
+export const AuthenticationContext = createContext(initialState);
 
 const reducer = (state, pair) => ({ ...state, ...pair });
 
 const initialState = {
-  bearerToken:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTk3MjIyMTcwM2E2ZjRlMjdhMTdmYSIsImlhdCI6MTY0MjczODcyOSwiZXhwIjoxNjQzMzQzNTI5fQ.lYBlxLZrxZNKaRTrUhkIiEJZWMeEJw00t2uMJpW7lGE",
+  bearerToken: "null",
+  id: "null",
+  userName: "null"
+  // bearerToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTk3MjIyMTcwM2E2ZjRlMjdhMTdmYSIsImlhdCI6MTY0MjY4OTA1OSwiZXhwIjoxNjQzMjkzODU5fQ.w-Gfi0czJty2MXLqlZ6CySn_vRhWGYM1nqHDcDADHIY"
 };
 
 export function AuthenticationProvider(props) {
@@ -14,7 +16,7 @@ export function AuthenticationProvider(props) {
 
   return (
     <AuthenticationContext.Provider value={{ state, update }}>
-      {props.children}
+        {props.children}
     </AuthenticationContext.Provider>
   );
 }

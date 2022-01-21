@@ -568,7 +568,6 @@ function Profile() {
           >
             <Flex
               alignItems="left"
-              direction="row"
               justifyContent="space-between"
               direction="column"
             >
