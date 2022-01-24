@@ -94,10 +94,11 @@ export default function Dashboard(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   document.documentElement.dir = "ltr";
   // Chakra Color Mode
+  //Hidden here
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <Sidebar
-        routes={routes}
+        routes={routes.filter((f) => f.path !== '/viewProject')}
         logoText={"SiiD"}
         display="none"
         sidebarVariant={sidebarVariant}
