@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import { FormControl, Input, List, ListItem } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -40,10 +39,9 @@ import {
 } from "utils/const/ColorChoice";
 import Card from "components/Card/Card";
 
-import avatar from "assets/img/avatars/avatar.png";
 import ProfileBgImage from "assets/img/ProfileBackground3.png";
 import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
-import { useHistory } from "react-router-dom";
+import { BASE_URL } from "utils/path/internalPaths";
 
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
@@ -99,28 +97,22 @@ function File({ file, setFiles }) {
     </Box>
   );
 }
-function uploadVersion(name, desc, file) {
-  console.log(name, desc, file);
-}
 function Profile() {
   const [profileName, setProfileName] = useState();
-  //get text from event.target
-
   const nameHandleChange = (event) => setProfileName(event.target.value);
   const [profileJob, setProfileJob] = useState();
   const jobHandleChange = (event) => setProfileJob(event.target.value);
   const [profileCountry, setProfileCountry] = useState();
-  const countryHandleChange = (event) =>
-    setProfileCountry(event.target.value);
+  const countryHandleChange = (event) => setProfileCountry(event.target.value);
   const [profileEmail, setProfileEmail] = useState();
-  const emailHandleChange = (event) =>
-    setProfileEmail(event.target.value);
+  const emailHandleChange = (event) => setProfileEmail(event.target.value);
   const [profilePhone, setProfilePhone] = useState();
-  const phoneHandleChange = (event) =>
-    setProfilePhone(event.target.value);
+  const phoneHandleChange = (event) => setProfilePhone(event.target.value);
   const [profileDescription, setProfileDescription] = useState();
   const descriptionHandleChange = (event) =>
     setProfileDescription(event.target.value);
+  const [avatar, setAvatar] = useState();
+  const avatarHandleChange = (event) => setAvatar(event.target.value);
 
   const [profileList, setProfileList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -135,19 +127,19 @@ function Profile() {
   const [new_des, setNewDes] = useState("");
 
   const { state, update } = useContext(AuthenticationContext);
-
+  const FormData = require("form-data");
   useEffect(() => {
     (async () => {
       await axios
         .get(USER_PROFILE + state.id)
         .then((response) => {
-          console.log(response);
           setProfileName(response.data.data.name);
           setProfileJob(response.data.data.job);
           setProfileCountry(response.data.data.country);
           setProfileEmail(response.data.data.email);
           setProfilePhone(response.data.data.phone);
           setProfileDescription(response.data.data.description);
+          setAvatar(BASE_URL + "/" + response.data.data.avatar);
 
           setProfileList([
             ["Full Name: ", response.data.data.name],
@@ -175,12 +167,6 @@ function Profile() {
         .patch(
           USER_PROFILE + state.id,
           {
-            // name: profileName,
-            // job: profileJob,
-            // country: profileCountry,
-            // email: profileEmail,
-            // phone: profilePhone,
-            // description: profileDescription,
             name: profileName,
             job: profileJob,
             country: profileCountry,
@@ -192,7 +178,6 @@ function Profile() {
         )
         .then((res) => {
           if (res.status === 200) {
-            console.log("1");
             toast({
               title: "Success",
               description: "Profile saved!",
@@ -210,10 +195,7 @@ function Profile() {
               ["Phone number: ", profilePhone],
               ["Descriptions: ", profileDescription],
             ]);
-
           } else {
-            console.log("2");
-
             toast({
               title: "Failed",
               description: "Wrong username or password",
@@ -224,8 +206,6 @@ function Profile() {
           }
         })
         .catch((err) => {
-          console.log(err);
-
           toast({
             title: "Failed",
             description: err.toString(),
@@ -236,18 +216,19 @@ function Profile() {
         });
     }
   };
-  const onHandleAvatarSubmit = (e) => {
+  const onHandleAvatarSubmit = (e, file) => {
     e.preventDefault();
+
+    const form = new FormData();
+    form.append("avatar", file[0]);
+
     if (true) {
+      const headers = {
+        Authorization: `Bearer ${state.bearerToken}`,
+        "Content-Type": "application/json;charset=UTF-8",
+      };
       axios
-        .post(USER_PROFILE, {
-          name: profileName,
-          job: profileJob,
-          country: profileCountry,
-          email: profileEmail,
-          phone: profilePhone,
-          description: profileDescription,
-        })
+        .post(USER_PROFILE + state.id, form, { headers: headers })
         .then((res) => {
           if (res.status === 200) {
             toast({
@@ -257,6 +238,15 @@ function Profile() {
               duration: 5000,
               isClosable: true,
             });
+            axios
+              .get(USER_PROFILE + state.id)
+              .then((response) => {
+                setAvatar(BASE_URL + "/" + response.data.data.avatar);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            onCloseAvatarModal();
           } else {
             toast({
               title: "Failed",
@@ -447,7 +437,7 @@ function Profile() {
             <Button
               color={WHITE}
               colorScheme="green"
-              onClick={uploadVersion(new_name, new_des, file)}
+              onClick={(e) => onHandleAvatarSubmit(e, file)}
             >
               Save
             </Button>
@@ -490,30 +480,32 @@ function Profile() {
             w={{ sm: "100%" }}
             textAlign={{ sm: "center", md: "end" }}
           >
-            <Avatar
-              me={{ md: "22px" }}
-              position="relative"
-              src={avatar}
-              w="200px"
-              h="200px"
-              borderRadius="full"
-              border="4px"
-              borderColor="white"
-            >
-              <Button
-                position="absolute"
-                right="5px"
-                bottom="5px"
-                w="40px"
-                h="40px"
-                p="0px"
+            {!!avatar && (
+              <Avatar
+                me={{ md: "22px" }}
+                position="relative"
+                src={avatar}
+                w="200px"
+                h="200px"
                 borderRadius="full"
-                bgColor={WHITE}
-                onClick={onOpenAvatarModal}
+                border="4px"
+                borderColor="white"
               >
-                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
-              </Button>
-            </Avatar>
+                <Button
+                  position="absolute"
+                  right="5px"
+                  bottom="5px"
+                  w="40px"
+                  h="40px"
+                  p="0px"
+                  borderRadius="full"
+                  bgColor={WHITE}
+                  onClick={onOpenAvatarModal}
+                >
+                  <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
+                </Button>
+              </Avatar>
+            )}
             <Flex direction="column" maxWidth="100%" color={WHITE}>
               {!!profileJob && (
                 <Text fontSize={{ sm: "sm", md: "md" }} fontWeight="semibold">
@@ -552,12 +544,7 @@ function Profile() {
               pl="32px"
               pr="10px"
             >
-              <Text
-                fontSize="lg"
-                color="white"
-                fontWeight="bold"
-                my="17px"
-              >
+              <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
                 Your Profiles
               </Text>
               <Button
@@ -588,7 +575,6 @@ function Profile() {
             >
               {!!profileList &&
                 !!profileList[0] &&
-                // console.log(profileList[0]) &&
                 profileList?.map((item) => (
                   <Flex align="center" mb="18px" alignItems="start">
                     <Text
@@ -622,12 +608,7 @@ function Profile() {
               pl="32px"
               pr="10px"
             >
-              <Text
-                fontSize="lg"
-                color="white"
-                fontWeight="bold"
-                my="17px"
-              >
+              <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
                 Platform Settings
               </Text>
             </Flex>
