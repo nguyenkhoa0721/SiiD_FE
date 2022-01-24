@@ -480,7 +480,7 @@ function Profile() {
             w={{ sm: "100%" }}
             textAlign={{ sm: "center", md: "end" }}
           >
-            {!!avatar && (
+            {(!!avatar || !avatar) && (
               <Avatar
                 me={{ md: "22px" }}
                 position="relative"
@@ -573,8 +573,7 @@ function Profile() {
               justifyContent="space-between"
               direction="column"
             >
-              {!!profileList &&
-                !!profileList[0] &&
+              {(!!profileList || !profileList) &&
                 profileList?.map((item) => (
                   <Flex align="center" mb="18px" alignItems="start">
                     <Text
