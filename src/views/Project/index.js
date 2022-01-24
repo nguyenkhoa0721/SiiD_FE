@@ -73,6 +73,7 @@ const InputComment = () => (
   </HStack>
 )
 import Dropzone from "react-dropzone";
+import { useHistory } from "react-router-dom";
 
 function File({file,setFiles}) {
   
@@ -112,8 +113,10 @@ function Project() {
   const [emptyProject, setEmptyProject] = useState(true);
   const { state, update } = useContext(AuthenticationContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const history = useHistory();
   useEffect(() => {
     (async () => {
+      history.push({pathname:'/admin/project'});
       const profile = await axios
         .get(USER_PROFILE, {
           headers: {
@@ -125,6 +128,7 @@ function Project() {
         });
     })();
   }, []);
+  
   return (
     <Flex
       overflow="auto" 

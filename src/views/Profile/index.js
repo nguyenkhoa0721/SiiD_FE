@@ -42,6 +42,7 @@ import Card from "components/Card/Card";
 import ProfileBgImage from "assets/img/ProfileBackground3.png";
 import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
 import { BASE_URL } from "utils/path/internalPaths";
+import { useHistory } from "react-router-dom";
 
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
@@ -128,10 +129,13 @@ function Profile() {
 
   const { state, update } = useContext(AuthenticationContext);
   const FormData = require("form-data");
+  const history = useHistory();
   useEffect(() => {
     (async () => {
+      history.push({pathname:'/admin/profile'});
+      console.log("checkpoint");
       await axios
-        .get(USER_PROFILE + state.id)
+        .get(USER_PROFILE + window.localStorage.getItem("id"))
         .then((response) => {
           setProfileName(response.data.data.name);
           setProfileJob(response.data.data.job);
