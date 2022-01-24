@@ -31,6 +31,8 @@ import {
   FormLabel,
   List,
   ListItem,
+  toast,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
@@ -61,6 +63,7 @@ import {
   WHITE,
   PINK,
 } from "utils/const/ColorChoice";
+import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
 
 const InputComment = () => (
   <HStack>
@@ -89,6 +92,11 @@ const InputComment = () => (
 );
 import Dropzone from "react-dropzone";
 import { useHistory } from "react-router-dom";
+import { BASE_URL } from "utils/path/internalPaths";
+import { GET_PROJECT } from "utils/path/internalPaths";
+import { GET_HISTORY } from "utils/path/internalPaths";
+import { error, get } from "@chakra-ui/utils";
+import { getNodeMajorVersion } from "typescript";
 
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
@@ -98,7 +106,7 @@ function File({ file, setFiles }) {
     padding: "20px",
     border: "3px dashed #eeeeee",
     backgroundColor: "#fafafa",
-    color: "#bdbdbd",
+    color: GREEN_SHOPIFY,
     marginBottom: "20px",
   };
   return (
@@ -107,7 +115,27 @@ function File({ file, setFiles }) {
         {({ getRootProps, getInputProps }) => (
           <div {...getRootProps({ className: "dropzone" })}>
             <input {...getInputProps()} />
-            <p>Selected files</p>
+            <MdOutlineCloudUpload
+              size="150px"
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "block",
+              }}
+            />
+            <p>UPLOAD IMAGE</p>
+            <hr
+              style={{
+                width: "70%",
+                border: "1px solid #718096",
+                marginTop: "20px",
+                marginBottom: "20px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "block",
+              }}
+            ></hr>
+            <p>CHOOSE FILE FROM LOCAL</p>
           </div>
         )}
       </Dropzone>
@@ -122,36 +150,122 @@ function File({ file, setFiles }) {
   );
 }
 
-function uploadVersion(name, desc, file) {
-  console.log(name, desc, file);
-}
+function ViewProject(projID) {
+  const toast = createStandaloneToast();
 
-function ViewProject() {
+  projID = "61ee658b4b0c2e483e0c29d4";
+  // upload
   const [file, setFiles] = useState([]);
-  const [new_name, setNewName] = useState("");
   const [new_des, setNewDes] = useState("");
+  // version
+  const [versionHistory, setVersionHistory] = useState([]);
+  const [version, setVersion] = useState();
 
-  const [emptyProject, setEmptyProject] = useState(true);
   const { state, update } = useContext(AuthenticationContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isUploadModalOpen,
+    onOpen: onOpenUploadModal,
+    onClose: onCloseUploadModal,
+  } = useDisclosure();
   const history = useHistory();
+  const getProject = () => {
+    axios
+      .get(GET_PROJECT + projID, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+        },
+      })
+      .then((response) => {
+        setVersionHistory(response.data.data.histories);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const getVersionHistory = (versionID) => {
+    axios
+      .get(GET_HISTORY + versionID, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+        },
+      })
+      .then((response) => {
+        setVersion(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   useEffect(() => {
     (async () => {
       history.push({ pathname: "/admin/viewProject" });
       //const params = new URLSearchParams(window.location.search);
       //params.get('abc');
-      const profile = await axios
-        .get(USER_PROFILE, {
-          headers: {
-            Authorization: `Bearer ${state.bearerToken}`,
-          },
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      const project = await getProject();
+      if (version === null) {
+        await getVersionHistory(versionHistory[0]);
+      }
     })();
   }, []);
+  const onHandleUploadSubmit = (e) => {
+    console.log(new_des, file);
+    if (file.length > 0) {
+      e.preventDefault();
 
+      const form = new FormData();
+      for (let i = 0; i < file.length; i++) {
+        form.append("files[]", file[i]);
+      }
+      form.append("changeNote", new_des);
+
+      if (true) {
+        const headers = {
+          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+        };
+        axios
+          .post(GET_PROJECT + projID, form, { headers: headers })
+          .then((res) => {
+            if (res.status === 200) {
+              onCloseUploadModal();
+              toast({
+                title: "Success",
+                description: "Upload success!",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+              });
+            } else {
+              toast({
+                title: "Failed",
+                description: "Change file name to new name",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+              });
+            }
+          })
+          .catch((err) => {
+            console.log("Checkpoint");
+            toast({
+              title: "Failed",
+              description: err,
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+          });
+      }
+    } else {
+      toast({
+        title: "Failed",
+        description: "Choose at least a file to upload",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <Flex
       overflow="auto"
@@ -214,13 +328,13 @@ function ViewProject() {
                   <Button variant="ghost">
                     <ArrowRightIcon />
                   </Button>
-                  <Button variant="ghost" onClick={onOpen}>
+                  <Button variant="ghost" onClick={onOpenUploadModal}>
                     <AddIcon />
                     <Modal
                       id="editProfileDialog"
                       isCentered
-                      isOpen={isOpen}
-                      onClose={onClose}
+                      isOpen={isUploadModalOpen}
+                      onClose={onCloseUploadModal}
                       size="2xl"
                       closeOnOverlayClick={false}
                       scrollBehavior="inside"
@@ -242,7 +356,7 @@ function ViewProject() {
                                 color={TEXT_COLOR}
                                 fontWeight="semibold"
                               >
-                                Edit Profiles
+                                Upload new version
                               </Text>
                               <ModalCloseButton mt="5px"></ModalCloseButton>
                             </Flex>
@@ -250,17 +364,6 @@ function ViewProject() {
                         </ModalHeader>
                         <ModalBody px="32px" pt="32px">
                           <FormControl experimental_spaceY="32px">
-                            <Input
-                              id="name"
-                              type="name"
-                              placeholder="Name version*"
-                              required
-                              h="50px"
-                              color={BLACK}
-                              fontSize="lg"
-                              borderColor={BLACK}
-                              onChange={(e) => setNewName(e.target.value)}
-                            />
                             <Textarea
                               id="description"
                               type=""
@@ -279,14 +382,16 @@ function ViewProject() {
                           <Button
                             color={WHITE}
                             colorScheme="green"
-                            onClick={uploadVersion(new_name, new_des, file)}
+                            onClick={(e) => {
+                              onHandleUploadSubmit(e);
+                            }}
                           >
                             Save
                           </Button>
                           <Button
                             color={BLACK}
                             colorScheme="gray"
-                            onClick={onClose}
+                            onClick={onCloseUploadModal}
                           >
                             Cancel
                           </Button>
@@ -314,7 +419,7 @@ function ViewProject() {
           </Box>
           <Flex direction="column">
             <Flex>
-              <CommentCard />
+              <CommentCard date={121514} />
             </Flex>
             <InputComment />
           </Flex>
@@ -338,7 +443,7 @@ function ViewProject() {
             </Text>
           </HStack>
         </Flex>
-        <HistoryItemCard />
+        <HistoryItemCard desc={"abc"}/>
         <HistoryItemCard />
       </Flex>
     </Flex>
