@@ -1,8 +1,12 @@
 import React from "react";
-import { useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { USER_PROFILE } from "utils/path/internalPaths";
+import { AuthenticationProvider } from "store/AuthenticationContext";
 import axios from "axios";
 import { AuthenticationContext } from "store/AuthenticationContext";
+import { createStandaloneToast } from "@chakra-ui/react";
+import Dropzone from "react-dropzone";
+
 // Chakra imports
 import {
   Modal,
@@ -14,67 +18,439 @@ import {
   ModalCloseButton,
   Textarea,
 } from "@chakra-ui/react";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, Input, List, ListItem } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
   Avatar,
-  AvatarGroup,
   Box,
   Button,
   Flex,
   Grid,
-  Icon,
-  Image,
-  Link,
   Switch,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   GREEN_SHOPIFY,
-  GREEN_DARKER,
   TEXT_COLOR,
-  GRAY1,
   GRAY2,
   BLACK,
   WHITE,
   PINK,
 } from "utils/const/ColorChoice";
 import Card from "components/Card/Card";
-import CardBody from "components/Card/CardBody";
-import CardHeader from "components/Card/CardHeader";
 
-import avatar from "assets/img/avatars/avatar.png";
 import ProfileBgImage from "assets/img/ProfileBackground3.png";
-import { MdEdit } from "react-icons/md";
-import {
-  FaCube,
-  FaFacebook,
-  FaInstagram,
-  FaPenFancy,
-  FaPlus,
-  FaTwitter,
-} from "react-icons/fa";
-import { IoDocumentsSharp } from "react-icons/io5";
+import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
+import { BASE_URL } from "utils/path/internalPaths";
 
+function File({ file, setFiles }) {
+  const handleDrop = (acceptedFiles) =>
+    setFiles(acceptedFiles.map((file) => file));
+  const dropStyle = {
+    textAlign: "center",
+    padding: "20px",
+    border: "1px dashed black",
+    backgroundColor: "#fafafa",
+    color: "#bdbdbd",
+    alignItems: "center",
+    borderRadius: "12px",
+    color: GREEN_SHOPIFY,
+    fontSize: "18px",
+  };
+  return (
+    <Box style={dropStyle}>
+      <Dropzone onDrop={handleDrop}>
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps({ className: "dropzone" })}>
+            <input {...getInputProps()} />
+            <MdOutlineCloudUpload
+              size="150px"
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "block",
+              }}
+            />
+            <p>UPLOAD IMAGE</p>
+            <hr
+              style={{
+                width: "70%",
+                border: "1px solid #718096",
+                marginTop: "20px",
+                marginBottom: "20px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "block",
+              }}
+            ></hr>
+            <p>CHOOSE FILE FROM LOCAL</p>
+          </div>
+        )}
+      </Dropzone>
+      <div>
+        <List>
+          {file.map((f) => (
+            <ListItem key={f.name}>{f.name}</ListItem>
+          ))}
+        </List>
+      </div>
+    </Box>
+  );
+}
 function Profile() {
-  const { state, update } = useContext(AuthenticationContext);
+  const [profileName, setProfileName] = useState();
+  const nameHandleChange = (event) => setProfileName(event.target.value);
+  const [profileJob, setProfileJob] = useState();
+  const jobHandleChange = (event) => setProfileJob(event.target.value);
+  const [profileCountry, setProfileCountry] = useState();
+  const countryHandleChange = (event) => setProfileCountry(event.target.value);
+  const [profileEmail, setProfileEmail] = useState();
+  const emailHandleChange = (event) => setProfileEmail(event.target.value);
+  const [profilePhone, setProfilePhone] = useState();
+  const phoneHandleChange = (event) => setProfilePhone(event.target.value);
+  const [profileDescription, setProfileDescription] = useState();
+  const descriptionHandleChange = (event) =>
+    setProfileDescription(event.target.value);
+  const [avatar, setAvatar] = useState();
+  const avatarHandleChange = (event) => setAvatar(event.target.value);
+
+  const [profileList, setProfileList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenAvatarModal,
+    onOpen: onOpenAvatarModal,
+    onClose: onCloseAvatarModal,
+  } = useDisclosure();
+
+  const [file, setFiles] = useState([]);
+  const [new_name, setNewName] = useState("");
+  const [new_des, setNewDes] = useState("");
+
+  const { state, update } = useContext(AuthenticationContext);
+  const FormData = require("form-data");
   useEffect(() => {
     (async () => {
-      const profile = await axios
-        .get(USER_PROFILE, {
-          headers: {
-            Authorization: `Bearer ${state.bearerToken}`,
-          },
+      await axios
+        .get(USER_PROFILE + state.id)
+        .then((response) => {
+          setProfileName(response.data.data.name);
+          setProfileJob(response.data.data.job);
+          setProfileCountry(response.data.data.country);
+          setProfileEmail(response.data.data.email);
+          setProfilePhone(response.data.data.phone);
+          setProfileDescription(response.data.data.description);
+          setAvatar(BASE_URL + "/" + response.data.data.avatar);
+
+          setProfileList([
+            ["Full Name: ", response.data.data.name],
+            ["Current job: ", response.data.data.job],
+            ["Country: ", response.data.data.country],
+            ["Email: ", response.data.data.email],
+            ["Phone number: ", response.data.data.phone],
+            ["Descriptions: ", response.data.data.description],
+          ]);
         })
         .catch((error) => {
           console.error(error);
         });
     })();
   }, []);
+  const toast = createStandaloneToast();
+  const onHandleSubmit = (e) => {
+    e.preventDefault();
+    if (!!profileList) {
+      const headers = {
+        Authorization: `Bearer ${state.bearerToken}`,
+        "Content-Type": "application/json;charset=UTF-8",
+      };
+      axios
+        .patch(
+          USER_PROFILE + state.id,
+          {
+            name: profileName,
+            job: profileJob,
+            country: profileCountry,
+            email: profileEmail,
+            phone: profilePhone,
+            description: profileDescription,
+          },
+          { headers: headers }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            toast({
+              title: "Success",
+              description: "Profile saved!",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            onClose();
+            //Set profile list
+            setProfileList([
+              ["Full Name: ", profileName],
+              ["Current job: ", profileJob],
+              ["Country: ", profileCountry],
+              ["Email: ", profileEmail],
+              ["Phone number: ", profilePhone],
+              ["Descriptions: ", profileDescription],
+            ]);
+          } else {
+            toast({
+              title: "Failed",
+              description: "Wrong username or password",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+        })
+        .catch((err) => {
+          toast({
+            title: "Failed",
+            description: err.toString(),
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+  };
+  const onHandleAvatarSubmit = (e, file) => {
+    e.preventDefault();
+
+    const form = new FormData();
+    form.append("avatar", file[0]);
+
+    if (true) {
+      const headers = {
+        Authorization: `Bearer ${state.bearerToken}`,
+        "Content-Type": "application/json;charset=UTF-8",
+      };
+      axios
+        .post(USER_PROFILE + state.id, form, { headers: headers })
+        .then((res) => {
+          if (res.status === 200) {
+            toast({
+              title: "Success",
+              description: "Profile saved!",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            axios
+              .get(USER_PROFILE + state.id)
+              .then((response) => {
+                setAvatar(BASE_URL + "/" + response.data.data.avatar);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            onCloseAvatarModal();
+          } else {
+            toast({
+              title: "Failed",
+              description: "Wrong username or password",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+        })
+        .catch((err) => {
+          toast({
+            title: "Failed",
+            description: "Noooo",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+  };
   return (
     <Flex direction="column">
+      <Modal
+        id="editProfileDialog"
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+        size="2xl"
+        closeOnOverlayClick={false}
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader p="0px">
+            <Box
+              w="full"
+              h="60px"
+              bgColor={GREEN_SHOPIFY}
+              borderRadius="5px 5px 0px 0px"
+              pl="32px"
+            >
+              <Flex justifyContent="space-between" align="center">
+                <Text
+                  my="12px"
+                  fontSize="2xl"
+                  color={TEXT_COLOR}
+                  fontWeight="semibold"
+                >
+                  Edit Profiles
+                </Text>
+                <ModalCloseButton mt="5px"></ModalCloseButton>
+              </Flex>
+            </Box>
+          </ModalHeader>
+          <ModalBody px="32px" pt="32px">
+            <FormControl
+              experimental_spaceY="32px"
+              onSubmit={(e) => onHandleSubmit(e)}
+            >
+              <Input
+                id="name"
+                type="name"
+                value={profileName}
+                onChange={nameHandleChange}
+                placeholder="Full name*"
+                required
+                h="50px"
+                color={BLACK}
+                fontSize="lg"
+                borderColor={BLACK}
+              />
+              <Input
+                id="job"
+                type="job"
+                value={profileJob}
+                onChange={jobHandleChange}
+                placeholder="Current job*"
+                required
+                h="50px"
+                color={BLACK}
+                fontSize="lg"
+                borderColor={BLACK}
+              />
+              <Input
+                id="country"
+                type="country"
+                value={profileCountry}
+                onChange={countryHandleChange}
+                placeholder="Country*"
+                required
+                h="50px"
+                color={BLACK}
+                fontSize="lg"
+                borderColor={BLACK}
+              />
+              <Input
+                id="email"
+                type="email"
+                value={profileEmail}
+                onChange={emailHandleChange}
+                placeholder="Email*"
+                required
+                h="50px"
+                color={BLACK}
+                fontSize="lg"
+                borderColor={BLACK}
+              />
+              <Input
+                id="phone-number"
+                type="number"
+                value={profilePhone}
+                onChange={phoneHandleChange}
+                placeholder="Phone number"
+                h="50px"
+                color={BLACK}
+                fontSize="lg"
+                borderColor={BLACK}
+              />
+              <Textarea
+                id="description"
+                type=""
+                value={profileDescription}
+                onChange={descriptionHandleChange}
+                placeholder="Description"
+                h="200px"
+                color={BLACK}
+                fontSize="lg"
+                borderColor={BLACK}
+              />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter p="32px" experimental_spaceX="32px">
+            <Button
+              color={WHITE}
+              colorScheme="green"
+              onClick={(e) => onHandleSubmit(e)}
+            >
+              Save
+            </Button>
+            <Button color={BLACK} colorScheme="gray" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        id="changeAvatarDialog"
+        isCentered
+        isOpen={isOpenAvatarModal}
+        onClose={onCloseAvatarModal}
+        size="2xl"
+        closeOnOverlayClick={false}
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader p="0px">
+            <Box
+              w="full"
+              h="60px"
+              bgColor={GREEN_SHOPIFY}
+              borderRadius="5px 5px 0px 0px"
+              pl="32px"
+            >
+              <Flex justifyContent="space-between" align="center">
+                <Text
+                  my="12px"
+                  fontSize="2xl"
+                  color={TEXT_COLOR}
+                  fontWeight="semibold"
+                >
+                  Change avatar
+                </Text>
+                <ModalCloseButton mt="5px"></ModalCloseButton>
+              </Flex>
+            </Box>
+          </ModalHeader>
+          <ModalBody px="32px" pt="32px">
+            <FormControl experimental_spaceY="32px">
+              <File file={file} setFiles={setFiles} />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter p="32px" experimental_spaceX="32px">
+            <Button
+              color={WHITE}
+              colorScheme="green"
+              onClick={(e) => onHandleAvatarSubmit(e, file)}
+            >
+              Save
+            </Button>
+            <Button
+              color={BLACK}
+              colorScheme="gray"
+              onClick={onCloseAvatarModal}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Box
         borderRadius="15px"
         px="0px"
@@ -104,44 +480,46 @@ function Profile() {
             w={{ sm: "100%" }}
             textAlign={{ sm: "center", md: "end" }}
           >
-            <Avatar
-              me={{ md: "22px" }}
-              position="relative"
-              src={avatar}
-              w="200px"
-              h="200px"
-              borderRadius="full"
-              border="4px"
-              borderColor={WHITE}
-            >
-              <Button
-                position="absolute"
-                right="5px"
-                bottom="5px"
-                w="40px"
-                h="40px"
-                p="0px"
+            {!!avatar && (
+              <Avatar
+                me={{ md: "22px" }}
+                position="relative"
+                src={avatar}
+                w="200px"
+                h="200px"
                 borderRadius="full"
-                bgColor={WHITE}
+                border="4px"
+                borderColor="white"
               >
-                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
-              </Button>
-            </Avatar>
+                <Button
+                  position="absolute"
+                  right="5px"
+                  bottom="5px"
+                  w="40px"
+                  h="40px"
+                  p="0px"
+                  borderRadius="full"
+                  bgColor={WHITE}
+                  onClick={onOpenAvatarModal}
+                >
+                  <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
+                </Button>
+              </Avatar>
+            )}
             <Flex direction="column" maxWidth="100%" color={WHITE}>
-              <Text
-                fontSize={{ sm: "sm", md: "md" }}
-                // color={TEXT_COLOR}
-                fontWeight="semibold"
-              >
-                Freelacer Designer
-              </Text>
-              <Text
-                fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
-                // color={TEXT_COLOR}
-                fontWeight="bold"
-              >
-                Tessa
-              </Text>
+              {!!profileJob && (
+                <Text fontSize={{ sm: "sm", md: "md" }} fontWeight="semibold">
+                  {profileJob}
+                </Text>
+              )}
+              {!!profileName && (
+                <Text
+                  fontSize={{ sm: "xl", md: "2xl", lg: "4xl" }}
+                  fontWeight="bold"
+                >
+                  {profileName}
+                </Text>
+              )}
             </Flex>
           </Flex>
         </Box>
@@ -166,12 +544,7 @@ function Profile() {
               pl="32px"
               pr="10px"
             >
-              <Text
-                fontSize="lg"
-                color={TEXT_COLOR}
-                fontWeight="bold"
-                my="17px"
-              >
+              <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
                 Your Profiles
               </Text>
               <Button
@@ -184,112 +557,6 @@ function Profile() {
               >
                 <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               </Button>
-
-              <Modal
-                id="editProfileDialog"
-                isCentered
-                isOpen={isOpen}
-                onClose={onClose}
-                size="2xl"
-                closeOnOverlayClick={false}
-                scrollBehavior="inside"
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader p="0px">
-                    <Box
-                      w="full"
-                      h="60px"
-                      bgColor={GREEN_SHOPIFY}
-                      borderRadius="5px 5px 0px 0px"
-                      pl="32px"
-                    >
-                      <Flex justifyContent="space-between" align="center">
-                        <Text
-                          my="12px"
-                          fontSize="2xl"
-                          color={TEXT_COLOR}
-                          fontWeight="semibold"
-                        >
-                          Edit Profiles
-                        </Text>
-                        <ModalCloseButton mt="5px"></ModalCloseButton>
-                      </Flex>
-                    </Box>
-                  </ModalHeader>
-                  <ModalBody px="32px" pt="32px">
-                    <FormControl experimental_spaceY="32px">
-                      <Input
-                        id="name"
-                        type="name"
-                        placeholder="Full name*"
-                        required
-                        h="50px"
-                        color={BLACK}
-                        fontSize="lg"
-                        borderColor={BLACK}
-                      />
-                      <Input
-                        id="job"
-                        type="job"
-                        placeholder="Current job*"
-                        required
-                        h="50px"
-                        color={BLACK}
-                        fontSize="lg"
-                        borderColor={BLACK}
-                      />
-                      <Input
-                        id="country"
-                        type="country"
-                        placeholder="Country*"
-                        required
-                        h="50px"
-                        color={BLACK}
-                        fontSize="lg"
-                        borderColor={BLACK}
-                      />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="Email*"
-                        required
-                        h="50px"
-                        color={BLACK}
-                        fontSize="lg"
-                        borderColor={BLACK}
-                      />
-                      <Input
-                        id="phone-number"
-                        type="number"
-                        placeholder="Phone number"
-                        h="50px"
-                        color={BLACK}
-                        fontSize="lg"
-                        borderColor={BLACK}
-                      />
-                      <Textarea
-                        id="description"
-                        type=""
-                        placeholder="Description"
-                        h="200px"
-                        color={BLACK}
-                        fontSize="lg"
-                        borderColor={BLACK}
-                      ></Textarea>
-                    </FormControl>
-                  </ModalBody>
-
-                  <ModalFooter p="32px" experimental_spaceX="32px">
-                    <Button color={WHITE} colorScheme="green">
-                      Save
-                    </Button>
-                    <Button color={BLACK} colorScheme="gray" onClick={onClose}>
-                      Cancel
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
             </Flex>
           </Box>
           <Box
@@ -303,91 +570,26 @@ function Profile() {
           >
             <Flex
               alignItems="left"
-              direction="row"
               justifyContent="space-between"
               direction="column"
             >
-              <Flex align="center" mb="18px">
-                <Text
-                  fontSize="md"
-                  color={TEXT_COLOR}
-                  fontWeight="bold"
-                  me="10px"
-                >
-                  Full Name:{" "}
-                </Text>
-                <Text fontSize="md" color={BLACK} fontWeight="400">
-                  Tessa Violet
-                </Text>
-              </Flex>
-              <Flex align="center" mb="18px">
-                <Text
-                  fontSize="md"
-                  color={TEXT_COLOR}
-                  fontWeight="bold"
-                  me="10px"
-                >
-                  Current job:{" "}
-                </Text>
-                <Text fontSize="md" color={BLACK} fontWeight="400">
-                  Freelancer Designer
-                </Text>
-              </Flex>
-              <Flex align="center" mb="18px">
-                <Text
-                  fontSize="md"
-                  color={TEXT_COLOR}
-                  fontWeight="bold"
-                  me="10px"
-                >
-                  Country:{" "}
-                </Text>
-                <Text fontSize="md" color={BLACK} fontWeight="400">
-                  Viet Nam
-                </Text>
-              </Flex>
-              <Flex align="center" mb="18px">
-                <Text
-                  fontSize="md"
-                  color={TEXT_COLOR}
-                  fontWeight="bold"
-                  me="10px"
-                >
-                  Email:{" "}
-                </Text>
-                <Text fontSize="md" color={BLACK} fontWeight="400">
-                  tessavio@gmail.com
-                </Text>
-              </Flex>
-              <Flex align="center" mb="18px">
-                <Text
-                  fontSize="md"
-                  color={TEXT_COLOR}
-                  fontWeight="bold"
-                  me="10px"
-                >
-                  Phone number:{" "}
-                </Text>
-                <Text fontSize="md" color={BLACK} fontWeight="400">
-                  0123456789
-                </Text>
-              </Flex>
-              <Flex align="center" mb="18px" alignItems="start">
-                <Text
-                  fontSize="md"
-                  color={TEXT_COLOR}
-                  fontWeight="bold"
-                  me="10px"
-                >
-                  Descriptions:{" "}
-                </Text>
-                <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
-                  Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
-                  answer is no. If two equally difficult paths, choose the one
-                  more painful in the short term (pain avoidance is creating an
-                  illusion of equality).
-                </Text>
-              </Flex>
+              {!!profileList &&
+                !!profileList[0] &&
+                profileList?.map((item) => (
+                  <Flex align="center" mb="18px" alignItems="start">
+                    <Text
+                      fontSize="md"
+                      color={TEXT_COLOR}
+                      fontWeight="bold"
+                      me="10px"
+                    >
+                      {item[0]}
+                    </Text>
+                    <Text fontSize="md" color={BLACK} fontWeight="400">
+                      {item[1]}
+                    </Text>
+                  </Flex>
+                ))}
             </Flex>
           </Box>
         </Card>
@@ -406,12 +608,7 @@ function Profile() {
               pl="32px"
               pr="10px"
             >
-              <Text
-                fontSize="lg"
-                color={TEXT_COLOR}
-                fontWeight="bold"
-                my="17px"
-              >
+              <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
                 Platform Settings
               </Text>
             </Flex>
