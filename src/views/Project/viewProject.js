@@ -99,6 +99,7 @@ import { error, get } from "@chakra-ui/utils";
 import { getNodeMajorVersion } from "typescript";
 import TimelineRow from "components/Tables/TimelineRow";
 import { GET_COMMENT } from "utils/path/internalPaths";
+import ShowImage from "components/Project/ShowImage";
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
     setFiles(acceptedFiles.map((file) => file));
@@ -162,6 +163,7 @@ function ViewProject(projID) {
   // version
   const [versionHistory, setVersionHistory] = useState([]); //list
   const [version, setVersion] = useState(); // item
+  const [chosenVersion, setChosenVersion] = useState(); // chosenVersion
 
   const { state, update } = useContext(AuthenticationContext);
   const {
@@ -178,29 +180,32 @@ function ViewProject(projID) {
         },
       })
       .then((response) => {
-        console.log(response.data.data.histories);
         setVersionHistory(response.data.data.histories);
+        if (version === null || version === undefined) {
+          getDetailVersion(response.data.data.histories[0].id);
+          setChosenVersion(response.data.data.histories[0]);
+        }
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  // const getVersionHistory = (versionID) => {
-  //   axios
-  //     .get(GET_HISTORY + versionID, {
-  //       headers: {
-  //         Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log("F");
-  //       setVersion(response.data.data);
-  //       console.log(response.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
+  const getDetailVersion = (versionID) => {
+    axios
+      .get(GET_HISTORY + versionID, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("F");
+        setVersion(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const getComment = (versionID) => {
     axios
       .get(GET_COMMENT + versionID, {
@@ -210,7 +215,6 @@ function ViewProject(projID) {
       })
       .then((response) => {
         setCmt(response.data.data);
-        console.log(response.data.data);
       })
       .catch((error) => {
         console.error(error);
@@ -223,10 +227,6 @@ function ViewProject(projID) {
       //params.get('abc');
       await getProject();
       console.log("Hehe");
-      console.log(versionHistory[0]);
-      if (version === null) {
-        setVersion(versionHistory[0]);
-      }
     })();
   }, []);
   const onHandleUploadSubmit = (e) => {
@@ -312,7 +312,9 @@ function ViewProject(projID) {
             borderRadius="lg"
           >
             <Text fontWeight="bold" fontSize="xl">
-              Version 3.0: Change color pallete hello
+              {version && version.changeNote
+                ? version.changeNote
+                : "Loading..."}
             </Text>
           </Box>
           <Box align="end">
@@ -335,11 +337,9 @@ function ViewProject(projID) {
               </Stack>
             </ButtonGroup>
             <Box pt={4} pr={4} borderRadius="lg">
-              <Image
-                borderRadius="lg"
-                src="https://bit.ly/dan-abramov"
-                alt="Dan Abramov"
-              />
+              {
+                <ShowImage chosenVersion={version} />
+              }
               <Box align="end">
                 <Stack direction="row" spacing={4} align="center">
                   <Button variant="ghost">
@@ -464,27 +464,23 @@ function ViewProject(projID) {
             </Text>
           </HStack>
         </Flex>
-        <TimelineRow
-          title={"He he"}
-          date={"He he"}
-          color={GREEN_SHOPIFY}
-          index={0}
-          arrLength={3}
-        />
-        <TimelineRow
-          title={"He he"}
-          date={"He he"}
-          color={GREEN_SHOPIFY}
-          index={1}
-          arrLength={3}
-        />
-        <TimelineRow
-          title={"He he"}
-          date={"He he"}
-          color={GREEN_SHOPIFY}
-          index={2}
-          arrLength={3}
-        />
+        {versionHistory && chosenVersion &&
+          versionHistory.map((e, index) => (
+            <div onClick={async () => {
+              await getDetailVersion(versionHistory[index].id);
+              setChosenVersion(versionHistory[index]);
+              console.log(chosenVersion);
+            }}>
+              <TimelineRow
+                key={index}
+                title={e.changeNote}
+                date={e.createdAt}
+                color={e.id === chosenVersion.id ? GREEN_SHOPIFY: BLACK}
+                index={index}
+                arrLength={versionHistory.length}
+              />
+            </div>
+          ))}
       </Flex>
     </Flex>
   );
