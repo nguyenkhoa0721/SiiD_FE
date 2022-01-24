@@ -73,6 +73,7 @@ const InputComment = () => (
   </HStack>
 )
 import Dropzone from "react-dropzone";
+import { useHistory } from "react-router-dom";
 
 function File({file,setFiles}) {
   
@@ -112,8 +113,12 @@ function Project() {
   const [emptyProject, setEmptyProject] = useState(true);
   const { state, update } = useContext(AuthenticationContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const history = useHistory();
   useEffect(() => {
     (async () => {
+      history.push({pathname:'/admin/project'});
+      //const params = new URLSearchParams(window.location.search);
+      //params.get('abc');
       const profile = await axios
         .get(USER_PROFILE, {
           headers: {
@@ -125,6 +130,7 @@ function Project() {
         });
     })();
   }, []);
+  
   return (
     <Flex
       overflow="auto" 
@@ -154,7 +160,10 @@ function Project() {
           <Box align='end'>
             <ButtonGroup>
             <Stack direction='row' spacing={4} align='center'>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={() => {
+              
+                history.push({ pathname: "/admin/viewProject" });
+              }}>
                 <DragHandleIcon/>
               </Button>
               <Button variant="ghost">
@@ -309,4 +318,8 @@ function Project() {
   );
 }
 
+
 export default Project;
+
+//const params = new URLSearchParams(window.location.search);
+//params.get('abc');

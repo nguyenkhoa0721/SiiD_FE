@@ -40,6 +40,7 @@ import axios from "axios";
 import { GET_ALL_PORTFOLIO } from "utils/path/internalPaths";
 import { AuthenticationContext } from "store/AuthenticationContext";
 import { isNull, isUndefined } from "lodash";
+import { useHistory } from "react-router-dom";
 
 function Portfolio() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +48,9 @@ function Portfolio() {
   const buttonEditColor = useColorModeValue("white", "white");
   const { state, update } = useContext(AuthenticationContext);
   const [dataVal, setDataVal] = useState();
+  const history = useHistory();
   useEffect(() => {
+    history.push({pathname:'/admin/portfolio'});
     loadPortfolioInfo();
   }, []);
   const loadPortfolioInfo = () => {
