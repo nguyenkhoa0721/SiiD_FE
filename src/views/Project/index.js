@@ -117,6 +117,8 @@ function Project() {
   useEffect(() => {
     (async () => {
       history.push({pathname:'/admin/project'});
+      //const params = new URLSearchParams(window.location.search);
+      //params.get('abc');
       const profile = await axios
         .get(USER_PROFILE, {
           headers: {
@@ -158,7 +160,10 @@ function Project() {
           <Box align='end'>
             <ButtonGroup>
             <Stack direction='row' spacing={4} align='center'>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={() => {
+              
+                history.push({ pathname: "/admin/viewProject" });
+              }}>
                 <DragHandleIcon/>
               </Button>
               <Button variant="ghost">
@@ -313,4 +318,8 @@ function Project() {
   );
 }
 
+
 export default Project;
+
+//const params = new URLSearchParams(window.location.search);
+//params.get('abc');
