@@ -36,6 +36,7 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
+  CheckCircleIcon,
   ArrowForwardIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -64,7 +65,6 @@ import {
   PINK,
 } from "utils/const/ColorChoice";
 import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
-
 const InputComment = () => (
   <HStack>
     <Input
@@ -93,11 +93,12 @@ const InputComment = () => (
 import Dropzone from "react-dropzone";
 import { useHistory } from "react-router-dom";
 import { BASE_URL } from "utils/path/internalPaths";
-import { GET_PROJECT } from "utils/path/internalPaths";
+import { USER_PROJECT } from "utils/path/internalPaths";
 import { GET_HISTORY } from "utils/path/internalPaths";
 import { error, get } from "@chakra-ui/utils";
 import { getNodeMajorVersion } from "typescript";
-
+import TimelineRow from "components/Tables/TimelineRow";
+import { GET_COMMENT } from "utils/path/internalPaths";
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
     setFiles(acceptedFiles.map((file) => file));
@@ -156,10 +157,11 @@ function ViewProject(projID) {
   projID = "61ee658b4b0c2e483e0c29d4";
   // upload
   const [file, setFiles] = useState([]);
+  const [cmt, setCmt] = useState([]);
   const [new_des, setNewDes] = useState("");
   // version
-  const [versionHistory, setVersionHistory] = useState([]);
-  const [version, setVersion] = useState();
+  const [versionHistory, setVersionHistory] = useState([]); //list
+  const [version, setVersion] = useState(); // item
 
   const { state, update } = useContext(AuthenticationContext);
   const {
@@ -170,27 +172,44 @@ function ViewProject(projID) {
   const history = useHistory();
   const getProject = () => {
     axios
-      .get(GET_PROJECT + projID, {
+      .get(USER_PROJECT + projID, {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         },
       })
       .then((response) => {
+        console.log(response.data.data.histories);
         setVersionHistory(response.data.data.histories);
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  const getVersionHistory = (versionID) => {
+  // const getVersionHistory = (versionID) => {
+  //   axios
+  //     .get(GET_HISTORY + versionID, {
+  //       headers: {
+  //         Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log("F");
+  //       setVersion(response.data.data);
+  //       console.log(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
+  const getComment = (versionID) => {
     axios
-      .get(GET_HISTORY + versionID, {
+      .get(GET_COMMENT + versionID, {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         },
       })
       .then((response) => {
-        setVersion(response.data.data);
+        setCmt(response.data.data);
         console.log(response.data.data);
       })
       .catch((error) => {
@@ -202,9 +221,11 @@ function ViewProject(projID) {
       history.push({ pathname: "/admin/viewProject" });
       //const params = new URLSearchParams(window.location.search);
       //params.get('abc');
-      const project = await getProject();
+      await getProject();
+      console.log("Hehe");
+      console.log(versionHistory[0]);
       if (version === null) {
-        await getVersionHistory(versionHistory[0]);
+        setVersion(versionHistory[0]);
       }
     })();
   }, []);
@@ -224,7 +245,7 @@ function ViewProject(projID) {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         };
         axios
-          .post(GET_PROJECT + projID, form, { headers: headers })
+          .post(USER_PROJECT + projID, form, { headers: headers })
           .then((res) => {
             if (res.status === 200) {
               onCloseUploadModal();
@@ -443,8 +464,27 @@ function ViewProject(projID) {
             </Text>
           </HStack>
         </Flex>
-        <HistoryItemCard desc={"abc"}/>
-        <HistoryItemCard />
+        <TimelineRow
+          title={"He he"}
+          date={"He he"}
+          color={GREEN_SHOPIFY}
+          index={0}
+          arrLength={3}
+        />
+        <TimelineRow
+          title={"He he"}
+          date={"He he"}
+          color={GREEN_SHOPIFY}
+          index={1}
+          arrLength={3}
+        />
+        <TimelineRow
+          title={"He he"}
+          date={"He he"}
+          color={GREEN_SHOPIFY}
+          index={2}
+          arrLength={3}
+        />
       </Flex>
     </Flex>
   );
