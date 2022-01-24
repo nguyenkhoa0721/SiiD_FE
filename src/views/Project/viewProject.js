@@ -33,6 +33,7 @@ import {
   ListItem,
   toast,
   createStandaloneToast,
+  Switch,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
@@ -165,13 +166,47 @@ function ViewProject(projID) {
   const [version, setVersion] = useState(); // item
   const [chosenVersion, setChosenVersion] = useState(); // chosenVersion
 
+
   const { state, update } = useContext(AuthenticationContext);
   const {
     isOpen: isUploadModalOpen,
     onOpen: onOpenUploadModal,
     onClose: onCloseUploadModal,
   } = useDisclosure();
+  const {
+    isOpen: isSettingModalOpen,
+    onOpen: onOpenSettingModal,
+    onClose: onCloseSettingModal,
+  } = useDisclosure();
   const history = useHistory();
+  const deleteProject = () => {
+    axios
+      .delete(USER_PROJECT + projID, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          onCloseSettingModal();
+          toast({
+            title: "Success",
+            description: "Delete success",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: "Failed",
+            description: "Delete failed",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      });
+  };
   const getProject = () => {
     axios
       .get(USER_PROJECT + projID, {
@@ -183,6 +218,8 @@ function ViewProject(projID) {
         setVersionHistory(response.data.data.histories);
         if (version === null || version === undefined) {
           getDetailVersion(response.data.data.histories[0].id);
+          // getComment(response.data.data.histories[0].id);
+          getComment('618eb8c02b4ca532f6af12e5');
           setChosenVersion(response.data.data.histories[0]);
         }
       })
@@ -198,9 +235,7 @@ function ViewProject(projID) {
         },
       })
       .then((response) => {
-        console.log("F");
         setVersion(response.data.data);
-        console.log(response.data.data);
       })
       .catch((error) => {
         console.error(error);
@@ -215,6 +250,8 @@ function ViewProject(projID) {
       })
       .then((response) => {
         setCmt(response.data.data);
+        console.log("GGG");
+        console.log(response.data.data);
       })
       .catch((error) => {
         console.error(error);
@@ -226,7 +263,6 @@ function ViewProject(projID) {
       //const params = new URLSearchParams(window.location.search);
       //params.get('abc');
       await getProject();
-      console.log("Hehe");
     })();
   }, []);
   const onHandleUploadSubmit = (e) => {
@@ -267,7 +303,6 @@ function ViewProject(projID) {
             }
           })
           .catch((err) => {
-            console.log("Checkpoint");
             toast({
               title: "Failed",
               description: err,
@@ -287,6 +322,16 @@ function ViewProject(projID) {
       });
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      if (chosenVersion && chosenVersion.id) {
+        //await getComment(chosenVersion.id);
+        await getComment('618eb8c02b4ca532f6af12e5');
+      }
+    })();
+  }, []);
+
   return (
     <Flex
       overflow="auto"
@@ -331,18 +376,102 @@ function ViewProject(projID) {
                 <Button variant="ghost">
                   <HamburgerIcon />
                 </Button>
-                <Button variant="ghost">
+                <Button variant="ghost" onClick={onOpenSettingModal}>
                   <SettingsIcon />
                 </Button>
+                <Modal
+                  id="SettingDialog"
+                  isCentered
+                  isOpen={isSettingModalOpen}
+                  onClose={onCloseSettingModal}
+                  size="2xl"
+                  closeOnOverlayClick={false}
+                  scrollBehavior="inside"
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader p="0px">
+                      <Box
+                        w="full"
+                        h="60px"
+                        bgColor={GREEN_SHOPIFY}
+                        borderRadius="5px 5px 0px 0px"
+                        pl="32px"
+                      >
+                        <Flex justifyContent="space-between" align="center">
+                          <Text
+                            my="12px"
+                            fontSize="2xl"
+                            color={TEXT_COLOR}
+                            fontWeight="semibold"
+                          >
+                            Settings
+                          </Text>
+                          <ModalCloseButton mt="5px"></ModalCloseButton>
+                        </Flex>
+                      </Box>
+                    </ModalHeader>
+                    <ModalBody px="32px" pt="32px">
+                      <Flex direction="column">
+                        <Flex align="center" mb="20px">
+                          <Button colorScheme="green" me="10px" color={PINK} onClick={() => {deleteProject();}} />
+                          <Text
+                            noOfLines={1}
+                            fontSize="md"
+                            color={BLACK}
+                            fontWeight="400"
+                          >
+                            Delete project
+                          </Text>
+                        </Flex>
+                        <Flex align="center" mb="20px">
+                          <Switch colorScheme="green" me="10px" />
+                          <Text
+                            noOfLines={1}
+                            fontSize="md"
+                            color={BLACK}
+                            fontWeight="400"
+                          >
+                            Turn on sharing
+                          </Text>
+                        </Flex>
+                        <Flex align="center" mb="20px">
+                          <Switch colorScheme="green" me="10px" />
+                          <Text
+                            noOfLines={1}
+                            fontSize="md"
+                            color={BLACK}
+                            fontWeight="400"
+                          >
+                            Archive project
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </ModalBody>
+
+                    <ModalFooter p="32px" experimental_spaceX="32px">
+                      <Button color={WHITE} colorScheme="green">
+                        Save
+                      </Button>
+                      <Button
+                        color={BLACK}
+                        colorScheme="gray"
+                        onClick={onCloseSettingModal}
+                      >
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
               </Stack>
             </ButtonGroup>
             <Box pt={4} pr={4} borderRadius="lg">
-              {
-                <ShowImage chosenVersion={version} />
-              }
+              {<ShowImage chosenVersion={version} />}
               <Box align="end">
                 <Stack direction="row" spacing={4} align="center">
-                  <Button variant="ghost">
+                  <Button variant="ghost" onClick={() => {
+
+                  }}>
                     <ArrowLeftIcon />
                   </Button>
                   <Text>1</Text>
@@ -440,7 +569,14 @@ function ViewProject(projID) {
           </Box>
           <Flex direction="column">
             <Flex>
-              <CommentCard date={121514} />
+              {cmt &&
+                cmt.length !== 0 &&
+                cmt.map((item, index) => {
+                  <CommentCard
+                    key={index}
+                    des={item.content ? item.content : "Loading..."}
+                  />;
+                })}
             </Flex>
             <InputComment />
           </Flex>
@@ -464,18 +600,21 @@ function ViewProject(projID) {
             </Text>
           </HStack>
         </Flex>
-        {versionHistory && chosenVersion &&
+        {versionHistory &&
+          chosenVersion &&
           versionHistory.map((e, index) => (
-            <div onClick={async () => {
-              await getDetailVersion(versionHistory[index].id);
-              setChosenVersion(versionHistory[index]);
-              console.log(chosenVersion);
-            }}>
+            <div
+              key={index}
+              onClick={async () => {
+                await getDetailVersion(versionHistory[index].id);
+                await getComment(versionHistory[index].id);
+                setChosenVersion(versionHistory[index]);
+              }}
+            >
               <TimelineRow
-                key={index}
                 title={e.changeNote}
                 date={e.createdAt}
-                color={e.id === chosenVersion.id ? GREEN_SHOPIFY: BLACK}
+                color={e.id === chosenVersion.id ? GREEN_SHOPIFY : BLACK}
                 index={index}
                 arrLength={versionHistory.length}
               />
