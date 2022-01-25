@@ -31,7 +31,9 @@ import {
 import Card from "components/Card/Card";
 
 import avatar from "assets/img/avatars/avatar.png";
-import galleryItem from "assets/img/galleryItem.png";
+import galleryItem0 from "assets/img/galleryItem0.png";
+import galleryItem1 from "assets/img/galleryItem1.png";
+import galleryItem2 from "assets/img/galleryItem2.png";
 import { MdEdit } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
 import { EditImage } from "components/Portfolio/EditImage";
@@ -41,6 +43,7 @@ import { GET_ALL_PORTFOLIO } from "utils/path/internalPaths";
 import { AuthenticationContext } from "store/AuthenticationContext";
 import { isNull, isUndefined } from "lodash";
 import { useHistory } from "react-router-dom";
+import { BASE_URL } from "utils/path/internalPaths";
 
 function Portfolio() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,7 +53,7 @@ function Portfolio() {
   const [dataVal, setDataVal] = useState();
   const history = useHistory();
   useEffect(() => {
-    history.push({pathname:'/admin/portfolio'});
+    history.push({ pathname: "/admin/portfolio" });
     loadPortfolioInfo();
   }, []);
   const loadPortfolioInfo = () => {
@@ -63,12 +66,27 @@ function Portfolio() {
       .then((res) => {
         const data = res.data;
         setDataVal(data.data);
+        console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
+  const dataGallery = [
+    galleryItem0,
+    galleryItem1,
+    galleryItem2,
+    galleryItem1,
+    galleryItem2,
+    galleryItem1,
+    galleryItem0,
+    galleryItem2,
+    galleryItem1,
+    galleryItem0,
+    galleryItem1,
+    galleryItem0,
+    galleryItem2,
+  ];
   return (
     <Flex pt={{ base: "120px", md: "75px" }} direction="column">
       <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
@@ -116,7 +134,7 @@ function Portfolio() {
               >
                 <Flex alignItems="center" direction="column">
                   <Avatar
-                    src={avatar}
+                    src={BASE_URL + "/" + dataVal?.createdBy?.avatar}
                     w="200px"
                     h="200px"
                     borderRadius="full"
@@ -157,8 +175,8 @@ function Portfolio() {
                 >
                   <BasicInfo
                     fullName={dataVal?.createdBy?.name ?? "None"}
-                    job="None"
-                    country="None"
+                    job={dataVal?.createdBy?.job ?? "None"}
+                    country={dataVal?.createdBy?.country ?? "None"}
                     email={dataVal?.createdBy?.email ?? "None"}
                     phoneNumber="0123456789"
                   />
@@ -187,7 +205,7 @@ function Portfolio() {
                     Descriptions:{" "}
                   </Text>
                   <Text fontSize="md" color={BLACK} fontWeight="400" mb="30px">
-                    Hong tiep ne!!!!
+                    {dataVal?.createdBy?.description ?? "None"}
                   </Text>
                 </Flex>
               </Flex>
@@ -221,18 +239,17 @@ function Portfolio() {
                 Gallery
               </Text>
 
-              {dataVal && dataVal.gallery && dataVal.gallery.length !== 0 && (
-                <Button
-                  w="40px"
-                  h="40px"
-                  p="0px"
-                  borderRadius="full"
-                  bgColor={buttonEditColor}
-                  onClick={onOpen}
-                />
-              )}
+              <Button
+                w="40px"
+                h="40px"
+                p="0px"
+                borderRadius="full"
+                bgColor={buttonEditColor}
+                onClick={onOpen}
+              >
+                <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
+              </Button>
 
-              <MdEdit color={GREEN_SHOPIFY} w="20px" h="20px" />
               <Modal
                 id="editGalleryDialog"
                 isCentered
@@ -270,16 +287,18 @@ function Portfolio() {
                       templateColumns={{ sm: "1fr", xl: "repeat(4, 1fr)" }}
                       gap="32px"
                     >
-                      {dataVal &&
+                      {/* {dataVal &&
                         dataVal.gallery &&
                         dataVal.gallery.map((item) => (
-                          <EditImage galleryItem={galleryItem} />
-                        ))}
-                      {/* <EditImage galleryItem={galleryItem} />
-                      <EditImage galleryItem={galleryItem} />
-                      <EditImage galleryItem={galleryItem} />
-                      <EditImage galleryItem={galleryItem} />
-                      <EditImage galleryItem={galleryItem} /> */}
+                          <EditImage galleryItem0={galleryItem0} />
+                        ))} */}
+                      {dataGallery.map((item) => (
+                        <EditImage
+                          galleryItem={item}
+                          alt=""
+                          borderRadius="15px"
+                        />
+                      ))}
                     </Grid>
                   </ModalBody>
 
@@ -302,16 +321,20 @@ function Portfolio() {
             templateColumns={{ sm: "1fr", xl: "repeat(3, 1fr)" }}
             gap="32px"
           >
-            {dataVal &&
+            {/* {
+              dataVal &&
               dataVal.gallery &&
               dataVal.gallery.map((item) => (
                 <Image
                   key={item}
-                  src={galleryItem}
+                  src={galleryItem0}
                   alt=""
                   borderRadius="15px"
                 />
-              ))}
+              ))} */}
+            {dataGallery.map((item) => (
+              <Image src={item} alt="" borderRadius="15px" />
+            ))}
           </Grid>
         </Box>
       </Card>
