@@ -22,7 +22,7 @@ export default function StatChart() {
       },
       colors: [GREEN_SHOPIFY],
       fill: {
-        type: 'gradient'
+        type: "gradient",
       },
       dataLabels: {
         enabled: false,
@@ -52,7 +52,7 @@ export default function StatChart() {
     },
   };
   return (
-    <Box shadow="lg" bg="white" p={4} ml={4} borderRadius="lg">
+    <Box shadow="lg" bg="white" p={4} ml={4} mb={4} borderRadius="lg">
       <ReactApexChart
         options={state.options}
         series={state.series}

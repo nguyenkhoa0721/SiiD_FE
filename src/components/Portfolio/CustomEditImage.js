@@ -4,8 +4,9 @@ export const CustomEditImage = ({ galleryItem }) => {
   return (
     <Box position="relative">
       <Image
-        height={450}
-        width={450}
+        height="auto"
+        width="full"
+        min-width="50%"
         src={galleryItem}
         alt=""
         borderRadius="15px"

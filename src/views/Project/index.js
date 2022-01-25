@@ -214,7 +214,7 @@ function Project() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
+      <Card p="24px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
         <Box
           w="full"
           h="60px"
@@ -236,9 +236,9 @@ function Project() {
         </Box>
 
         <Grid
-          mt="32px"
+          mt="24px"
           templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }}
-          gap="32px"
+          gap="24px"
         >
           <Card
             title="Create New Project"
@@ -269,9 +269,9 @@ function Project() {
                 title={item.projectName}
                 onClick={() => {
                   console.log(item);
-                  window.localStorage.setItem('projectId',item.id);
+                  window.localStorage.setItem("projectId", item.id);
                   history.push({
-                    pathname: "/admin/viewProject"
+                    pathname: "/admin/viewProject",
                   });
                 }}
               >

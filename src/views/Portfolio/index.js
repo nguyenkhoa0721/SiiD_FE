@@ -87,7 +87,7 @@ function Portfolio() {
   ];
   return (
     <Flex pt={{ base: "120px", md: "75px" }} direction="column">
-      <Card p="32px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
+      <Card p="24px" boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)">
         <Box
           w="full"
           h="60px"
@@ -99,7 +99,7 @@ function Portfolio() {
             alignItems="center"
             direction="row"
             justifyContent="space-between"
-            pl="32px"
+            pl="24px"
             pr="10px"
           >
             <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
@@ -112,13 +112,13 @@ function Portfolio() {
           h="full"
           bgColor={GRAY2}
           borderRadius="15px"
-          mt="32px"
-          p="32px"
+          mt="24px"
+          p="24px"
           boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
         >
           <Grid
             templateColumns={{ sm: "1fr", xl: "repeat(4, 1fr)" }}
-            gap="32px"
+            gap="24px"
           >
             <GridItem colSpan={1}>
               <Box
@@ -215,8 +215,8 @@ function Portfolio() {
           h="full"
           bgColor={GRAY2}
           borderRadius="15px"
-          mt="32px"
-          p="32px"
+          mt="24px"
+          p="24px"
           boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
         >
           <Box
@@ -230,7 +230,7 @@ function Portfolio() {
               alignItems="center"
               direction="row"
               justifyContent="space-between"
-              pl="32px"
+              pl="24px"
               pr="10px"
             >
               <Text fontSize="lg" color="white" fontWeight="bold" my="17px">
@@ -314,10 +314,10 @@ function Portfolio() {
           </Box>
 
           <Grid
-            mt="32px"
+            mt="24px"
             templateRows={{ sm: "1fr", xl: "repeat(3, 1fr)" }}
             templateColumns={{ sm: "1fr", xl: "repeat(3, 1fr)" }}
-            gap="32px"
+            gap="24px"
           >
             {/* {
               dataVal &&

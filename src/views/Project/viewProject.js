@@ -399,8 +399,8 @@ function ViewProject() {
           <Box
             bg={GREEN_SHOPIFY}
             w="100%"
-            pl={6}
-            pr={4}
+            // pl={6}
+            // pr={4}
             color="white"
             borderRadius="lg"
           >
@@ -411,7 +411,7 @@ function ViewProject() {
               pl="32px"
               pr="10px"
             >
-              <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
+              <Text fontWeight="bold" fontSize="lg" my="10px" color="white">
                 {version && version.changeNote
                   ? version.changeNote
                   : "Loading..."}
@@ -552,7 +552,7 @@ function ViewProject() {
             </ButtonGroup>
             <Box pt={4} pr={4} borderRadius="lg">
               {<ShowImage chosenVersion={version} />}
-              <Box align="end">
+              <Box my="16px">
                 <Stack direction="row" spacing={4} align="center">
                   <Button variant="ghost" onClick={() => {}}>
                     <ArrowLeftIcon />
@@ -651,8 +651,8 @@ function ViewProject() {
             <Box
               bg={GREEN_SHOPIFY}
               w="100%"
-              pl={6}
-              pr={4}
+              // pl={6}
+              // pr={4}
               color="white"
               borderRadius="lg"
             >
@@ -660,10 +660,10 @@ function ViewProject() {
                 alignItems="center"
                 direction="row"
                 justifyContent="space-between"
-                pl="32px"
+                pl="24px"
                 pr="10px"
               >
-                <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
+                <Text fontWeight="bold" fontSize="lg" my="10px" color="white">
                   Review
                 </Text>
               </Flex>
@@ -725,8 +725,8 @@ function ViewProject() {
           <Box
             bg={GREEN_SHOPIFY}
             w="100%"
-            pl={6}
-            pr={4}
+            // pl={6}
+            // pr={4}
             color="white"
             borderRadius="lg"
           >
@@ -734,10 +734,10 @@ function ViewProject() {
               alignItems="center"
               direction="row"
               justifyContent="space-between"
-              pl="32px"
+              pl="24px"
               pr="10px"
             >
-              <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
+              <Text fontWeight="bold" fontSize="lg" my="10px" color="white">
                 History
               </Text>
             </Flex>

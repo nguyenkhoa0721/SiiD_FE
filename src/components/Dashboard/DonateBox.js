@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spacer, Text} from "@chakra-ui/react";
+import { Box, Button, Flex, Spacer, Text } from "@chakra-ui/react";
 import { GREEN_SHOPIFY } from "utils/const/ColorChoice";
 
 export default function DonateBox() {
@@ -10,6 +10,7 @@ export default function DonateBox() {
       pr={4}
       pt={10}
       pb={10}
+      mb={4}
       color="white"
       borderRadius="lg"
     >
