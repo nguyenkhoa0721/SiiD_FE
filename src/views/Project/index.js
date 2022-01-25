@@ -65,32 +65,6 @@ import {
   PINK,
 } from "utils/const/ColorChoice";
 
-const InputComment = () => (
-  <HStack>
-    <Input
-      placeholder="Send message herer"
-      color={GREEN_SHOPIFY}
-      variant="ghost"
-    />
-    <Box align="end">
-      <ButtonGroup>
-        <Button
-          variant="link"
-          onClick={() => {
-            console.log("Pay");
-          }}
-        >
-          <AtSignIcon />
-          Pay
-        </Button>
-        <Button variant="link">
-          <ArrowForwardIcon />
-        </Button>
-      </ButtonGroup>
-    </Box>
-  </HStack>
-);
-import Dropzone from "react-dropzone";
 import { useHistory } from "react-router-dom";
 import { USER_PROJECT } from "utils/path/internalPaths";
 
@@ -98,8 +72,6 @@ function Project() {
   const [project, setProject] = useState([]);
   const [projectName, setProjectName] = useState();
   const nameHandleChange = (event) => setProjectName(event.target.value);
-  const [new_name, setNewName] = useState("");
-  const [new_des, setNewDes] = useState("");
 
   const [emptyProject, setEmptyProject] = useState(true);
   const { state, update } = useContext(AuthenticationContext);

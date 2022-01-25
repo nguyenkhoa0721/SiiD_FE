@@ -72,7 +72,7 @@ const InputComment = ({ func1, func2 }) => (
     />
     <Box align="end">
       <ButtonGroup>
-        <Button
+        {/* <Button
           variant="link"
           onClick={() => {
             console.log("Pay");
@@ -80,7 +80,7 @@ const InputComment = ({ func1, func2 }) => (
         >
           <AtSignIcon />
           Pay
-        </Button>
+        </Button> */}
         <Button variant="link" onClick={func2}>
           <ArrowForwardIcon />
         </Button>
@@ -388,11 +388,28 @@ function ViewProject() {
             color="white"
             borderRadius="lg"
           >
-            <Text fontWeight="bold" fontSize="xl">
+            <Box
+          w="full"
+          h="60px"
+          bgColor={GREEN_SHOPIFY}
+          borderRadius="15px"
+          boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
+        >
+          <Flex
+            alignItems="center"
+            direction="row"
+            justifyContent="space-between"
+            pl="32px"
+            pr="10px"
+          >
+            <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
               {version && version.changeNote
                 ? version.changeNote
                 : "Loading..."}
             </Text>
+          </Flex>
+        </Box>
+            
           </Box>
           <Box align="end">
             <ButtonGroup>

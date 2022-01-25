@@ -464,7 +464,7 @@ function Profile() {
         align="center"
       >
         <Box
-          bgImage={ProfileBgImage}
+          bgImage={"https://source.unsplash.com/random"}
           w="100%"
           h="300px"
           borderRadius="25px"
