@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -22,14 +22,31 @@ import { USER_LOGIN } from "utils/path/internalPaths";
 import { GREEN_SHOPIFY } from "utils/const/ColorChoice";
 import { TEXT_COLOR } from "utils/const/ColorChoice";
 import { GREEN_DARKER } from "utils/const/ColorChoice";
-import { createStandaloneToast } from '@chakra-ui/react';
+import { createStandaloneToast } from "@chakra-ui/react";
+import { AuthenticationContext } from "store/AuthenticationContext";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+ 
   const toast = createStandaloneToast();
   const router = useHistory();
+  const { state, update } = useContext(AuthenticationContext);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("bearerToken") !== null) {
+      window.localStorage.removeItem("bearerToken");
+    }
+    if (window.localStorage.getItem("id") !== null) {
+      window.localStorage.removeItem("id");
+    }
+    if (window.localStorage.getItem("userName") !== null) {
+      window.localStorage.removeItem("userName");
+    }
+    if (window.localStorage.getItem("projectId") !== null) {
+      window.localStorage.removeItem("projectId");
+    }
+  }, []);
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +58,16 @@ function SignIn() {
         })
         .then((res) => {
           if (res.status === 200) {
+            window.localStorage.setItem("bearerToken", res.data.data.token);
+            window.localStorage.setItem("id", res.data.data.id);
+            window.localStorage.setItem("userName", res.data.data.username);
             router.push("/admin/dashboard");
+            update({
+              bearerToken: res.data.data.token,
+              id: res.data.data.id,
+              userName: res.data.data.username,
+            });
+
             toast({
               title: "Success",
               description: "You have been signed in",

@@ -1,19 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 
 import AdminLayout from "./layouts/Admin";
 import SignUp from "views/Authentication/SignUp";
 import SignIn from "views/Authentication/SignIn";
-
+import { AuthenticationProvider } from "store/AuthenticationContext";
+import { ProtectedRoute } from "layouts/ProjectedRoute";
 ReactDOM.render(
-  <HashRouter>
+  <BrowserRouter>
     <Switch>
-      <Route path={`/admin`} component={AdminLayout} />
-      <Route path={`/auth/signup`} exact={true} component={SignUp} />
-      <Route path={`/auth/signin`} exact={true} component={SignIn} />
-      <Redirect from={`/`} to="/admin/dashboard" />
+      <AuthenticationProvider>
+        <ProtectedRoute exact path={`/`} />
+        <Route path={`/admin`} component={AdminLayout} />
+        <Route path={`/auth/signup`} exact={true} component={SignUp} />
+        <Route path={`/auth/signin`} exact={true} component={SignIn} />
+      </AuthenticationProvider>
     </Switch>
-  </HashRouter>,
+  </BrowserRouter>,
   document.getElementById("root")
 );

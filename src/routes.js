@@ -6,6 +6,7 @@ import Profile from "views/Profile";
 import SignIn from "views/Authentication/SignIn.js";
 import {FaHome, FaChalkboard, FaDoorOpen} from "react-icons/fa";
 import {MdDesignServices, MdPerson} from "react-icons/md";
+import ViewProject from "views/Project/viewProject";
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -22,6 +23,13 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    path: "/viewProject",
+    name: "View Project",
+    icon: <FaChalkboard color="inherit" />,
+    component: ViewProject,
+    layout: "/admin",
+  },
+  {
     path: "/portfolio",
     name: "Portfolio",
     icon: <MdDesignServices color="inherit" />,
@@ -29,6 +37,7 @@ var dashRoutes = [
     component: Portfolio,
     layout: "/admin",
   },
+  
   {
     name: "ACCOUNT PAGES",
     category: "account",
