@@ -1,4 +1,6 @@
-export const BASE_URL = "http://34.132.24.23/api/v1";
+// export const BASE_URL = "http://34.132.24.23/api/v1";
+// export const BASE_URL = "https://f613-42-118-117-91.ngrok.io/api/v1";
+export const BASE_URL = "https://nmcnpm-siid.ml/api/v1";
 export const USER_LOGIN = BASE_URL + "/user/login";
 export const USER_SIGNUP = BASE_URL + "/user/signup";
 

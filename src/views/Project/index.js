@@ -296,11 +296,10 @@ function Project() {
               <div
                 title={item.projectName}
                 onClick={() => {
-                  // console.log(item);
-                  // window.localStorage.setItem('projectId',item.id);
+                  console.log(item);
+                  window.localStorage.setItem('projectId',item.id);
                   history.push({
-                    pathname: "/admin/viewProject",
-                    state: { projID: item.id },
+                    pathname: "/admin/viewProject"
                   });
                 }}
               >

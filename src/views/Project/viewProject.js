@@ -141,7 +141,7 @@ function File({ file, setFiles }) {
   );
 }
 
-function ViewProject({ projID }) {
+function ViewProject() {
   const toast = createStandaloneToast();
 
   // upload
@@ -169,9 +169,50 @@ function ViewProject({ projID }) {
     onClose: onCloseSettingModal,
   } = useDisclosure();
   const history = useHistory();
-  const deleteProject = () => {
+  const getLink = () => {
     axios
-      .delete(USER_PROJECT + projID, {
+      .get(USER_PROJECT + window.localStorage.getItem('projectId')+"/invite", {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
+        },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          toast({
+            title: "Success",
+            description: res.data,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });          
+        } else {
+          toast({
+            title: "Failed",
+            description: "Get failed",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      }) 
+      .catch((error)=>{
+        console.error(error);
+        toast({
+          title: "Failed",
+          description: "Error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+      onCloseSettingModal();
+    };
+      
+  
+  const deleteProject = () => {
+    console.log(window.localStorage.getItem('projectId'));
+    axios
+      .delete(USER_PROJECT + window.localStorage.getItem('projectId'), {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         },
@@ -199,7 +240,7 @@ function ViewProject({ projID }) {
   };
   const getProject = () => {
     axios
-      .get(USER_PROJECT + projID, {
+      .get(USER_PROJECT + window.localStorage.getItem('projectId'), {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         },
@@ -271,7 +312,7 @@ function ViewProject({ projID }) {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         };
         axios
-          .post(USER_PROJECT + projID, form, { headers: headers })
+          .post(USER_PROJECT + window.localStorage.getItem('projectId'), form, { headers: headers })
           .then((res) => {
             if (res.status === 200) {
               onCloseUploadModal();
@@ -422,7 +463,14 @@ function ViewProject({ projID }) {
                           </Text>
                         </Flex>
                         <Flex align="center" mb="20px">
-                          <Switch colorScheme="green" me="10px" />
+                        <Button
+                            colorScheme="green"
+                            me="10px"
+                            color={PINK}
+                            onClick={() => {
+                              getLink();
+                            }}
+                          />
                           <Text
                             noOfLines={1}
                             fontSize="md"
@@ -622,7 +670,7 @@ function ViewProject({ projID }) {
               key={index}
               onClick={async () => {
                 await getDetailVersion(versionHistory[index].id);
-                await getComment(versionHistory[index].id);
+                // await getComment(versionHistory[index].id);
                 setChosenVersion(versionHistory[index]);
               }}
             >
