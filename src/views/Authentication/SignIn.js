@@ -43,6 +43,9 @@ function SignIn() {
     if (window.localStorage.getItem("userName") !== null) {
       window.localStorage.removeItem("userName");
     }
+    if (window.localStorage.getItem("projectId") !== null) {
+      window.localStorage.removeItem("projectId");
+    }
   }, []);
 
   const onHandleSubmit = (e) => {

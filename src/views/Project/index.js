@@ -94,42 +94,6 @@ import Dropzone from "react-dropzone";
 import { useHistory } from "react-router-dom";
 import { USER_PROJECT } from "utils/path/internalPaths";
 
-function File({ file, setFiles }) {
-  const handleDrop = (acceptedFiles) =>
-    setFiles(acceptedFiles.map((file) => file));
-  const dropStyle = {
-    textAlign: "center",
-    padding: "20px",
-    border: "3px dashed #eeeeee",
-    backgroundColor: "#fafafa",
-    color: "#bdbdbd",
-    marginBottom: "20px",
-  };
-  return (
-    <Box style={dropStyle}>
-      <Dropzone onDrop={handleDrop}>
-        {({ getRootProps, getInputProps }) => (
-          <div {...getRootProps({ className: "dropzone" })}>
-            <input {...getInputProps()} />
-            <p>Selected files</p>
-          </div>
-        )}
-      </Dropzone>
-      <div>
-        <List>
-          {file.map((f) => (
-            <ListItem key={f.name}>{f.name}</ListItem>
-          ))}
-        </List>
-      </div>
-    </Box>
-  );
-}
-
-function uploadVersion(name, desc, file) {
-  console.log(name, desc, file);
-}
-
 function Project() {
   const [project, setProject] = useState([]);
   const [projectName, setProjectName] = useState();
@@ -499,7 +463,9 @@ function Project() {
               <div
                 title={item.projectName}
                 onClick={() => {
-                  history.push({ pathname: "/admin/viewProject" });
+                  // console.log(item);
+                  // window.localStorage.setItem('projectId',item.id);
+                  history.push({ pathname: "/admin/viewProject", state: {projID: item.id } });
                 }}
               >
                 <ProjectCard data={item} />

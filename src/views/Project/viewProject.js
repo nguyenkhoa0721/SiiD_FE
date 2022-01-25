@@ -1,21 +1,10 @@
 // Chakra imports
 import {
   Flex,
-  Grid,
-  GridItem,
   Box,
-  SimpleGrid,
   Text,
   HStack,
   Button,
-  Spacer,
-  VStack,
-  Table,
-  Th,
-  Tr,
-  Thead,
-  Tbody,
-  Image,
   ButtonGroup,
   Stack,
   Input,
@@ -28,7 +17,6 @@ import {
   ModalCloseButton,
   Textarea,
   FormControl,
-  FormLabel,
   List,
   ListItem,
   toast,
@@ -48,11 +36,8 @@ import {
   AddIcon,
 } from "@chakra-ui/icons";
 import React, { useState } from "react";
-import { tablesTableData } from "variables/general";
 import CommentCard from "components/Project/CommentCard";
-import HistoryItemCard from "components/Project/HistoryItemCard";
 import { useEffect, useContext } from "react";
-import { USER_PROFILE } from "utils/path/internalPaths";
 import axios from "axios";
 import { AuthenticationContext } from "store/AuthenticationContext";
 import {
@@ -65,13 +50,24 @@ import {
   WHITE,
   PINK,
 } from "utils/const/ColorChoice";
-import { MdEdit, MdOutlineCloudUpload } from "react-icons/md";
-const InputComment = () => (
+import { MdOutlineCloudUpload } from "react-icons/md";
+import Dropzone from "react-dropzone";
+import { useHistory } from "react-router-dom";
+import { USER_PROJECT } from "utils/path/internalPaths";
+import { GET_HISTORY } from "utils/path/internalPaths";
+import TimelineRow from "components/Tables/TimelineRow";
+import { GET_COMMENT } from "utils/path/internalPaths";
+import ShowImage from "components/Project/ShowImage";
+
+
+const InputComment = ({func1, func2}) => (
   <HStack>
     <Input
       placeholder="Send message herer"
-      color={GREEN_SHOPIFY}
+      bg={GRAY2}
+      color={BLACK}
       variant="ghost"
+      onChange={(e)=>{func1(e.target.value)}}
     />
     <Box align="end">
       <ButtonGroup>
@@ -84,23 +80,14 @@ const InputComment = () => (
           <AtSignIcon />
           Pay
         </Button>
-        <Button variant="link">
+        <Button variant="link" onClick={func2}>
           <ArrowForwardIcon />
         </Button>
       </ButtonGroup>
     </Box>
   </HStack>
 );
-import Dropzone from "react-dropzone";
-import { useHistory } from "react-router-dom";
-import { BASE_URL } from "utils/path/internalPaths";
-import { USER_PROJECT } from "utils/path/internalPaths";
-import { GET_HISTORY } from "utils/path/internalPaths";
-import { error, get } from "@chakra-ui/utils";
-import { getNodeMajorVersion } from "typescript";
-import TimelineRow from "components/Tables/TimelineRow";
-import { GET_COMMENT } from "utils/path/internalPaths";
-import ShowImage from "components/Project/ShowImage";
+
 function File({ file, setFiles }) {
   const handleDrop = (acceptedFiles) =>
     setFiles(acceptedFiles.map((file) => file));
@@ -153,20 +140,22 @@ function File({ file, setFiles }) {
   );
 }
 
-function ViewProject(projID) {
+function ViewProject({projID}) {
   const toast = createStandaloneToast();
 
-  projID = "61ee658b4b0c2e483e0c29d4";
   // upload
   const [file, setFiles] = useState([]);
-  const [cmt, setCmt] = useState([]);
   const [new_des, setNewDes] = useState("");
   // version
   const [versionHistory, setVersionHistory] = useState([]); //list
   const [version, setVersion] = useState(); // item
   const [chosenVersion, setChosenVersion] = useState(); // chosenVersion
-
-
+  // comment
+  const [cmt, setCmt] = useState([]);
+  const [new_cmt, setNewCmt] = useState();
+  const createNewCmt = () =>{
+    console.log(new_cmt);
+  }
   const { state, update } = useContext(AuthenticationContext);
   const {
     isOpen: isUploadModalOpen,
@@ -568,17 +557,18 @@ function ViewProject(projID) {
             </Text>
           </Box>
           <Flex direction="column">
-            <Flex>
-              {cmt &&
+              <CommentCard path="https://bit.ly/dan-abramov" des="It's beautiful but in my point of view, I think the size must be to square because of the frame when I print." date="25/1/2022"/>
+              <CommentCard path="http://localhost:3000/static/media/avatar.c9889310.png" des="Yeah! I'll fix it in ther next release. Anything elsu to fixed ?" date="25/1/2022"/>
+              <CommentCard path="https://bit.ly/dan-abramov" des="Nope. I'm pretty satify with the remain. Waiting for the next version." date="26/1/2022"/>
+              {/* {cmt &&
                 cmt.length !== 0 &&
                 cmt.map((item, index) => {
                   <CommentCard
                     key={index}
                     des={item.content ? item.content : "Loading..."}
                   />;
-                })}
-            </Flex>
-            <InputComment />
+                })} */}
+            <InputComment onChange={(e)=>{setNewCmt(e)}} onClick={()=>{console.log(new_cmt)}}/>
           </Flex>
         </Box>
       </Flex>
