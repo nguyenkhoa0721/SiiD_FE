@@ -59,15 +59,16 @@ import TimelineRow from "components/Tables/TimelineRow";
 import { GET_COMMENT } from "utils/path/internalPaths";
 import ShowImage from "components/Project/ShowImage";
 
-
-const InputComment = ({func1, func2}) => (
+const InputComment = ({ func1, func2 }) => (
   <HStack>
     <Input
       placeholder="Send message herer"
       bg={GRAY2}
       color={BLACK}
       variant="ghost"
-      onChange={(e)=>{func1(e.target.value)}}
+      onChange={(e) => {
+        func1(e.target.value);
+      }}
     />
     <Box align="end">
       <ButtonGroup>
@@ -140,7 +141,7 @@ function File({ file, setFiles }) {
   );
 }
 
-function ViewProject({projID}) {
+function ViewProject({ projID }) {
   const toast = createStandaloneToast();
 
   // upload
@@ -153,9 +154,9 @@ function ViewProject({projID}) {
   // comment
   const [cmt, setCmt] = useState([]);
   const [new_cmt, setNewCmt] = useState();
-  const createNewCmt = () =>{
+  const createNewCmt = () => {
     console.log(new_cmt);
-  }
+  };
   const { state, update } = useContext(AuthenticationContext);
   const {
     isOpen: isUploadModalOpen,
@@ -208,7 +209,7 @@ function ViewProject({projID}) {
         if (version === null || version === undefined) {
           getDetailVersion(response.data.data.histories[0].id);
           // getComment(response.data.data.histories[0].id);
-          getComment('618eb8c02b4ca532f6af12e5');
+          getComment("618eb8c02b4ca532f6af12e5");
           setChosenVersion(response.data.data.histories[0]);
         }
       })
@@ -294,7 +295,7 @@ function ViewProject({projID}) {
           .catch((err) => {
             toast({
               title: "Failed",
-              description: err,
+              description: err.toString(),
               status: "error",
               duration: 5000,
               isClosable: true,
@@ -316,7 +317,7 @@ function ViewProject({projID}) {
     (async () => {
       if (chosenVersion && chosenVersion.id) {
         //await getComment(chosenVersion.id);
-        await getComment('618eb8c02b4ca532f6af12e5');
+        await getComment("618eb8c02b4ca532f6af12e5");
       }
     })();
   }, []);
@@ -403,7 +404,14 @@ function ViewProject({projID}) {
                     <ModalBody px="32px" pt="32px">
                       <Flex direction="column">
                         <Flex align="center" mb="20px">
-                          <Button colorScheme="green" me="10px" color={PINK} onClick={() => {deleteProject();}} />
+                          <Button
+                            colorScheme="green"
+                            me="10px"
+                            color={PINK}
+                            onClick={() => {
+                              deleteProject();
+                            }}
+                          />
                           <Text
                             noOfLines={1}
                             fontSize="md"
@@ -458,9 +466,7 @@ function ViewProject({projID}) {
               {<ShowImage chosenVersion={version} />}
               <Box align="end">
                 <Stack direction="row" spacing={4} align="center">
-                  <Button variant="ghost" onClick={() => {
-
-                  }}>
+                  <Button variant="ghost" onClick={() => {}}>
                     <ArrowLeftIcon />
                   </Button>
                   <Text>1</Text>
@@ -557,10 +563,22 @@ function ViewProject({projID}) {
             </Text>
           </Box>
           <Flex direction="column">
-              <CommentCard path="https://bit.ly/dan-abramov" des="It's beautiful but in my point of view, I think the size must be to square because of the frame when I print." date="25/1/2022"/>
-              <CommentCard path="http://localhost:3000/static/media/avatar.c9889310.png" des="Yeah! I'll fix it in ther next release. Anything elsu to fixed ?" date="25/1/2022"/>
-              <CommentCard path="https://bit.ly/dan-abramov" des="Nope. I'm pretty satify with the remain. Waiting for the next version." date="26/1/2022"/>
-              {/* {cmt &&
+            <CommentCard
+              path="https://bit.ly/dan-abramov"
+              des="It's beautiful but in my point of view, I think the size must be to square because of the frame when I print."
+              date="25/1/2022"
+            />
+            <CommentCard
+              path="http://localhost:3000/static/media/avatar.c9889310.png"
+              des="Yeah! I'll fix it in ther next release. Anything elsu to fixed ?"
+              date="25/1/2022"
+            />
+            <CommentCard
+              path="https://bit.ly/dan-abramov"
+              des="Nope. I'm pretty satify with the remain. Waiting for the next version."
+              date="26/1/2022"
+            />
+            {/* {cmt &&
                 cmt.length !== 0 &&
                 cmt.map((item, index) => {
                   <CommentCard
@@ -568,7 +586,14 @@ function ViewProject({projID}) {
                     des={item.content ? item.content : "Loading..."}
                   />;
                 })} */}
-            <InputComment onChange={(e)=>{setNewCmt(e)}} onClick={()=>{console.log(new_cmt)}}/>
+            <InputComment
+              onChange={(e) => {
+                setNewCmt(e);
+              }}
+              onClick={() => {
+                console.log(new_cmt);
+              }}
+            />
           </Flex>
         </Box>
       </Flex>

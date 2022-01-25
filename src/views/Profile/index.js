@@ -132,7 +132,7 @@ function Profile() {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      history.push({pathname:'/admin/profile'});
+      history.push({ pathname: "/admin/profile" });
       console.log("checkpoint");
       await axios
         .get(USER_PROFILE + window.localStorage.getItem("id"))
@@ -202,7 +202,7 @@ function Profile() {
           } else {
             toast({
               title: "Failed",
-              description: "Wrong username or password",
+              description: "Invalid data inputs",
               status: "error",
               duration: 5000,
               isClosable: true,
@@ -254,7 +254,7 @@ function Profile() {
           } else {
             toast({
               title: "Failed",
-              description: "Wrong username or password",
+              description: "Invalid data input",
               status: "error",
               duration: 5000,
               isClosable: true,
@@ -264,7 +264,7 @@ function Profile() {
         .catch((err) => {
           toast({
             title: "Failed",
-            description: "Noooo",
+            description: err.toString(),
             status: "error",
             duration: 5000,
             isClosable: true,

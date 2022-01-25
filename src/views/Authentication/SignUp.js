@@ -73,7 +73,7 @@ function SignUp() {
         .catch((err) => {
           toast({
             title: "Failed",
-            description: "Noooo",
+            description: err.toString(),
             status: "error",
             duration: 5000,
             isClosable: true,

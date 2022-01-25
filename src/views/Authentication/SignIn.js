@@ -28,7 +28,7 @@ import { AuthenticationContext } from "store/AuthenticationContext";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
+
   const toast = createStandaloneToast();
   const router = useHistory();
   const { state, update } = useContext(AuthenticationContext);
@@ -88,7 +88,7 @@ function SignIn() {
         .catch((err) => {
           toast({
             title: "Failed",
-            description: "Noooo",
+            description: err.toString(),
             status: "error",
             duration: 5000,
             isClosable: true,
