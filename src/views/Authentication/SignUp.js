@@ -228,7 +228,7 @@ function SignUp() {
             right="0px"
           >
             <Box
-              bgImage={signInImage}
+              bgImage="https://source.unsplash.com/random/1000x1000"
               w="100%"
               h="100%"
               bgSize="cover"

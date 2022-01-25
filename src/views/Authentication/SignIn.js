@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 // Assets
-import signInImage from "assets/img/signInImage.jpg";
+// import signInImage from "assets/img/signInImage.jpg";
 //Import Axios
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
@@ -214,7 +214,7 @@ function SignIn() {
             right="0px"
           >
             <Box
-              bgImage={signInImage}
+              bgImage="https://source.unsplash.com/random/1000x1000"
               w="100%"
               h="100%"
               bgSize="cover"
