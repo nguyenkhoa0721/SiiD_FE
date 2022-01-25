@@ -178,11 +178,12 @@ function ViewProject() {
       })
       .then((res) => {
         if (res.status == 200) {
+          console.log(res);
           toast({
             title: "Success",
-            description: res.data,
+            description:  "Client: "+res.data.data.client +"Designer: " + res.data.data.design,
             status: "success",
-            duration: 5000,
+            duration: 10000,
             isClosable: true,
           });          
         } else {
