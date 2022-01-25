@@ -15,6 +15,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  Image,
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
 import { CreativeTimLogo } from "components/Icons/Icons";
@@ -216,10 +217,17 @@ function Sidebar(props) {
         alignItems="center"
         fontSize="11px"
       >
-        <CreativeTimLogo w="32px" h="32px" me="10px" />
-        <Text fontSize="sm" mt="3px">
+        {/* <CreativeTimLogo w="32px" h="32px" me="10px" /> */}
+        <Image
+          src="https://i.imgur.com/9eSlMN5.png"
+          alt=""
+          width="70px"
+          height="auto"
+          me="10px"
+        ></Image>
+        {/* <Text fontSize="sm" mt="3px">
           {logoText}
-        </Text>
+        </Text> */}
       </Link>
       <Separator></Separator>
     </Box>

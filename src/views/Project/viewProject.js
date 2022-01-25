@@ -171,21 +171,30 @@ function ViewProject() {
   const history = useHistory();
   const getLink = () => {
     axios
-      .get(USER_PROJECT + window.localStorage.getItem('projectId')+"/invite", {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
-        },
-      })
+      .get(
+        USER_PROJECT + window.localStorage.getItem("projectId") + "/invite",
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              "bearerToken"
+            )}`,
+          },
+        }
+      )
       .then((res) => {
         if (res.status == 200) {
           console.log(res);
           toast({
             title: "Success",
-            description:  "Client: "+res.data.data.client +"Designer: " + res.data.data.design,
+            description:
+              "Client: " +
+              res.data.data.client +
+              "Designer: " +
+              res.data.data.design,
             status: "success",
             duration: 10000,
             isClosable: true,
-          });          
+          });
         } else {
           toast({
             title: "Failed",
@@ -195,8 +204,8 @@ function ViewProject() {
             isClosable: true,
           });
         }
-      }) 
-      .catch((error)=>{
+      })
+      .catch((error) => {
         console.error(error);
         toast({
           title: "Failed",
@@ -206,14 +215,13 @@ function ViewProject() {
           isClosable: true,
         });
       });
-      onCloseSettingModal();
-    };
-      
-  
+    onCloseSettingModal();
+  };
+
   const deleteProject = () => {
-    console.log(window.localStorage.getItem('projectId'));
+    console.log(window.localStorage.getItem("projectId"));
     axios
-      .delete(USER_PROJECT + window.localStorage.getItem('projectId'), {
+      .delete(USER_PROJECT + window.localStorage.getItem("projectId"), {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         },
@@ -241,7 +249,7 @@ function ViewProject() {
   };
   const getProject = () => {
     axios
-      .get(USER_PROJECT + window.localStorage.getItem('projectId'), {
+      .get(USER_PROJECT + window.localStorage.getItem("projectId"), {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         },
@@ -313,7 +321,9 @@ function ViewProject() {
           Authorization: `Bearer ${window.localStorage.getItem("bearerToken")}`,
         };
         axios
-          .post(USER_PROJECT + window.localStorage.getItem('projectId'), form, { headers: headers })
+          .post(USER_PROJECT + window.localStorage.getItem("projectId"), form, {
+            headers: headers,
+          })
           .then((res) => {
             if (res.status === 200) {
               onCloseUploadModal();
@@ -394,20 +404,19 @@ function ViewProject() {
             color="white"
             borderRadius="lg"
           >
-        <Flex
-            alignItems="center"
-            direction="row"
-            justifyContent="space-between"
-            pl="32px"
-            pr="10px"
-          >
-            <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
-              {version && version.changeNote
-                ? version.changeNote
-                : "Loading..."}
-            </Text>
-          </Flex>
-            
+            <Flex
+              alignItems="center"
+              direction="row"
+              justifyContent="space-between"
+              pl="32px"
+              pr="10px"
+            >
+              <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
+                {version && version.changeNote
+                  ? version.changeNote
+                  : "Loading..."}
+              </Text>
+            </Flex>
           </Box>
           <Box align="end">
             <ButtonGroup>
@@ -431,7 +440,7 @@ function ViewProject() {
                   isCentered
                   isOpen={isSettingModalOpen}
                   onClose={onCloseSettingModal}
-                  size="2xl"
+                  size="lg"
                   closeOnOverlayClick={false}
                   scrollBehavior="inside"
                 >
@@ -463,50 +472,64 @@ function ViewProject() {
                       <Flex direction="column">
                         <Flex align="center" mb="20px">
                           <Button
-                            colorScheme="green"
+                            // colorScheme="green"
+                            width="full"
                             me="10px"
                             color={PINK}
                             onClick={() => {
                               deleteProject();
                             }}
-                          />
-                          <Text
-                            noOfLines={1}
-                            fontSize="md"
-                            color={BLACK}
-                            fontWeight="400"
                           >
-                            Delete project
-                          </Text>
+                            <Text
+                              noOfLines={1}
+                              fontSize="md"
+                              color={BLACK}
+                              fontWeight="400"
+                            >
+                              Delete project
+                            </Text>
+                          </Button>
                         </Flex>
                         <Flex align="center" mb="20px">
-                        <Button
-                            colorScheme="green"
+                          <Button
+                            // colorScheme="green"
+                            width="full"
                             me="10px"
                             color={PINK}
                             onClick={() => {
                               getLink();
                             }}
-                          />
-                          <Text
-                            noOfLines={1}
-                            fontSize="md"
-                            color={BLACK}
-                            fontWeight="400"
                           >
-                            Turn on sharing
-                          </Text>
+                            <Text
+                              noOfLines={1}
+                              fontSize="md"
+                              color={BLACK}
+                              fontWeight="400"
+                            >
+                              Turn on sharing
+                            </Text>
+                          </Button>
                         </Flex>
                         <Flex align="center" mb="20px">
-                          <Switch colorScheme="green" me="10px" />
-                          <Text
-                            noOfLines={1}
-                            fontSize="md"
-                            color={BLACK}
-                            fontWeight="400"
+                          {/* <Switch colorScheme="green" me="10px" /> */}
+                          <Button
+                            // colorScheme="green"
+                            width="full"
+                            me="10px"
+                            color={PINK}
+                            onClick={() => {
+                              getLink();
+                            }}
                           >
-                            Archive project
-                          </Text>
+                            <Text
+                              noOfLines={1}
+                              fontSize="md"
+                              color={BLACK}
+                              fontWeight="400"
+                            >
+                              Archive project
+                            </Text>
+                          </Button>
                         </Flex>
                       </Flex>
                     </ModalBody>
@@ -614,39 +637,37 @@ function ViewProject() {
             </Box>
           </Box>
         </Box>
-        <Box bg="white" w="100%" color="black" borderRadius="lg"
-            shadow="lg">
+        <Box bg="white" w="100%" color="black" borderRadius="lg" shadow="lg">
           <Box
-          bg="white"
-          w="100%"
-          color="black"
-          borderRadius="lg"
-          pl="4"
-          pr="4"
-          mb="8"
-          pt="4"
-        >
-          <Box
-            bg={GREEN_SHOPIFY}
+            bg="white"
             w="100%"
-            pl={6}
-            pr={4}
-            color="white"
+            color="black"
             borderRadius="lg"
+            pl="4"
+            pr="4"
+            mb="8"
+            pt="4"
           >
-        <Flex
-            alignItems="center"
-            direction="row"
-            justifyContent="space-between"
-            pl="32px"
-            pr="10px"
-          >
-            <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
-              Review
-            </Text>
-          </Flex>
-            
-          </Box>
+            <Box
+              bg={GREEN_SHOPIFY}
+              w="100%"
+              pl={6}
+              pr={4}
+              color="white"
+              borderRadius="lg"
+            >
+              <Flex
+                alignItems="center"
+                direction="row"
+                justifyContent="space-between"
+                pl="32px"
+                pr="10px"
+              >
+                <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
+                  Review
+                </Text>
+              </Flex>
+            </Box>
           </Box>
           <Flex direction="column">
             <CommentCard
@@ -683,8 +704,15 @@ function ViewProject() {
           </Flex>
         </Box>
       </Flex>
-      <Flex width={1 / 3} flexDirection="column" bg="white">
-      <Box
+      <Flex
+        width={1 / 3}
+        height="min-content"
+        flexDirection="column"
+        bg="white"
+        borderRadius="15px"
+        shadow="lg"
+      >
+        <Box
           bg="white"
           w="100%"
           color="black"
@@ -702,20 +730,19 @@ function ViewProject() {
             color="white"
             borderRadius="lg"
           >
-        <Flex
-            alignItems="center"
-            direction="row"
-            justifyContent="space-between"
-            pl="32px"
-            pr="10px"
-          >
-            <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
-              History
-            </Text>
-          </Flex>
-            
+            <Flex
+              alignItems="center"
+              direction="row"
+              justifyContent="space-between"
+              pl="32px"
+              pr="10px"
+            >
+              <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
+                History
+              </Text>
+            </Flex>
           </Box>
-          </Box>
+        </Box>
         {versionHistory &&
           chosenVersion &&
           versionHistory.map((e, index) => (

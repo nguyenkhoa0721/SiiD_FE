@@ -13,7 +13,9 @@ const ShowImage = ({ chosenVersion }) => {
                 <CustomEditImage
                   galleryItem={
                     item.imageFile
-                      ? BASE_URL + "/" + item.imageFile.path.replace("static", "public")
+                      ? BASE_URL +
+                        "/" +
+                        item.imageFile.path.replace("static", "public")
                       : "https://bit.ly/dan-abramov"
                   }
                 />

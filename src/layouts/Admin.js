@@ -98,7 +98,7 @@ export default function Dashboard(props) {
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <Sidebar
-        routes={routes.filter((f) => f.path !== '/viewProject')}
+        routes={routes.filter((f) => f.path !== "/viewProject")}
         logoText={"SiiD"}
         display="none"
         sidebarVariant={sidebarVariant}

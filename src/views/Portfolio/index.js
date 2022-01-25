@@ -73,19 +73,17 @@ function Portfolio() {
       });
   };
   const dataGallery = [
-    galleryItem0,
-    galleryItem1,
-    galleryItem2,
-    galleryItem1,
-    galleryItem2,
-    galleryItem1,
-    galleryItem0,
-    galleryItem2,
-    galleryItem1,
-    galleryItem0,
-    galleryItem1,
-    galleryItem0,
-    galleryItem2,
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
+    "https://source.unsplash.com/random/2000x2000",
   ];
   return (
     <Flex pt={{ base: "120px", md: "75px" }} direction="column">
