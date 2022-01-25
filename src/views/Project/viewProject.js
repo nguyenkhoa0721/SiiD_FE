@@ -62,7 +62,7 @@ import ShowImage from "components/Project/ShowImage";
 const InputComment = ({ func1, func2 }) => (
   <HStack>
     <Input
-      placeholder="Send message herer"
+      placeholder="What you want to complain"
       bg={GRAY2}
       color={BLACK}
       variant="ghost"
@@ -324,6 +324,10 @@ function ViewProject() {
                 duration: 5000,
                 isClosable: true,
               });
+              getProject();
+              getDetailVersion(versionHistory[0].id);
+              // await getComment(versionHistory[index].id);
+              setChosenVersion(versionHistory[0]);
             } else {
               toast({
                 title: "Failed",
@@ -379,6 +383,8 @@ function ViewProject() {
           pl="4"
           pr="4"
           mb="8"
+          pt="4"
+          shadow="lg"
         >
           <Box
             bg={GREEN_SHOPIFY}
@@ -388,14 +394,7 @@ function ViewProject() {
             color="white"
             borderRadius="lg"
           >
-            <Box
-          w="full"
-          h="60px"
-          bgColor={GREEN_SHOPIFY}
-          borderRadius="15px"
-          boxShadow="0 2px 12px 0 rgb(0 0 0 / 16%)"
-        >
-          <Flex
+        <Flex
             alignItems="center"
             direction="row"
             justifyContent="space-between"
@@ -408,7 +407,6 @@ function ViewProject() {
                 : "Loading..."}
             </Text>
           </Flex>
-        </Box>
             
           </Box>
           <Box align="end">
@@ -443,6 +441,7 @@ function ViewProject() {
                       <Box
                         w="full"
                         h="60px"
+                        p="8px"
                         bgColor={GREEN_SHOPIFY}
                         borderRadius="5px 5px 0px 0px"
                         pl="32px"
@@ -615,7 +614,18 @@ function ViewProject() {
             </Box>
           </Box>
         </Box>
-        <Box bg="white" w="100%" p={4} color="black" borderRadius="lg">
+        <Box bg="white" w="100%" color="black" borderRadius="lg"
+            shadow="lg">
+          <Box
+          bg="white"
+          w="100%"
+          color="black"
+          borderRadius="lg"
+          pl="4"
+          pr="4"
+          mb="8"
+          pt="4"
+        >
           <Box
             bg={GREEN_SHOPIFY}
             w="100%"
@@ -624,9 +634,19 @@ function ViewProject() {
             color="white"
             borderRadius="lg"
           >
-            <Text fontWeight="bold" fontSize="xl">
+        <Flex
+            alignItems="center"
+            direction="row"
+            justifyContent="space-between"
+            pl="32px"
+            pr="10px"
+          >
+            <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
               Review
             </Text>
+          </Flex>
+            
+          </Box>
           </Box>
           <Flex direction="column">
             <CommentCard
@@ -664,23 +684,38 @@ function ViewProject() {
         </Box>
       </Flex>
       <Flex width={1 / 3} flexDirection="column" bg="white">
-        <Flex
-          bg={GREEN_SHOPIFY}
+      <Box
+          bg="white"
           w="100%"
-          pl={6}
-          pr={4}
-          color="white"
+          color="black"
           borderRadius="lg"
+          pl="4"
+          pr="4"
+          mb="8"
+          pt="4"
         >
-          <HStack spacing={2}>
-            <Button variant="link">
-              <ArrowRightIcon w={4} h={4} color="white" />
-            </Button>
-            <Text fontWeight="bold" fontSize="xl">
+          <Box
+            bg={GREEN_SHOPIFY}
+            w="100%"
+            pl={6}
+            pr={4}
+            color="white"
+            borderRadius="lg"
+          >
+        <Flex
+            alignItems="center"
+            direction="row"
+            justifyContent="space-between"
+            pl="32px"
+            pr="10px"
+          >
+            <Text fontWeight="bold" fontSize="lg" my="17px" color="white">
               History
             </Text>
-          </HStack>
-        </Flex>
+          </Flex>
+            
+          </Box>
+          </Box>
         {versionHistory &&
           chosenVersion &&
           versionHistory.map((e, index) => (

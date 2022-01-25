@@ -36,25 +36,16 @@ export default function Footer(props) {
         <Link
           // color={linkTeal}
           color="teal.400"
-          href="https://www.creative-tim.com"
+          href=""
           target="_blank"
         >
           {document.documentElement.dir === "rtl"
             ? " توقيت الإبداعية"
-            : "Creative Tim "}
-        </Link>
-        &
-        <Link
-          // color={linkTeal}
-          color="teal.400"
-          href="https://www.simmmple.com"
-          target="_blank"
-        >
-          {document.documentElement.dir === "rtl" ? "سيممبل " : " Simmmple"}
+            : "Group01 "}
         </Link>
         {document.documentElement.dir === "rtl"
           ? "للحصول على ويب أفضل"
-          : " for a better web"}
+          : " for a better designers society"}
       </Text>
       <List display="flex">
         <ListItem
@@ -63,13 +54,13 @@ export default function Footer(props) {
             md: "44px",
           }}
         >
-          <Link color="gray.400" href="https://www.creative-tim.com">
+          <Link color="gray.400" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/profile.php?id=100010566067844">
             {document.documentElement.dir === "rtl"
               ? "توقيت الإبداعية"
-              : "Creative Tim"}
+              : "Group01"}
           </Link>
         </ListItem>
-        <ListItem
+        {/* <ListItem
           me={{
             base: "20px",
             md: "44px",
@@ -101,7 +92,7 @@ export default function Footer(props) {
           >
             {document.documentElement.dir === "rtl" ? "رخصة" : "License"}
           </Link>
-        </ListItem>
+        </ListItem> */}
       </List>
     </Flex>
   );
